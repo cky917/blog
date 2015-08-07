@@ -63,10 +63,11 @@ pagination_dir: page
 # Extensions
 ## Plugins: http://hexo.io/plugins/
 ## Themes: http://hexo.io/themes/
-theme: pacman
+theme: landscape
 
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
-  type:github
-  repo:git@github.com:cky917/myblog.git
+  type: github
+  repository: git@github.com:cky917/blog.git
+  branch: master
