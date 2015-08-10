@@ -17,6 +17,8 @@ root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 
+#多说
+duoshuo_shortname: coolmogu
 # Directory
 source_dir: source
 public_dir: public
