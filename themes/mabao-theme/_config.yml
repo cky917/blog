@@ -1,30 +1,28 @@
 # config
 cover: /img/img-bg.jpg
 logo: /img/logo.svg
-bio: 一个叫陈柯伊的人
+bio: 梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年
 
 # Content
 excerpt_link: 阅读更多
 
 # Header  nav
 menu:
-  Home: /
-  Archive: /archive
-  Images: /images
-  Wiki: http://www.baidu.com
-  Favorites: /favorites
-  Contact: /about/2014-09-11-mabao/
+  博客主页: /
+  我的项目: /archive
+  生活杂记: /images
+  github: http://github.com/cky917
+  关于我: /about/2014-09-11-mabao/
 
 ##Private: /private
 
 # nav.fonticon.css
 navclass:
-  Home: icon-home
-  Archive: icon-news
-  Images: icon-image
-  Wiki: icon-wiki
-  Favorites: icon-Favorites
-  Contact: icon-mail
+  博客主页: icon-home
+  我的项目: icon-news
+  生活杂记: icon-image
+  github: icon-wiki
+  关于我: icon-mail
 
 ##Private: icon-lock
 rss: /atom.xml
