@@ -9,10 +9,10 @@ excerpt_link: 阅读更多
 # Header  nav
 menu:
   博客主页: /
-  我的项目: /archive
-  生活杂记: /images
+  我的项目: /archives
+  生活杂记: /mylife
   github: http://github.com/cky917
-  关于我: /about/2014-09-11-mabao/
+  关于我: /aboutme/
 
 ##Private: /private
 
