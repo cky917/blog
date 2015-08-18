@@ -1,5 +1,5 @@
 title: 用js原生实现Ajax的get和post
-date: 2015-08-02 10:17:50
+date: 2015-08-18 10:17:50
 tags: Javascript学习笔记
 
 ---
@@ -7,7 +7,7 @@ tags: Javascript学习笔记
 虽然jquery的ajax挺方便，但是了解了原生实现的原理也是很不错的。而且封装好的原生Js Ajax用起来也挺方便的~ XD~
 
 
-####参数序列化函数
+#### 参数序列化函数
 
 	function serialize (data) {//将参数序列化
     	if (!data) return '';
@@ -23,7 +23,7 @@ tags: Javascript学习笔记
     	return pairs.join('&');
 	}
 
-####原生封装Ajax的get方法
+#### 原生封装Ajax的get方法
 
 	function get(url,options,callback){
     	var xhr = new XMLHttpRequest();
@@ -48,7 +48,7 @@ tags: Javascript学习笔记
 	})
 
 
-####原生封装Ajax的post方法
+#### 原生封装Ajax的post方法
 		
 		function post(url, options, callback) {
     		var xhr = new XMLHttpRequest();
