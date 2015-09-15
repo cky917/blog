@@ -19,7 +19,7 @@ menu:
 # nav.fonticon.css
 navclass:
   博客主页: icon-home
-  我的项目: icon-news
+  博客目录: icon-news
   生活杂记: icon-image
   github: icon-wiki
   关于我: icon-mail
