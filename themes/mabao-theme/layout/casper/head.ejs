@@ -26,7 +26,15 @@
   <link rel="stylesheet" type="text/css" href="<%- config.root %>css/screen.css" />
   <link rel="stylesheet" type="text/css" href="<%- config.root %>css/style.css" />
   <meta name="generator" content="<%- config.title %>">
-
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?6a1455cacec5edcacfd72a097b6308d0";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
   <% if (config.rss) { %>
   <link rel="alternate" type="application/rss+xml" title="RSS" href="<%- config.rss %>">
   <% } %>
@@ -43,4 +51,5 @@
     analytics.load("uj8ix0aatc");
   </script>
   <% } %>
+
 </head>
