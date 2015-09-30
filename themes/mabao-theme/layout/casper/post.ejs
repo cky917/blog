@@ -1,9 +1,15 @@
 
 <% permalink = config.url + config.root + post.path %>
 <main class="content" role="main">
+
   <article class="post">
     <%- partial('post/meta') %>
     <h1 class="post-title"><%- post.title %></h1>
+    <span id="busuanzi_container_page_pv" class="readCount">
+      阅读量：
+    <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+
+    </span>
     <section class="post-content">
       <%- post.content %>
     </section>
@@ -14,5 +20,5 @@
   </article>
   <%- partial('post/navigation') %>
   <%- partial('post/comments') %>
-  
+
 </main>

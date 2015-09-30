@@ -90,7 +90,7 @@ button:hover, button:active { background: rgba(0,0,0,0.2); }
 /*fonticons*/
 [class^="icon-"], [class*=" icon-"] { font-family: 'icons'; speak: none; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; line-height: 1; /* Better Font Rendering =========== */
 -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-.icon-Favorites:before { content: "\e600"; }.icon-logo:before { content: "\e608"; }
+.icon-Favorites:before { content: "\e600"; }.icon-logo:before { content: "";position: absolute;width: 38px;height: 19px;left:50%;margin-left:-19px;background: url(../img/mogu.png); margin:0 auto; }
 .icon-newspaper:before { content: "\e609"; }.icon-dice:before { content: "\e60a"; }
 .icon-pacman:before { content: "\e60b"; }.icon-book:before { content: "\e60c"; }
 .icon-paste:before { content: "\e60d"; }.icon-qrcode:before { content: "\e603"; }.icon-calculate:before { content: "\e60e"; }

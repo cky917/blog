@@ -1,6 +1,6 @@
 # config
 cover: /img/img-bg.jpg
-logo: /img/logo.svg
+logo: /img/logo.png
 bio: 梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年
 
 # Content
@@ -29,7 +29,7 @@ rss: /atom.xml
 
 # Miscellaneous
 google_analytics:
-favicon: /img/favicon.png
+favicon: /favicon.ico
 twitter:
 google_plus:
 fb_admins:
