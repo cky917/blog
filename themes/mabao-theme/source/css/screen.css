@@ -43,7 +43,7 @@
    ========================================================================== */
 
 html { height: 100%; max-height: 100%; font-size: 64%; }
-body { height: 100%; max-height: 100%; font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', 'SimSun', 'Droid Sans Fallback', sans-serif; font-size: 1.7rem; line-height: 1.6em; color: #3A4145; background: white; }
+body { height: 100%; max-height: 100%; font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif; font-size: 1.6rem; line-height: 1.7em; color: #3A4145; background: white; }
 
 ::-moz-selection {
  color: #222;
@@ -61,7 +61,7 @@ h6 { font-size: 1.4rem; }
 a { color: #1F85C8; text-decoration: none; transition: color ease 0.3s; outline: none; }
 a:hover, a:focus { color: #3498DB; outline: none; }
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: #50585D; }
-p, ul, ol, dl { margin: 1.6em 0; }
+p, ul, ol, dl { margin: 1.6em 0;}
 ol ol, ul ul, ul ol, ol ul { margin: 0.4em 0; }
 dl dt { float: left; width: 180px; overflow: hidden; clear: left; text-align: right; text-overflow: ellipsis; white-space: nowrap; font-weight: bold; margin-bottom: 1em }
 dl dd { margin-left: 200px; margin-bottom: 1em }
@@ -295,6 +295,36 @@ h4 { font-size: 2.3rem; }
 .older-posts,  .newer-posts { position: static; margin: 10px 0; }
 .page-number { display: block; }
 .site-footer { margin-top: 6rem; font-size: 1.1rem; }
+}
+.archive-list,.tag-list{
+  padding: 10px;
+  width: 200px;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+}
+.archive-list:after,.tag-list:after{
+  content: "";
+  display: block;
+  height: 0;
+  width: 0;
+  clear: both;
+}
+.archive-list-item,.tag-list-item{
+  display: block;
+  width: 100%;
+  clear: both;
+}
+.archive-list-link,.tag-list-link{
+  color: #666;
+ float: left;
+}
+.archive-list-count,.tag-list-count{
+  font-size: 12px;
+  float: right;
+}
+.archive-list-count:after,.tag-list-count:after{
+  content: "篇";
+  font-size: 14px;
 }
 /* ==========================================================================
    End of file. Media queries should be the last thing here. Do not add stuff

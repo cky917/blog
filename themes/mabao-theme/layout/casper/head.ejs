@@ -2,7 +2,7 @@
   var title = page.title;
 
   if (is_archive()){
-    title = 'Archives';
+    title = '归档';
 
     if (is_month()){
       title += ': ' + page.year + '/' + page.month;
@@ -10,9 +10,9 @@
       title += ': ' + page.year;
     }
   } else if (is_category()){
-    title = 'Category: ' + page.category;
+    title = '目录: ' + page.category;
   } else if (is_tag()){
-    title = 'Tag: ' + page.tag;
+    title = '标签: ' + page.tag;
   }
 %>
 <head>
