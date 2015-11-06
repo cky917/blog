@@ -192,3 +192,6 @@ button:hover, button:active { background: rgba(0,0,0,0.2); }
 .fs3 {
 	font-size: 20px;
 }
+.runCode{
+  display: none;
+}
