@@ -98,7 +98,7 @@ $("#mytable").on('click','td',function(e){
         //code
         return this;
     }
-})
+})(jQuery)
 ```
 ### 五、合理利用HTML的data属性
 HTML5的data属性可以帮助我们插入数据，特别是前后端的数据交换。jQuery的data()方法可以自动得到数据。例子：
