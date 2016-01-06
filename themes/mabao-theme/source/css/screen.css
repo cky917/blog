@@ -191,8 +191,8 @@ figure.highlight { background: #fff; border-radius: 2px; border-bottom: 1px soli
 figure.highlight figcaption { padding: 8px 10px; font-size: .8em; }
 figure.highlight table { margin: 0; }
 figure.highlight table > tbody > tr > td { padding: 0; background: #fff !important; }
-figure.highlight table > tbody > tr > td.gutter { max-width: 30px; width: 30px; text-align: left; color: #999; }
-figure.highlight pre { border: none; margin: 0; }
+figure.highlight table > tbody > tr > td.gutter { max-width: 40px; width:40px;text-align: center; color: #999; }
+figure.highlight pre { border: none; margin: 0; padding: 1.6em 0.5em;}
 /* Theme: Solarized - Github
  * More theme here: http://softwaremaniacs.org/media/soft/highlight/test.html
  */

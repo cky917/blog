@@ -5,22 +5,22 @@ tags: Javascript学习笔记
 在我们写javascript函数的时候，经常会使用到条件判断，使用得最多的就是if else进行判断了。使用得多了渐渐会特别依赖这个最简单的方法，而导致整个函数里好多if else,甚至嵌套很多层。仔细研究，我们会发现用一大段if else的逻辑，其实用其他方法，一句话就能够完全实现同样的功能。
 
 #### 初级替代之一：三元表达式
-    
     var max = a>b?a:b;
 
 三元表达式的规则就是，当"?"前的表达式为true时，返回":"前的值，否则返回":"后的值。
 所以上面那句表达式等价于
-    
-    if(a>b){
-        max=a;
-    }else{
-        max=b;
-    }
-
+```javascript
+if(a>b){
+    max=a;
+}else{
+    max=b;
+}
+```
 #### 初级替代之二：switch
 
 switch作为条件判断的方法之二，很明显可以替代一些简单但是重复的if else。实例
 
+```javascript
     if(str=="项链"){//用if else
         type="珠宝";
     }else if(str=="苹果"){
@@ -30,8 +30,9 @@ switch作为条件判断的方法之二，很明显可以替代一些简单但�
     }else{
         type="人类";
     }
-
-    switch(str){// switch
+```
+```javascript
+    switch(str){//switch
         case "项链": type="珠宝";
         break;
         case "苹果": type="水果";
@@ -41,10 +42,10 @@ switch作为条件判断的方法之二，很明显可以替代一些简单但�
         default:
         type=="人类";
     }
-
+```
 但是看了上面的代码，肯定很多人会说，switch根本没有好到哪里去嘛，只是看上去稍微清晰了一点点。确实，所以我们有更简单的方法。
 
-#### 高级替代：数组对象；
+#### 高级替代：对象字面量；
     
     var typeMap = {"项链":"珠宝","苹果":"水果","仙人掌":"植物"};
     var type = typeMap[str];
@@ -56,13 +57,13 @@ switch作为条件判断的方法之二，很明显可以替代一些简单但�
     var type = typeMap[str]||"人类";
 
 就这么两句话就完全实现了之前一大段逻辑判断的功能。不相信？可以试一试哦。
-
+```javascript
     var type = typeMap["项链"]||"人类";
     console.log(type)// 珠宝
 
     var type2 = typeMap["不认识"]||"人类";
     console.log(type2)// 人类
-
+```
 
 要了解这之中的原因，首先要了解“||”的机制。
 一般我们用“||”是用来进行布尔判断，前后都是布尔值，但是当其中一个不是布尔值时，它遵循以下原则:
@@ -85,42 +86,43 @@ switch作为条件判断的方法之二，很明显可以替代一些简单但�
 - 如果有一个操作数都是undefined，则返回undefined。
 
 所以我们可以这么用
-
+```javascript
     var typeMap = {"项链":"珠宝","苹果":"水果","仙人掌":"植物"};
     var type = (year>1) && typeMap[str];
-
+```
 上面这段话等同于
-
-    if(year>1){
-        if(str=="项链"){
-            type="珠宝";
-        }else if(str=="苹果"){
-            type="水果";
-        }else if(str=="仙人掌"){
-            type="植物";
+```javascript
+if(year>1){
+    if(str=="项链"){
+        type="珠宝";
+    }else if(str=="苹果"){
+        type="水果";
+    }else if(str=="仙人掌"){
+        type="植物";
     }
-
+}
+```
 然后我们还可以这样来
-
+```javascript
     var typeMap = {"项链":"珠宝","苹果":"水果","仙人掌":"植物"};
     var type = ((year>1) && typeMap[str]) || "人类";
-
+```
 这段话等同于
-
-    if(year>1){
-        if(str=="项链"){
-            type="珠宝";
-        }else if(str=="苹果"){
-            type="水果";
-        }else if(str=="仙人掌"){
-            type="植物";
-        }else{
-            type="人类";
-        }
+```javascript
+if(year>1){
+    if(str=="项链"){
+        type="珠宝";
+    }else if(str=="苹果"){
+        type="水果";
+    }else if(str=="仙人掌"){
+        type="植物";
     }else{
         type="人类";
     }
-
+}else{
+    type="人类";
+}
+```
 卧槽，简直简便了好多对吧，不过为了维护性，还是不建议同时使用多个"&&" "||"，因为多了阅读起来就和阅读正则一样困难了。
 
 
