@@ -1,4 +1,5 @@
 title: node.js学习笔记(四)——全局对象与全局变量
+date: 2015-12-11 10:17:50
 tags: node.js学习笔记
 ---
 所有属性都可以在程序的任何地方访问，即全局变量。在javascript中，通常window是全局对象，而node.js的全局对象是global，所有全局变量都是global对象的属性，如：console、process等。

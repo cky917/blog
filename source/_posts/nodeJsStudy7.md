@@ -1,4 +1,5 @@
 title: node.js学习笔记(七)——HTTP服务器
+date: 2016-01-06 10:17:50
 tags: node.js学习笔记
 ---
 node.js提供了http模块。其中封装了一个高效的HTTP服务器和一个简易的HTTP客户端。

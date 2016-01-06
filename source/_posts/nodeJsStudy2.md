@@ -1,4 +1,5 @@
 title: node.js学习笔记(二)——node.js回调函数与事件
+date: 2015-12-02 10:17:50
 tags: node.js学习笔记
 ---
 ### 一、回调函数
