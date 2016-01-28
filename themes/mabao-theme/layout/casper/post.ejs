@@ -26,7 +26,7 @@
 //运行文本域代码
 function runEx(cod1) {
   cod=document.all(cod1)
-  var code=cod.value;
+  var code=cod.value.replace(/‘|’/g,'\'');
   if (code!=""){
     var newwin=window.open('','',''); //打开一个窗口并赋给变量newwin。
     newwin.opener = null // 防止代码对论谈页面修改
