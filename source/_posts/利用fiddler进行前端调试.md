@@ -10,21 +10,21 @@ tags: web前端知识
 我们直接进入正题：利用Fiddler进行前端调试。
 
 打开软件，我们看到的是这样的界面：
-![软件界面](https://github.com/cky917/blog/blob/master/themes/mabao-theme/source/img/1.png)
+![软件界面](https://raw.githubusercontent.com/cky917/blog/master/themes/mabao-theme/source/img/1.png)
 左边那些就是你的网络请求列表，右边是一些工具面板。
 
 我们以coolmogu.com为例，打开本网站，出现以下请求：
-![](http://i12.tietuku.com/9d594da04d3c7f65.png)
+![](https://raw.githubusercontent.com/cky917/blog/master/themes/mabao-theme/source/img/2.png)
 
 假如我们要修改index.js，在本地我们有一个index.js，具体步骤如下图
-![](https://github.com/cky917/blog/blob/master/themes/mabao-theme/source/img/3.png)
-![](https://github.com/cky917/blog/blob/master/themes/mabao-theme/source/img/4.png)
 
-这样再刷新页面，实际coolmogu.com以后请求的index.js就是请求的你本地的Index.js了。假如我index.js里加了一行`alert("cky")`, ![](http://i11.tietuku.com/535ba941a555232f.png) 看看效果：
-![](https://github.com/cky917/blog/blob/master/themes/mabao-theme/source/img/5.png)
+![](https://raw.githubusercontent.com/cky917/blog/master/themes/mabao-theme/source/img/4.png)
+
+这样再刷新页面，实际coolmogu.com以后请求的index.js就是请求的你本地的Index.js了。假如我index.js里加了一行`alert("cky")`, ![](https://raw.githubusercontent.com/cky917/blog/master/themes/mabao-theme/source/img/3.png) 看看效果：
+![](https://raw.githubusercontent.com/cky917/blog/master/themes/mabao-theme/source/img/5.png)
 
 很简单吧，还可以用同样的方法进行css文件调试等~
 
-![](https://github.com/cky917/blog/blob/master/themes/mabao-theme/source/img/6.png)
+![](https://raw.githubusercontent.com/cky917/blog/master/themes/mabao-theme/source/img/6.png)
 
 （本来之前用的图床，结果图床挂了- -，今天来修复图片。以后图片还是放在自己的github上吧）
