@@ -25,6 +25,6 @@ tags: web前端知识
 
 很简单吧，还可以用同样的方法进行css文件调试等~
 
-![](https://raw.githubusercontent.com/cky917/blog/master/themes/mabao-theme/source/img/6.png)
+![](https://raw.githubusercontent.com/cky917/blog/master/themes/mabao-theme/source/img/6.jpg)
 
 （本来之前用的图床，结果图床挂了- -，今天来修复图片。以后图片还是放在自己的github上吧）
