@@ -1,6 +1,6 @@
 <span class="post-meta">
       <time datetime="<%= date_xml(post.date) %>" itemprop="datePublished">
-          <%= date(post.date, null) %>
+        <%= date(post.date, 'YYYY-M-D HH:mm:ss') %> 
       </time>
     <% if (post.tags && post.tags.length){ %>
     <% count = post.tags.length %>
