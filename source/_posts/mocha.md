@@ -194,6 +194,8 @@ describe('api文件测试', function() {
 ```
 设置超时5000m`mocha -t 5000`后正常执行
 
+另外，上面的测试用例里面，有一个done函数。it块执行的时候，传入一个done参数，当测试结束的时候，必须显式调用这个函数，告诉Mocha测试结束了。否则，Mocha就无法知道，测试是否结束，会一直等到超时报错。
+
 另外，Mocha内置对Promise的支持，允许直接返回Promise，等到它的状态改变，再执行断言，而不用显式调用done，见/test/userCheck.test.js。
 
 ### 测试用例的钩子
