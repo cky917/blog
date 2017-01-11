@@ -9,7 +9,7 @@
     $(document).ready(function(){
 
         $(".post-content").fitVids();
-
+        $('#toc').appendTo('body');
     });
-
+    
 }(jQuery));

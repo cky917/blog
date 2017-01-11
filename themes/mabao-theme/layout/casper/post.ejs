@@ -22,6 +22,9 @@
   <%- partial('post/comments') %>
 
 </main>
+<% if (post.toc !== false) {%> 
+  <%- partial('post/toc') %>
+<% } %>
 <script language="JavaScript" type="text/JavaScript">
 //运行文本域代码
 function runEx(cod1) {
@@ -34,4 +37,5 @@ function runEx(cod1) {
     newwin.document.close();
   }
 }
+
 </script>
