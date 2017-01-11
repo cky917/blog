@@ -35,7 +35,7 @@ BDD描述的行为就像一个个的故事(Story)，需求方、开发者、测�
 [Mocha](https://mochajs.org/)是具有丰富特性的 JavaScript 测试框架，可以运行在 Node.js 和浏览器中，使得异步测试更简单更有趣。Mocha 可以持续运行测试，支持灵活又准确的报告，当映射到未捕获异常时转到正确的测试示例。
 它支持TDD/BDD等多种流行的接口，也接受多种Assertions（断言），如should.js/expect/chai/better-assert（断言框架）等，通过这些即可构建各种风格的测试用例。
 
-### 安装
+### 1. 安装
 要开始我们的单元测试之路，首先要安装mocha。
 ```javascript
 npm install mocha --save
@@ -45,7 +45,7 @@ chai提供了三种断言风格来分别适用于BDD和TDD。__expect/should__ A
 ```javascript
 npm install chai --save
 ```
-### 起步
+### 2. 起步
 修改package.json 配置：
 ```javascript
  .....
@@ -135,7 +135,7 @@ it块称为"测试用例"（test case），表示一个单独的测试，是测�
 
 从`checkUser`方法测试也可以看出，是支持promise风格写法的。
 
-### 断言
+### 3. 断言
 
 所谓"断言"，就是判断源码的实际执行结果与预期结果是否一致，如果不一致就抛出一个错误。所有的测试用例（it块）都应该含有一句或多句的断言。它是编写测试用例的关键。断言功能由断言库来实现，Mocha本身不带断言库，所以必须先引入断言库。
 
@@ -193,7 +193,7 @@ expect({}).to.be.empty;
 // match
 expect('foobar').to.match(/^foo/);
 ```
-### 命令行参数
+### 4. 命令行参数
 `--recursive` 执行/test文件夹下的所有测试文件
 `--reporter,-R` 参数用来指定测试报告的格式，默认是spec格式
 `--watch,-w` 参数用来监视指定的测试脚本。只要测试脚本有变化，就会自动运行Mocha。
@@ -216,7 +216,7 @@ server-tests
 --recursive
 ```
 
-### 异步测试
+### 5. 异步测试
 Mocha默认每个测试用例最多执行2000毫秒，如果到时没有得到结果，就报错。对于涉及异步操作的测试用例，这个时间往往是不够的，需要用-t或--timeout参数指定超时门槛。
 ```javascript
 //timeout.js
@@ -249,7 +249,7 @@ describe('api文件测试', function() {
 
 另外，Mocha内置对Promise的支持，允许直接返回Promise，等到它的状态改变，再执行断言，而不用显式调用done，见/test/userCheck.test.js。
 
-### 测试用例的钩子
+### 6. 测试用例的钩子
 
 Mocha在describe块之中，提供测试用例的四个钩子：`before()`、`after()`、`beforeEach()`和`afterEach()`。它们会在指定时间执行。
 ```javascript
@@ -272,7 +272,7 @@ describe('hooks', function() {
 
 
 
-### 参考文档 
+## 三、参考文档 
 - [测试框架 Mocha 实例教程](http://www.ruanyifeng.com/blog/2015/12/a-mocha-tutorial-of-examples.html)
 - [单元测试 & mocha 简述](http://imweb.io/topic/5634c91109e01a534b461eaa?utm_source=tuicool&utm_medium=referral)
 - [学习TDD：TDD的好处](http://blog.csdn.net/m13666368773/article/details/7006912)

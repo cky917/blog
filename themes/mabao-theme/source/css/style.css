@@ -223,6 +223,7 @@ button:hover, button:active { background: rgba(0,0,0,0.2); }
 .toc-article li{
   cursor: pointer;
   list-style: none;
+  word-break: break-all;
 }
 .toc-article a{
   color: #50585D;
