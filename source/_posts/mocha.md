@@ -140,8 +140,59 @@ it块称为"测试用例"（test case），表示一个单独的测试，是测�
 所谓"断言"，就是判断源码的实际执行结果与预期结果是否一致，如果不一致就抛出一个错误。所有的测试用例（it块）都应该含有一句或多句的断言。它是编写测试用例的关键。断言功能由断言库来实现，Mocha本身不带断言库，所以必须先引入断言库。
 
 上面也提到了断言库chai，其中有三个API expect/should/assert，
-详细的文档可以查看[chai](http://chaijs.com/api/)，暂时不详细说了。
+详细的文档可以查看[chai](http://chaijs.com/api/)。
 
+`expect(rs.data).to.be.ok;`这句话，就是一个断言。
+
+要使用断言，首先要
+```javascript
+var chai      = require("chai");
+var expect    = chai.expect;
+```
+确认引入断言库，这里介绍比较常用的expect风格api。
+我们可以这样写：`expect(4+5).equal(9);`
+Chai添加了下面的链式getter，它们不会做任何事，但是你可以将它们添加进入断言中是的句子变得啰嗦但是增加了易读性。
+- to
+- be
+- been
+- is
+- that
+- and
+- have
+- with
+- at
+- of
+- same
+- a
+- an
+
+重写上面的方法：
+`expect(4+5).to.equal(5)`
+下面是一些使用断言例子
+
+```javascript
+// 相等或不相等
+expect(4 + 5).to.be.equal(9);
+expect(4 + 5).to.be.not.equal(10);
+expect(foo).to.be.deep.equal({ bar: 'baz' });
+// 布尔值为true
+expect('everthing').to.be.ok;
+expect(false).to.not.be.ok;
+// typeof
+expect('test').to.be.a('string');
+expect({ foo: 'bar' }).to.be.an('object');
+expect(foo).to.be.an.instanceof(Foo);
+// include
+expect([1,2,3]).to.include(2);
+expect('foobar').to.contain('foo');
+expect({ foo: 'bar', hello: 'universe' }).to.include.keys('foo');
+// empty
+expect([]).to.be.empty;
+expect('').to.be.empty;
+expect({}).to.be.empty;
+// match
+expect('foobar').to.match(/^foo/);
+```
 ### 命令行参数
 `--recursive` 执行/test文件夹下的所有测试文件
 `--reporter,-R` 参数用来指定测试报告的格式，默认是spec格式
@@ -189,7 +240,7 @@ describe('api文件测试', function() {
 ```
 在不设置 -t时，执行报错
 ```javascript
-1) api文件测试 timeout超时测试 测试应该5000毫秒后结束:
+1) api文件测试 timeout超时测试 测试应该4000毫秒后结束:
      Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves.
 ```
 设置超时5000m`mocha -t 5000`后正常执行
