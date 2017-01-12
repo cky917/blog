@@ -216,6 +216,8 @@ button:hover, button:active { background: rgba(0,0,0,0.2); }
   margin-top: 1em;
   margin-bottom: 1em;
   padding-left: 10px;
+  max-height: 30em;
+  overflow-y: scroll;
 }
 .toc-article .toc-child{
   padding-left: 20px;
@@ -228,6 +230,10 @@ button:hover, button:active { background: rgba(0,0,0,0.2); }
 .toc-article a{
   color: #50585D;
   transition:.3s ease all;   
+}
+.toc-item.toc-active>a{
+  color: #3498DB;
+  outline: none;
 }
 .toc-article a:hover{
     color: #3498DB;
