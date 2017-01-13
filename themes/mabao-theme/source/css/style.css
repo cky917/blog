@@ -87,6 +87,11 @@ button:hover, button:active { background: rgba(0,0,0,0.2); }
 @media screen and (max-height: 31.6em) {
 .outer-nav a { margin-bottom: 20px; }
 }
+@media screen and (max-width:960px){
+    .toc-article{
+      display: none;
+    }
+}
 /*fonticons*/
 [class^="icon-"], [class*=" icon-"] { font-family: 'icons'; speak: none; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; line-height: 1; /* Better Font Rendering =========== */
 -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
@@ -194,48 +199,4 @@ button:hover, button:active { background: rgba(0,0,0,0.2); }
 }
 .runCode{
   display: none;
-}
-.toc-article{
-    position: fixed;
-    top: 200px;
-    right: 30px;
-    max-width: 20em;
-    font-size: 0.75em;
-    z-index: 100;
-    background: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-.toc-article .toc-title{
-  text-align: center;
-  border-bottom: 1px solid #ccc;
-  font-weight: bold;
-}
-.toc-article .toc{
-  margin-top: 1em;
-  margin-bottom: 1em;
-  padding-left: 10px;
-  max-height: 30em;
-  overflow-y: scroll;
-}
-.toc-article .toc-child{
-  padding-left: 20px;
-}
-.toc-article li{
-  cursor: pointer;
-  list-style: none;
-  word-break: break-all;
-}
-.toc-article a{
-  color: #50585D;
-  transition:.3s ease all;   
-}
-.toc-item.toc-active>a{
-  color: #3498DB;
-  outline: none;
-}
-.toc-article a:hover{
-    color: #3498DB;
-    outline: none;
 }

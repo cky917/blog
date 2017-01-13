@@ -333,6 +333,62 @@ h4 { font-size: 2.3rem; }
   content: "篇";
   font-size: 14px;
 }
+.toc-article{
+    position: absolute;
+    top: 600px;
+    right: 30px;
+    max-width: 20em;
+    font-size: 0.75em;
+    z-index: 100;
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+}
+.toc-article-fixed{
+    position: fixed;
+    top: 50px;
+}
+.toc-article .toc-title{
+  text-align: left;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+.toc-article .toc{
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border-left: 3px solid #ccc;
+  padding-left: 0;
+}
+.toc-item{
+  padding-left: 10px;
+}
+.toc-article li{
+  cursor: pointer;
+  list-style: none;
+  word-break: break-all;
+}
+.toc-article a{
+  color: #50585D;
+  transition:.3s ease all;   
+}
+.toc-item.toc-active{
+  position: relative;
+  left: -3px;
+  background: #f3f3f3;
+  border-left: 3px solid #3498DB;
+}
+.toc-child .toc-active{
+  border-left: none;
+}
+
+.toc-item.toc-active>a{
+  color: #3498DB;
+  outline: none;
+}
+.toc-article a:hover{
+    color: #3498DB;
+    outline: none;
+}
 /* ==========================================================================
    End of file. Media queries should be the last thing here. Do not add stuff
    below this point, or it will probably fuck everything up.
