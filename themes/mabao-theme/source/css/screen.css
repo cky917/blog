@@ -337,7 +337,7 @@ h4 { font-size: 2.3rem; }
     position: absolute;
     top: 600px;
     right: 30px;
-    max-width: 20em;
+    width: 10em;
     font-size: 0.75em;
     z-index: 100;
     background: #fff;
@@ -348,16 +348,27 @@ h4 { font-size: 2.3rem; }
     position: fixed;
     top: 50px;
 }
+.toc-box{
+  position: absolute;
+  top: 50px;
+  height: 400px;
+  width: 100%;
+  overflow: hidden;
+}
+.toc-child{
+  margin:0;
+}
 .toc-article .toc-title{
   text-align: left;
   font-weight: bold;
   font-size: 1.5em;
 }
 .toc-article .toc{
-  margin-top: 1em;
+  position: absolute;
   margin-bottom: 1em;
   border-left: 3px solid #ccc;
   padding-left: 0;
+  margin-top: 0;
 }
 .toc-item{
   padding-left: 10px;
@@ -389,6 +400,7 @@ h4 { font-size: 2.3rem; }
     color: #3498DB;
     outline: none;
 }
+
 /* ==========================================================================
    End of file. Media queries should be the last thing here. Do not add stuff
    below this point, or it will probably fuck everything up.
