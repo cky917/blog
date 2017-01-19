@@ -209,6 +209,112 @@ map.get('title') // "Author"
 [reflect](http://es6.ruanyifeng.com/#docs/reflect)，文档再此，后续总结
 
 ### Iterator和for...of循环
+遍历器（Iterator）就是这样一种机制。它是一种接口，为各种不同的数据结构提供统一的访问机制。任何数据结构只要部署Iterator接口，就可以完成遍历操作（即依次处理该数据结构的所有成员）。
+Iterator的遍历过程是这样的。
+1. 创建一个指针对象，指向当前数据结构的起始位置。也就是说，遍历器对象本质上，就是一个指针对象。
+2. 第一次调用指针对象的`next`方法，可以将指针指向数据结构的第一个成员。
+3. 第二次调用指针对象的`next`方法，指针就指向数据结构的第二个成员。
+4. 不断调用指针对象的`next`方法，直到它指向数据结构的结束位置。
+
+下面是一个模拟next方法返回值的例子。
+```javascript
+var it = makeIterator(['a', 'b']);
+it.next() // { value: "a", done: false }
+it.next() // { value: "b", done: false }
+it.next() // { value: undefined, done: true }
+function makeIterator(array) {
+  var nextIndex = 0;
+  return {
+    next: function() {
+      return nextIndex < array.length ?
+        {value: array[nextIndex++], done: false} :
+        {value: undefined, done: true};
+    }
+  };
+}
+```
+每一次调用`next`方法，都会返回数据结构的当前成员的信息。具体来说，就是返回一个包含value和done两个属性的对象。其中，value属性是当前成员的值，done属性是一个布尔值，表示遍历是否结束。
 
 
+凡是部署了`Symbol.iterator`属性的数据结构，就称为部署了遍历器接口。调用这个接口，就会返回一个遍历器对象。
+当使用`for...of`循环遍历某种数据结构时，该循环会自动去寻找Iterator接口。
+在ES6中，有三类数据结构原生具备Iterator接口：数组、某些类似数组的对象、Set和Map结构。
+有一些场合会默认调用Iterator接口（即Symbol.iterator方法）：
+1. 解构赋值
+```javascript
+let set = new Set().add('a').add('b').add('c');
+let [x,y] = set;// x='a'; y='b'
+let [first, ...rest] = set;// first='a'; rest=['b','c'];
+```
+2. 扩展运算符
+```javascript
+// 例一
+var str = 'hello';
+[...str] //  ['h','e','l','l','o']
+// 例二
+let arr = ['b', 'c'];
+['a', ...arr, 'd']
+```
+3. yield\*
+yield\*后面跟的是一个可遍历的结构，它会调用该结构的遍历器接口。
+```javascript
+let generator = function* () {
+  yield 1;
+  yield* [2,3,4];
+  yield 5;
+};
+var iterator = generator();
+iterator.next() // { value: 1, done: false }
+iterator.next() // { value: 2, done: false }
+iterator.next() // { value: 3, done: false }
+iterator.next() // { value: 4, done: false }
+iterator.next() // { value: 5, done: false }
+iterator.next() // { value: undefined, done: true }
+```
+4. 其他场合
+由于数组的遍历会调用遍历器接口，所以任何接受数组作为参数的场合，其实都调用了遍历器接口。下面是一些例子。
+- `for...of`
+- `Array.from()`
+- `Map()`, `Set()`, `WeakMap()`, `WeakSet()`（比如new Map([['a',1],['b',2]])）
+- `Promise.all()`
+- `Promise.race()`
 
+```
+var arr = ['a', 'b', 'c', 'd'];
+for (let a in arr) {
+  console.log(a); // 0 1 2 3
+}
+for (let a of arr) {
+  console.log(a); // a b c d
+}
+```
+上面代码表明，`for...in`循环读取键名，`for...of`循环读取键值。如果要通过`for...of`循环，获取数组的索引，可以借助数组实例的entries方法和keys方法，参见《数组的扩展》章节。
+`for...of`循环调用遍历器接口，数组的遍历器接口只返回具有数字索引的属性。这一点跟`for...in`循环也不一样。
+
+### Generator 函数
+#### 简介
+Generator函数是ES6提供的一种异步编程解决方案，语法行为与传统函数完全不同。本章详细介绍Generator函数的语法和API，它的异步编程应用请看《异步操作》一章。语法上，首先可以把它理解成，Generator函数是一个状态机，封装了多个内部状态。执行Generator函数会返回一个遍历器对象，也就是说，Generator函数除了状态机，还是一个遍历器对象生成函数。返回的遍历器对象，可以依次遍历Generator函数内部的每一个状态。形式上，Generator函数是一个普通函数，但是有两个特征。一是，function关键字与函数名之间有一个星号；二是，函数体内部使用yield语句，定义不同的内部状态（yield语句在英语里的意思就是“产出”）。
+
+Generator函数的调用方法与普通函数一样，也是在函数名后面加上一对圆括号。不同的是，调用Generator函数后，该函数并不执行，返回的也不是函数运行结果，而是一个指向内部状态的指针对象，也就是上一章介绍的遍历器对象（Iterator Object）。
+下一步，必须调用遍历器对象的next方法，使得指针移向下一个状态。也就是说，每次调用next方法，内部指针就从函数头部或上一次停下来的地方开始执行，直到遇到下一个yield语句（或return语句）为止。换言之，Generator函数是分段执行的，yield语句是暂停执行的标记，而next方法可以恢复执行。
+#### yield语句
+由于Generator函数返回的遍历器对象，只有调用next方法才会遍历下一个内部状态，所以其实提供了一种可以暂停执行的函数。yield语句就是暂停标志。
+`yield`语句后面的表达式，只有当调用next方法、内部指针指向该语句时才会执行，因此等于为JavaScript提供了手动的“惰性求值”（Lazy Evaluation）的语法功能。
+yield语句与return语句既有相似之处，也有区别。相似之处在于，都能返回紧跟在语句后面的那个表达式的值。区别在于每次遇到yield，函数暂停执行，下一次再从该位置继续向后执行，而return语句不具备位置记忆的功能。一个函数里面，只能执行一次（或者说一个）return语句，但是可以执行多次（或者说多个）yield语句。
+
+`for...of`循环可以自动遍历Generator函数时生成的Iterator对象，且此时不再需要调用next方法。
+```
+function *foo() {
+  yield 1;
+  yield 2;
+  yield 3;
+  yield 4;
+  yield 5;
+  return 6;
+}
+for (let v of foo()) {
+  console.log(v);
+}
+// 1 2 3 4 5
+```
+...待补充
