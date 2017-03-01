@@ -6,9 +6,12 @@ tags:
 每次在本地跑Node项目自娱自乐总不是很爽，一直想把自己的node项目部署到服务器上。但是我对于后端和运维知识我还是处于小白阶段，今天研究了一下午，总算是成功把自己的node项目搞了上去，又学到了新姿势。本文将介绍怎么从零开始，获得服务器，并将node项目通过github+pm2部署到远程服务器。
 <!-- more -->
 
-### 获得服务器
+### 服务器环境搭建
+#### 购买服务器
 (已有服务器的可以跳过此步骤)。
-我是用的腾讯的云服务器，因为腾讯云还是比较良心，云服务器开放了免费体验功能（不知道之后会不会关闭），很适合我们这种新手先试用再购买。通过这个【[链接](https://www.qcloud.com/act/try?t=cvm)】申请了免费试用。申请成功后，就会收到该改主机的信息。我选择的1核CPU、1GB内存,系统为CentOS 7.2 64位。
+我是用的腾讯的云服务器，因为腾讯云还是比较良心，云服务器开放了免费体验功能（不知道之后会不会关闭），很适合我们这种新手先试用再购买。通过这个【[链接](https://www.qcloud.com/act/try?t=cvm)】申请了免费试用。申请成功后，就会收到该改主机的信息。我选择的1核CPU、1GB内存,系统为CentOS 7.2 64位。也许在你看到这篇文章的时候，服务器也过期了- -
+___
+现在我换成了国外的vps 便宜好用还能翻墙 嚯嚯嚯。
 
 #### 登录云服务器
 在本机终端输入以下命令即可连接上云服务器，然后需要输入给你的初始密码。
@@ -208,4 +211,51 @@ pm2 deploy <configuration_file> <environment> <command>
 ### nginx反向代理
 通过nginx反向代理，可以让服务器上某端口，指向指定域名的80端口，这样访问时就不需要加端口号了。
 详细见[官方文档](http://pm2.keymetrics.io/docs/tutorials/pm2-nginx-production-setup)
-//研究中，待补充
+首先我们要在云服务器上安装nginx:
+```
+yum install nginx
+```
+安装成功后，启动nginx服务：
+```
+service nginx start
+```
+使用命令`nginx -t`查找nginx配置文件，并使用vi命令修改该配置文件。
+我的配置如下
+
+```
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+# Load dynamic modules. See /usr/share/nginx/README.dynamic.
+include /usr/share/nginx/modules/*.conf;
+events {
+    worker_connections 1024;
+}
+http {
+  upstream my_nodejs_upstream {
+    server 127.0.0.1:3000;
+    keepalive 64;
+  }
+  server {
+    listen 80;
+    server_name   www.chenkeyi.com;//你的域名
+    access_log  /var/log/nginx/bysj.log;
+    error_log /var/log/nginx/bysj.error.log;
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-NginX-Proxy true;
+        proxy_http_version 1.1;
+        proxy_pass http://my_nodejs_upstream/;
+    }
+  }
+}
+```
+改完后`service nginx restart`重启nginx
+
+### 解析域名
+
+这个在腾讯云和阿里云等都提供解析域名服务。
+
+配置成功：[bysj.chenkeyi.com](http://bysj.chenkeyi.com)可以访问。
