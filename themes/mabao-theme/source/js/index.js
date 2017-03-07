@@ -15,13 +15,12 @@
         }
         eventHandler();
     });
-
     function eventHandler(){
         var topLength = $('.toc').length; 
-        countCateStyle();
+        var throttled = _.throttle(countCateStyle, 100);
         $(window).scroll(function(){
             if(topLength){
-                countCateStyle();
+               throttled();
             }
         });
     }
