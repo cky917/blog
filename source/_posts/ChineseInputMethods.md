@@ -61,7 +61,7 @@ tags: Javascript学习笔记
         });
     </script>
 ```
-<textarea id="runCode2" name="textarea" rows="10" cols="60" class="runCode"><script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js"></script><style type="text/css">.warn{display: none;color: #f00;}</style><body><input id="test"/><span class="warn">不能输入超过7个字</span><script type="text/javascript">var test = $('#test');test.on('input propertychange change', function(){if($(this).prop('comStart')) return;var value = $(this).val();console.log('当前输入：'+value);if(value.length>7){$(this).val(value.substring(0,7));$('.warn').show()}else{$('.warn').hide();}}).on('compositionstart', function(){$(this).prop('comStart', true);console.log('中文输入：开始');}).on('compositionend', function(){$(this).prop('comStart', false);console.log('中文输入：结束');});</script><body></textarea>
+<textarea id="runCode2" name="textarea" rows="10" cols="60" class="runCode"><script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js"></script><style type="text/css">.warn{display: none;color: #f00;}</style><body><input id="test"/><span class="warn">不能输入超过7个字</span><script type="text/javascript">var test = $('#test');test.on('input propertychange change', function(){if($(this).prop('comStart')) return;var value = $(this).val();console.log('当前输入：'+value);if(value.length>7){$(this).val(value.substring(0,7));$('.warn').show()}else{$('.warn').hide();}}).on('compositionstart', function(){$(this).prop('comStart', true);console.log('中文输入：开始');}).on('compositionend', function(){$(this).prop('comStart', false);console.log('中文输入：结束');});</script></body></textarea>
 
 <input style="cursor: hand" onclick="runEx('runCode2')" type="button" value="运行代码" class="runCode-btn"/><br/>
 

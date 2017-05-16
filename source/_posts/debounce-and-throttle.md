@@ -47,7 +47,7 @@ _.debounce = function(func, wait, immediate) {
 参数function是需要进行函数防抖的函数；参数wait则是需要等待的时间，单位为毫秒；immediate参数如果为true，则debounce函数会在调用时立刻执行一次function，而不需要等到wait这个时间后，例如防止点击提交按钮时的多次点击就可以使用这个参数。
 
 可以从下面我写的例子里看到2者的区别，明显看出使用了防抖的明显避免了没必要的多次请求。
-<a class="jsbin-embed" href="http://jsbin.com/caxozusove/embed?js,output">JS Bin on jsbin.com</a><script src="http://static.jsbin.com/js/embed.min.js?3.41.6"></script>
+<a class="jsbin-embed" href="http://jsbin.com/fuxowejolo/1/embed?js,output">JS Bin on jsbin.com</a><script src="http://static.jsbin.com/js/embed.min.js?3.41.6"></script>
 
 ### 函数节流
 还有一些需求，在滚动页面的时候监听滚动的位置做出相应的交互，比如本站文章页右侧的目录导航滚动。所以我们需要监听页面的滚动事件，在滚动事件监听的回调里执行你的方法。如果用户滚动很快，一秒内可能执行上百次，导致页面性能变得很慢。
@@ -96,6 +96,5 @@ _.throttle = function(func, wait, options) {
 ```
 参数function是需要进行函数节流的函数；参数wait则是函数执行的时间间隔，单位是毫秒。option有两个选项，throttle第一次调用时默认会立刻执行一次function，如果传入{leading: false}，则第一次调用时不执行function。{trailing: false}参数则表示禁止最后那一次延迟的调用。
 进行滚动2个DIV内部，可以看到函数节流的效果，明显看出，快速滚动，函数节流的情况下减少了多次回调的调用。
-<a class="jsbin-embed" href="http://jsbin.com/lerolizuji/embed?js,output">JS Bin on jsbin.com</a><script src="http://static.jsbin.com/js/embed.min.js?3.41.6"></script>
-
+<a class="jsbin-embed" href="http://jsbin.com/havuximowu/1/embed?js,output">JS Bin on jsbin.com</a><script src="http://static.jsbin.com/js/embed.min.js?3.41.6"></script>
 
