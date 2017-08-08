@@ -6,19 +6,18 @@
     </div>
     <% } %>
     <% if ( page.comments){ %>
-<section id="comment">
+<section class="comment-box">
     <!--高速版-->
-    <div id="SOHUCS" sid="<%=page.permalink %>"></div>
+    <div id="SOHUCS" sid="<%=page.permalink%>"></div>
     <script charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/changyan.js" ></script>
     <script type="text/javascript">
-    window.changyan.api.config({
-    appid: 'cyt0WGpod',
-    conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
-    });
-</script>
+        window.changyan.api.config({
+        appid: 'cyt0WGpod',
+        conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
+        });
+    </script>
 
 </section>
-
 <% } %>
 </div>
 
