@@ -1,6 +1,8 @@
 title: webpack学习笔记
 tags: web前端知识
 ---
+webpack学习笔记
+<!-- more -->
 ## 配置：
 ```
 const path = require('path');
