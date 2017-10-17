@@ -1,4 +1,5 @@
 title: 使用pm2+github将node项目一键部署到远程服务器
+date: 2016-07-25 14:06:50
 tags:
 - node.js学习笔记 
 - web前端知识

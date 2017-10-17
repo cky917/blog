@@ -1,4 +1,5 @@
 title: postMessage解决跨域、跨窗口消息传递
+date: 2017-08-27 14:06:50
 tags: Javascript学习笔记
 ---
 最近遇到一个需求，页面嵌入了iframe框，iframe框里是一个Im在线聊天对话框。在用户切换聊天对象时，外层页面也需要获取当前用户正在聊天的对方的userid。但是由于im页面是嵌入的iframe，外层父页面既无法监听切换聊天对象的事件，也无法获取里面的dom元素，会报跨域的错误。为了解决这一问题，可以使用html5的API`postMessage`.

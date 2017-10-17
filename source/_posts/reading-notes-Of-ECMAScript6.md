@@ -1,4 +1,5 @@
 title: 《ECMAScript 6 入门》读书笔记
+date: 2017-03-27 14:06:50
 tags: 读书笔记
 ---
 ### let与const
