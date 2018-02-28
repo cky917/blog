@@ -1,8 +1,8 @@
-title: typescript学习笔记 - 基础类型、变量声明
+title: TypeScript学习笔记 - 基础类型、变量声明
 date: 2018-02-28 10:48:00
 tags: web前端知识
 ---
-typescript学习笔记 - 基础类型、变量声明
+TypeScript学习笔记 - 基础类型、变量声明
 <!-- more -->
 ## 基础类型
 ### 布尔值： 
