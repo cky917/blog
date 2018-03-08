@@ -61,5 +61,4 @@ function buildName(firstName: string, ...restOfName: string[]) {
 
 let employeeName = buildName("Joseph", "Samuel", "Lucas", "MacKinzie");
 ```
-
-## this
+// TODO
