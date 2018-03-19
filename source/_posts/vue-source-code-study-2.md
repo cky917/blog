@@ -355,7 +355,89 @@ export function initExtend (Vue: GlobalAPI) {
 }
 ```
 
-// 剩下的待更新
+## [Vue.components](https://cn.vuejs.org/v2/api/#Vue-component)、[Vue.directive](https://cn.vuejs.org/v2/api/#Vue-directive)、[Vue.filter](https://cn.vuejs.org/v2/api/#Vue-filter)
+
+`Vue.components、Vue.directive、Vue.filter`三个方法的定义都写在了`initAssetRegisters`方法里。
+
+- Vue.components：注册或获取全局组件。注册还会自动使用给定的`id`设置组件的名称 参考：[组件](https://cn.vuejs.org/v2/guide/components.html)
+- Vue.directive: 注册或获取全局指令。 参考：[自定义指令](https://cn.vuejs.org/v2/guide/custom-directive.html)
+- Vue.filter: 注册或获取全局过滤器。参考：[过滤器](https://cn.vuejs.org/v2/guide/filters.html)
+
+它们的用法类似：
+
+```javascript
+// 注册组件，传入一个扩展过的构造器
+Vue.component('my-component', Vue.extend({ /* ... */ }))
+
+// 注册组件，传入一个选项对象 (自动调用 Vue.extend)
+Vue.component('my-component', { /* ... */ })
+
+// 获取注册的组件 (始终返回构造器)
+var MyComponent = Vue.component('my-component')
+
+// directive
+// 注册
+// 钩子函数
+Vue.directive('my-directive', {
+  bind: function () {}, // 只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。
+  inserted: function () {}, // 被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。
+  update: function () {}, // 所在组件的 VNode 更新时调用
+  componentUpdated: function () {}, // 指令所在组件的 VNode 及其子 VNode 全部更新后调用。
+  unbind: function () {} // 只调用一次，指令与元素解绑时调用。
+})
+
+// 注册 (指令函数)
+Vue.directive('my-directive', function () {
+  // 这里将会被 `bind` 和 `update` 调用
+})
+
+// getter，返回已注册的指令
+var myDirective = Vue.directive('my-directive')
+```
+
+定义：
+
+```javascript
+// export const ASSET_TYPES = [
+//   'component',
+//   'directive',
+//   'filter'
+// ]
+export function initAssetRegisters (Vue: GlobalAPI) {
+  /**
+   * Create asset registration methods.
+   */
+  ASSET_TYPES.forEach(type => {
+    Vue[type] = function (
+      id: string,
+      definition: Function | Object
+    ): Function | Object | void {
+      // 如果没有传入definition, 则通过id去返回之前注册过的
+      if (!definition) {
+        return this.options[type + 's'][id]
+      } else {
+        /* istanbul ignore if */
+        if (process.env.NODE_ENV !== 'production' && type === 'component') {
+          // 校验components的名字
+          validateComponentName(id)
+        }
+        if (type === 'component' && isPlainObject(definition)) {
+          // 如果是component, 且传入的是个对象，则用component被初始化前的状态去调用extend
+          definition.name = definition.name || id
+          definition = this.options._base.extend(definition)
+        }
+        if (type === 'directive' && typeof definition === 'function') {
+          // 如果是directive，且传入的是个函数，则给bind和update赋值
+          definition = { bind: definition, update: definition }
+        }
+        // 注册
+        this.options[type + 's'][id] = definition
+        return definition
+      }
+    }
+  })
+}
+```
 
 ## 知识点
 
