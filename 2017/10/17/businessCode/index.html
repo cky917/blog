@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>如何写好前端业务代码 | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2017-10-17T13:25:00.000Z" itemprop="datePublished">
+        2017-10-17 21:25:00 
+      </time>
+    
+    
+    | 
+    <a href='/tags/体会感悟/'>体会感悟</a>
+    
+    
+</span>
+    <h1 class="post-title">如何写好前端业务代码</h1>
+    <span id="busuanzi_container_page_pv" class="readCount">
+      阅读量：
+    <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+
+    </span>
+    <section class="post-content">
+      <h2 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a>一、背景</h2><p>想想从15年11月到现在，从zbj以前的交易取经团，到现在的顾问平台，大大小小做了不少业务需求，也是一边踩坑（一边挖坑）一边成长。以前维护10年累计下来的老代码，缝缝补补，主站所有项目全部在一个文件夹里，也是练就了一身从定位代码的本事。到后来新项目用了新框架，node作为controller层，后台不需要兼容ie的项目也引入了vue。刚开始的时候开心得不行，终于不用苦逼地搭php那一套老开发环境，前后端彻底分离，也不用维护那些“陈年佳酿”。后来才慢慢发现，其实并不是那么轻松。java写的服务化接口，基本是原子性的接口，一个接口只做一件事，所以前端除了完成以前的工作外，node端必须去处理之前几乎没有涉及到的业务逻辑，也承担了更重要的责任。经过了一年左右，几个项目的摸索，我也总结出了一些业务经验。</p>
+<h2 id="二、排期"><a href="#二、排期" class="headerlink" title="二、排期"></a>二、排期</h2><p>这是很重要却最容易被忽略的一个环节。项目做到后面做得很累，感觉自己怎么也完不成，往往是因为排期没有做好。 </p>
+<h3 id="需求分析-功能模块细分"><a href="#需求分析-功能模块细分" class="headerlink" title="需求分析,功能模块细分"></a>需求分析,功能模块细分</h3><p>一个需求我们拿到的时候，肯定是先做需求分析。排期也是在完成需求分析的基础上进行的，需求分析的时候需要注意以下几点。</p>
+<h4 id="明确需求"><a href="#明确需求" class="headerlink" title="明确需求"></a>明确需求</h4><p>根据产品原型和产品的需求宣讲，梳理一遍需求，如果有自己不懂或者不理解的地方一定要在这个阶段产品明确。</p>
+<h4 id="模块、功能划分"><a href="#模块、功能划分" class="headerlink" title="模块、功能划分"></a>模块、功能划分</h4><p>单页面排期一般就是从上到下按照功能不同分模块，比如顶部导航、信息展示、评价列表等等。</p>
+<p>一般一个多页面的项目，产品们会在产品原型上根据他们的理解，分几个板块。但是我们分析需求的时候不能用他们的思路去分版块，而是要从开发和程序设计的角度去划分。比如在首页、某某搜索结果页、某某页有三个不同的地方，虽然样式不同、逻辑不完全相同，但是他们都在某步骤上涉及同一个业务逻辑。比如点击某个地方，判断用户在线，不在线调出登录框，在线的话创建订单，然后跳转支付页面。balabala，这个逻辑是不是最好让同一个人去完成，而且最好写成一个统一的接口或者组件呢。</p>
+<h3 id="依赖关系整理，时间线整理"><a href="#依赖关系整理，时间线整理" class="headerlink" title="依赖关系整理，时间线整理"></a>依赖关系整理，时间线整理</h3><p>划分好模块后，就是进行工期预估了。这也是一项很重要的工作，不仅是让团队的开发、测试、上线计划能够顺利开展，而且也能帮我们进行前期工作优先级安排。</p>
+<p>需要依赖的东西包括设计稿、后端接口、其他前端组件、人员到位时间等等，排期时间需要根据这些依赖项产出的时间进行时间线的整理。</p>
+<h3 id="风险点预测"><a href="#风险点预测" class="headerlink" title="风险点预测"></a>风险点预测</h3><p>容易产生风险的点需要提出来，排期中留出适当的缓和时间。当然在开发中遇到阻碍也要及时抛出，让PMO或者项目负责人及时跟进解决。</p>
+<h3 id="每天跟进或者总结"><a href="#每天跟进或者总结" class="headerlink" title="每天跟进或者总结"></a>每天跟进或者总结</h3><p>根据排期最好做一个任务清单，每天总结完成的项目，想好明天的开发计划。</p>
+<h2 id="如何面对快速的业务需求迭代"><a href="#如何面对快速的业务需求迭代" class="headerlink" title="如何面对快速的业务需求迭代"></a>如何面对快速的业务需求迭代</h2><p>最近做的一个项目是一个从0开始的新项目，产品发展方向其实也不是非常明确，需要上线试错，经过用户反馈和数据收集后不断改进。一期产品为了快速上线往往很多需求做了简化，这时候如果在一期的开发上不注重项目的扩展性，后面的每一次迭代都是伤筋动骨。</p>
+<h3 id="功能细分、代码模块化"><a href="#功能细分、代码模块化" class="headerlink" title="功能细分、代码模块化"></a>功能细分、代码模块化</h3><p>尽量让功能变成积木一样的，每个部分写成一个模块，方便后期维护和拓展。代码模块化，一个几千行的文件，几百行的方法真的难以维护，其实就是一句话，当你觉得这部分代码好长，那就是需要拆分模块了。</p>
+<h3 id="通用接口多样化"><a href="#通用接口多样化" class="headerlink" title="通用接口多样化"></a>通用接口多样化</h3><p>这也算是我挖的一个坑。在一期的时候，有一个搜索接口，当时的需求只需要通过一个id进行查询，我设计的接口参数就是传一个id。当1.2.4的迭代版本的时候，产品说需要支持多个id查询，java把参数改成了数组类型。我准备改的时候，发现已经有几个其他业务方调用我这个接口，传的是单个id，我为了不去改更多地方，只能在接口层面做了单个和多个的兼容。</p>
+<p>所以在接口设计的时候，就要尽可能考虑多种调用场景，可拓展地设计接口入参和出参。</p>
+<h3 id="公用逻辑提取"><a href="#公用逻辑提取" class="headerlink" title="公用逻辑提取"></a>公用逻辑提取</h3><p>之前也提到了，在一期的时候可能我们并没有发现这个逻辑其他地方也可能会用，所以写到了自己的模块文件里。当后面业务发展，这个逻辑其他业务方也要接入，而且仅仅是来复制粘贴你的代码的时候，就应该要马上做出判断，这部分逻辑是否需要提成一个公用接口，如果是包含了前端各种逻辑比如弹窗、调用其他前端组件等，这个逻辑就要提成一个组件。<br>一是减少了后续的开发成本和维护成本，二是让这部分逻辑更加可控。保证后续修改逻辑的时候，没有遗漏到某个地方。除了保证组件的一致性，可拓展性也很重要，对于组件的设计，又是另外一个话题了。</p>
+<h3 id="内容配置化，业务逻辑不要写死"><a href="#内容配置化，业务逻辑不要写死" class="headerlink" title="内容配置化，业务逻辑不要写死"></a>内容配置化，业务逻辑不要写死</h3><p>除了产品提出需求要开发配置功能外，我们自己也要主动去拆分可配置的内容。<br>一些业务上经常改动的部分，需要产品和运营去修改的部分，比如推荐位id列表，推荐位图片等，走cms配置。<br>一些静态数据，不经常改但是可能改动，比如网址等可以写到配置中心或者配置文件。<br>如果实在没必要走配置的，也要写成一个常量，这就让我想起了以前接的一个需求，把某某发布最低金额限制的判断从<code>3000</code>改到<code>1000</code>，我在老代码里<code>ctrl+f</code>了很多地方，才把那些<code>3000</code>全部改成一个统一的常量。</p>
+<p>静态内容和代码分离是最好的，内容改动，仅仅改一下配置就行，不需要走上线流程，这样才能真正做到以不变应万变。</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>还有其他需要注意的点，我也就不一一说明了。</p>
+<ul>
+<li>发现不对劲，一定要停下来和产品沟通。</li>
+<li>任何显示给用户的字符串，都应该抽取成常量，方便国际化，这点也是我做了一个项目转国际化的需求得出的感想。但是在后续开发中其实还是没有实施，如果项目有国际化的需求，需要考虑这一点。</li>
+</ul>
+<h2 id="三、业务安全问题"><a href="#三、业务安全问题" class="headerlink" title="三、业务安全问题"></a>三、业务安全问题</h2><p>因为做了Node层，很多参数校验都是我们做了，也就积累了一些和业务安全相关的经验（安全测试环节被查水表）。这里提到的就不仅仅是xss和csrf了，更多的是业务层面的安全问题</p>
+<ul>
+<li>xss</li>
+<li>csrf</li>
+<li>表单提交的内容，如果网站有这个需求，需要做违规违法字过滤</li>
+<li>推送红包、站内信、通知、发布订单、发送手机验证码等http接口，需要做防刷处理，限制次数</li>
+<li>用户id用token加密解密获取，而不是直接用cookie里的userid</li>
+<li>注意判断用户的身份和权限，防止越权</li>
+</ul>
+<h2 id="四、定位问题"><a href="#四、定位问题" class="headerlink" title="四、定位问题"></a>四、定位问题</h2><ol>
+<li>尽量在所有可能出错的地方，捕获并抛出问题，报错内容清晰指明什么接口报错，方便定位。比如一大堆的报错都是<code>&#39;系统异常！&#39;</code>和<code>创建支付订单失败：xxxx</code>，哪个更容易定位错误呢？</li>
+<li>方法文档清晰。</li>
+<li>使用charles、findler等工具调试非本地环境代码</li>
+</ol>
+<p>暂时想到了这些，如果后续还有新的体会会来补充。</p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>陈柯伊</h4>
+    <p>梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年</p>
+</section>
+      <section class="share">
+   <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2018/02/28/typescript1/">
+        ← TypeScript学习笔记 - 基础类型、变量声明
+    </a>
+    
+    
+    <a class="older-posts" href="/2017/09/05/webpack/">
+        webpack学习笔记 →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    
+<section class="comment-box">
+    <!--高速版-->
+    <div id="SOHUCS" sid="https://coolmogu.com/2017/10/17/businessCode/"></div>
+    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+    <script type="text/javascript">
+        window.changyan.api.config({
+        appid: 'cyt0WGpod',
+        conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
+        });
+    </script>
+
+</section>
+
+</div>
+
+
+
+</main>
+ 
+  <div id="toc" class="toc-article">
+    <div class="toc-title">文章目录</div>
+    <div class="toc-box">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、背景"><span class="toc-text">一、背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、排期"><span class="toc-text">二、排期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#需求分析-功能模块细分"><span class="toc-text">需求分析,功能模块细分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#明确需求"><span class="toc-text">明确需求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#模块、功能划分"><span class="toc-text">模块、功能划分</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖关系整理，时间线整理"><span class="toc-text">依赖关系整理，时间线整理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#风险点预测"><span class="toc-text">风险点预测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#每天跟进或者总结"><span class="toc-text">每天跟进或者总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何面对快速的业务需求迭代"><span class="toc-text">如何面对快速的业务需求迭代</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#功能细分、代码模块化"><span class="toc-text">功能细分、代码模块化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通用接口多样化"><span class="toc-text">通用接口多样化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#公用逻辑提取"><span class="toc-text">公用逻辑提取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内容配置化，业务逻辑不要写死"><span class="toc-text">内容配置化，业务逻辑不要写死</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他"><span class="toc-text">其他</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、业务安全问题"><span class="toc-text">三、业务安全问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、定位问题"><span class="toc-text">四、定位问题</span></a></li></ol>
+    </div>
+
+</div>
+
+
+<script language="JavaScript" type="text/JavaScript">
+//运行文本域代码
+function runEx(cod1) {
+  cod=document.all(cod1)
+  var code=cod.value.replace(/‘|’/g,'\'');
+  if (code!=""){
+    var newwin=window.open('','',''); //打开一个窗口并赋给变量newwin。
+    newwin.opener = null // 防止代码对论谈页面修改
+    newwin.document.write(code); //向这个打开的窗口中写入代码code，这样就实现了运行代码功能。
+    newwin.document.close();
+  }
+}
+
+</script>
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

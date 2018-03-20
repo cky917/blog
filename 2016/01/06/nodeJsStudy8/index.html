@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>node.js学习笔记(八)——HTTP客户端 | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2016-01-06T02:19:50.000Z" itemprop="datePublished">
+        2016-1-6 10:19:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/node-js学习笔记/'>node.js学习笔记</a>
+    
+    
+</span>
+    <h1 class="post-title">node.js学习笔记(八)——HTTP客户端</h1>
+    <span id="busuanzi_container_page_pv" class="readCount">
+      阅读量：
+    <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+
+    </span>
+    <section class="post-content">
+      <h3 id="一、http模块提供了两个函数http-request和http-get。"><a href="#一、http模块提供了两个函数http-request和http-get。" class="headerlink" title="一、http模块提供了两个函数http.request和http.get。"></a>一、http模块提供了两个函数http.request和http.get。</h3><p>功能是作为客户端向HTTP服务器发起请求。</p>
+<h4 id="1-http-request-options-callback"><a href="#1-http-request-options-callback" class="headerlink" title="1. http.request(options,callback)"></a>1. http.request(options,callback)</h4><p>http.request发起HTTP请求，接受两个参数，option是一个类似关联数组的对象，表示请求的参数，callback是请求的回调函数，option常用的参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>host</td>
+<td>请求网站的域名或IP地址</td>
+</tr>
+<tr>
+<td>port</td>
+<td>请求网站的端口，默认是80</td>
+</tr>
+<tr>
+<td>method</td>
+<td>请求方法，比如GET、POST</td>
+</tr>
+<tr>
+<td>path</td>
+<td>请求的相对于根的路径，默认是”/“。QueryString应该包含在其中，例如/search?query=cky</td>
+</tr>
+<tr>
+<td>header</td>
+<td>一个关联数组对象，为请求头的内容</td>
+</tr>
+</tbody>
+</table>
+<p>callback传递一个参数，为http.ClientResponse的实例。<br>http.request返回一个http.ClientRequest的实例。</p>
+<p>例：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//clientRequest.js</span></span><br><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"><span class="keyword">var</span> querystring = <span class="built_in">require</span>(<span class="string">'querystring'</span>);</span><br><span class="line"><span class="comment">//启动服务</span></span><br><span class="line">http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">req,res</span>)</span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'请求到了，解析参数'</span>);</span><br><span class="line">	<span class="keyword">var</span> post = <span class="string">''</span>;</span><br><span class="line">	req.on(<span class="string">'data'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">chunk</span>)</span>&#123;</span><br><span class="line">		post+=chunk;</span><br><span class="line">	&#125;);</span><br><span class="line">	req.on(<span class="string">'end'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		post = querystring.parse(post);</span><br><span class="line">		<span class="comment">//解析完成</span></span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">"参数解析完成，返回给客户端name参数"</span>);</span><br><span class="line">		res.end(post.address);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;).listen(<span class="number">3000</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//客户端请求</span></span><br><span class="line"><span class="keyword">var</span> contents = querystring.stringify(&#123;<span class="comment">//将JSON对象转换成JSON字符串</span></span><br><span class="line">	name:<span class="string">'cky'</span>,</span><br><span class="line">	age:<span class="number">21</span>,</span><br><span class="line">	address:<span class="string">'重庆'</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">	host:<span class="string">'localhost'</span>,</span><br><span class="line">	path:<span class="string">'/'</span>,</span><br><span class="line">	port:<span class="number">3000</span>,</span><br><span class="line">	method:<span class="string">'POST'</span>,</span><br><span class="line">	headers:&#123;</span><br><span class="line">		<span class="string">'Content-Type'</span>:<span class="string">'application/x-www-form-urlencoded'</span>,</span><br><span class="line">		<span class="string">'Content-Length'</span>:contents.length</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//发送请求</span></span><br><span class="line"><span class="keyword">var</span> req = http.request(options,<span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;</span><br><span class="line">	res.setEncoding(<span class="string">'utf-8'</span>);</span><br><span class="line">	res.on(<span class="string">'data'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'后端返回数据'</span>);</span><br><span class="line">		<span class="built_in">console</span>.log(data);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;);</span><br><span class="line">req.write(contents);</span><br><span class="line"><span class="comment">//必须调end()</span></span><br><span class="line">req.end();</span><br></pre></td></tr></table></figure></p>
+<p>执行结果：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">请求到了，解析参数</span><br><span class="line">参数解析完成，返回给客户端name参数</span><br><span class="line">后端返回数据</span><br><span class="line">cky</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-http-get-options-callback"><a href="#2-http-get-options-callback" class="headerlink" title="2. http.get(options,callback)"></a>2. http.get(options,callback)</h4><p> http模块还提供了一个更加简便的方法——http.get。它是http.request的简化版，唯一的区别在于http.get自动将请求方法设为GET请求，同时不需要手动调用req.end()；</p>
+<p> 例：<br> <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//clientGet.js</span></span><br><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"><span class="keyword">var</span> url = <span class="built_in">require</span>(<span class="string">'url'</span>);</span><br><span class="line"><span class="keyword">var</span> util = <span class="built_in">require</span>(<span class="string">'util'</span>);</span><br><span class="line"><span class="comment">//启动服务</span></span><br><span class="line">http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">req,res</span>)</span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'请求到了，解析参数'</span>);</span><br><span class="line">	<span class="keyword">var</span> params = url.parse(req.url,<span class="literal">true</span>);</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'解析完成'</span>);</span><br><span class="line">	<span class="built_in">console</span>.log(util.inspect(params));</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'向客户端返回'</span>);</span><br><span class="line">	res.end(params.query.name);</span><br><span class="line">&#125;).listen(<span class="number">3000</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//客户端请求</span></span><br><span class="line">http.get(&#123;</span><br><span class="line">	<span class="string">'host'</span>:<span class="string">'localhost'</span>,</span><br><span class="line">	path:<span class="string">'/user?name=cky&amp;age=21'</span>,</span><br><span class="line">	port:<span class="number">3000</span>&#125;,<span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;</span><br><span class="line">		res.setEncoding(<span class="string">'utf-8'</span>);</span><br><span class="line">		res.on(<span class="string">'data'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">			<span class="built_in">console</span>.log(<span class="string">'服务器端返回来的是：'</span>+ data);</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
+<p> 执行结果：<br> <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">请求到了，解析参数</span><br><span class="line">解析完成</span><br><span class="line">Url &#123;</span><br><span class="line">  protocol: <span class="literal">null</span>,</span><br><span class="line">  slashes: <span class="literal">null</span>,</span><br><span class="line">  auth: <span class="literal">null</span>,</span><br><span class="line">  host: <span class="literal">null</span>,</span><br><span class="line">  port: <span class="literal">null</span>,</span><br><span class="line">  hostname: <span class="literal">null</span>,</span><br><span class="line">  hash: <span class="literal">null</span>,</span><br><span class="line">  search: <span class="string">'?name=cky&amp;age=21</span></span><br><span class="line"><span class="string">  query: &#123; name: '</span>cky<span class="string">', age</span></span><br><span class="line"><span class="string">  pathname: '</span>/user<span class="string">',</span></span><br><span class="line"><span class="string">  path: '</span>/user?name=cky&amp;age</span><br><span class="line">  href: <span class="string">'/user?name=cky&amp;age</span></span><br><span class="line"><span class="string">向客户端返回</span></span><br><span class="line"><span class="string">服务器端返回来的是：cky</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="二、http-ClientRequest"><a href="#二、http-ClientRequest" class="headerlink" title="二、http.ClientRequest"></a>二、http.ClientRequest</h3><p> 该对象是由<code>http.request</code>或<code>http.get</code>返回产生的对象，表示一个已经产生而且正在进行的http请求，它提供了response事件，即<code>http.request</code>或<code>http.get</code>第二个参数指定的回调函数的绑定对象，<strong>请求必须调用end方法结束请求</strong><br> 提供的函数：<br> <code>request.abort()</code> 终止正在发送的请求<br> <code>request.setTimeOut(time,[callback])</code>设置请求超时事件。<br> 更多请参考 ：<a href="http://nodeapi.ucdok.com/#/api/http.html" target="_blank" rel="noopener">api文档</a></p>
+<h3 id="三、http-ClientResponse"><a href="#三、http-ClientResponse" class="headerlink" title="三、http.ClientResponse"></a>三、http.ClientResponse</h3><p><code>http.ClientResponse</code>是与<code>http.Response</code>相似，提供三个事件，data、end和close，分别在数据到达、传输结束、连接结束时触发。其中data事件传递一个参数chunk，表示接受到的数据。<br> res的属性（表示请求的结果状态）：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>statusCode</td>
+<td>http状态码</td>
+</tr>
+<tr>
+<td>httpVersion</td>
+<td>http协议版本</td>
+</tr>
+<tr>
+<td>headers</td>
+<td>HTTP请求头</td>
+</tr>
+<tr>
+<td>trailers</td>
+<td>HTTP请求尾</td>
+</tr>
+</tbody>
+</table>
+<p>res函数：<br><code>response.setEncoding([encoding]):</code>设置默认的编码，当data事件被触发时，数据将以encoding编码，默认为null,以buffer形式储存。<br><code>response.parse()</code>:暂停接收数据和发送事件，方便实现下载功能<br><code>renspose.resume()</code>:以暂停状态恢复。</p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>陈柯伊</h4>
+    <p>梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年</p>
+</section>
+      <section class="share">
+   <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2016/01/06/nodeJsStudy9/">
+        ← node.js学习笔记(九)——Express框架入门介绍
+    </a>
+    
+    
+    <a class="older-posts" href="/2016/01/06/nodeJsStudy7/">
+        node.js学习笔记(七)——HTTP服务器 →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    
+<section class="comment-box">
+    <!--高速版-->
+    <div id="SOHUCS" sid="https://coolmogu.com/2016/01/06/nodeJsStudy8/"></div>
+    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+    <script type="text/javascript">
+        window.changyan.api.config({
+        appid: 'cyt0WGpod',
+        conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
+        });
+    </script>
+
+</section>
+
+</div>
+
+
+
+</main>
+ 
+  <div id="toc" class="toc-article">
+    <div class="toc-title">文章目录</div>
+    <div class="toc-box">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、http模块提供了两个函数http-request和http-get。"><span class="toc-text">一、http模块提供了两个函数http.request和http.get。</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-http-request-options-callback"><span class="toc-text">1. http.request(options,callback)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-http-get-options-callback"><span class="toc-text">2. http.get(options,callback)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、http-ClientRequest"><span class="toc-text">二、http.ClientRequest</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、http-ClientResponse"><span class="toc-text">三、http.ClientResponse</span></a></li></ol>
+    </div>
+
+</div>
+
+
+<script language="JavaScript" type="text/JavaScript">
+//运行文本域代码
+function runEx(cod1) {
+  cod=document.all(cod1)
+  var code=cod.value.replace(/‘|’/g,'\'');
+  if (code!=""){
+    var newwin=window.open('','',''); //打开一个窗口并赋给变量newwin。
+    newwin.opener = null // 防止代码对论谈页面修改
+    newwin.document.write(code); //向这个打开的窗口中写入代码code，这样就实现了运行代码功能。
+    newwin.document.close();
+  }
+}
+
+</script>
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>node.js学习笔记(十一)——路由控制 | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2016-01-07T06:08:50.000Z" itemprop="datePublished">
+        2016-1-7 14:08:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/node-js学习笔记/'>node.js学习笔记</a>
+    
+    
+</span>
+    <h1 class="post-title">node.js学习笔记(十一)——路由控制</h1>
+    <span id="busuanzi_container_page_pv" class="readCount">
+      阅读量：
+    <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+
+    </span>
+    <section class="post-content">
+      <h3 id="一、工作原理"><a href="#一、工作原理" class="headerlink" title="一、工作原理"></a>一、工作原理</h3><p>当访问<a href="http://localhost:3000，" target="_blank" rel="noopener">http://localhost:3000，</a> 浏览器会向服务器发送请求，包括请求的方法、路径、HTTP协议版本和请求头信息。app会解析请求的路径，调用相应的逻辑，route/index.js中有 <code>router.get(&#39;/&#39;,function(){})</code>通过<code>res.render(&#39;index&#39;,{title:&quot;cky&quot;})</code>调用视图模板index，传递title变量，最终生成HTML页面，返回给浏览器。<br>浏览器收到内容后，通过分析需要获取/stylesheet/style.css，因此会再次向服务器发起请求，app.js并没有一个路由指派到/stylesheets/style.css，但app通过<code>app.use(express.static(__dirname+&#39;/public&#39;))</code>配置了静态文件服务器，因此会定向到app.js所在目录下的/public/stylesheets/style.css拿取这个文件。</p>
+<p>这是一个典型的MVC架构，浏览器发送请求，由路由控制接收，根据不同的路径定向到不同的服务器，控制器处理用户具体的请求，可能会访问数据库中的对象，即模型部分，生成视图的HTML，最后再由控制器返回给浏览器，完成一次请求。</p>
+<h3 id="二、创建路由规则"><a href="#二、创建路由规则" class="headerlink" title="二、创建路由规则"></a>二、创建路由规则</h3><p>当我们在浏览器访问<a href="http://localhost:3000/cky" target="_blank" rel="noopener">http://localhost:3000/cky</a> 的时候，服务器响应头返回404 NOT FOUND的错误，这是因为/cky是一个不存在的路由规则，而且它也不是一个public目录下的文件，所以响应404。<br>假设我们创建一个/cky的路由规则<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">router.get(<span class="string">'/cky'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res, next</span>) </span>&#123;</span><br><span class="line">  res.send(<span class="string">"cky route"</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>即可访问。<br>服务器开始监听之前，设置好了所有的路由规则，当请求到来时直接分配到相应的函数，app.get是路由规则创建函数。</p>
+<h3 id="三、路径匹配"><a href="#三、路径匹配" class="headerlink" title="三、路径匹配"></a>三、路径匹配</h3><p>上面讲到了为固定的路径设置路由规则，Express还提供了更高级的路径匹配模式。<br>1.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">router.get(<span class="string">'/user/:username'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">req,res</span>)</span>&#123;</span><br><span class="line">    res.send(<span class="string">'user:'</span> +req.params.username);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>访问结果：<br><img src="http://i4.tietuku.com/52a6b8b573c8450b.jpg" alt=""><br>路径规则/user/username会自动编译成正则表达式，类似于\/user\/([^\/]+)\/?这样的形式，路径参数可以在相应函数中通过req.params的属性访问。</p>
+<ol>
+<li>路径规则同样支持javascript正则表达式，例如<code>router.get(\/user\/([^\/]+)\/?,callback)</code>这样的好处在于可以定义更加复杂的路径规则，不同之处是配置的参数是匿名的，因此需要通过req.params[0]这样的形式访问。</li>
+</ol>
+<h3 id="四、REST风格的路由规则"><a href="#四、REST风格的路由规则" class="headerlink" title="四、REST风格的路由规则"></a>四、REST风格的路由规则</h3><p>Express支持REST风格的请求方式，REST意思是表征状态转移，它是一种基于HTTP协议的网络应用的接口风格，充分利用HTTP的方法实现了统一风格的接口服务，HTTP协议定义了以下8个标准方法：</p>
+<table>
+<thead>
+<tr>
+<th>请求方法</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>请求获取的资源 获取</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>向指定资源提交数据 新增</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>请求服务器删除指定资源 删除</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>请求服务器存储一个资源 更新</td>
+</tr>
+<tr>
+<td>HEAD</td>
+<td>请求指定资源的响应头</td>
+</tr>
+<tr>
+<td>TRACE</td>
+<td>回显服务器数到的请求，主要用户测试或诊断</td>
+</tr>
+<tr>
+<td>CONNECT</td>
+<td>HTTP/1.1协议中预留给能够将连接改为管道方式的代理服务器。</td>
+</tr>
+<tr>
+<td>OPTIONS</td>
+<td>返回服务器支持HTTP请求方法</td>
+</tr>
+</tbody>
+</table>
+<p>Express对每种HTTP请求方法都设计了不同的路由绑定函数 </p>
+<ul>
+<li>GET : app.get(path,callback);</li>
+<li>POST: app.post(path,callback);</li>
+<li>PUT : app.put(path,callback);</li>
+<li>DELETE: app.delete(path,callback);<br>…<br>…<br>所有方法 app.all(path,callback);<br>app.all函数，它支持把所有的请求方法绑定到同一个相应函数，是一个非常灵活的函数。</li>
+</ul>
+<h3 id="五、控制权转移"><a href="#五、控制权转移" class="headerlink" title="五、控制权转移"></a>五、控制权转移</h3><p>Express支持同一路径绑定多个响应函数<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">app.all(<span class="string">'test/:user'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">req,res,next</span>)</span>&#123;</span><br><span class="line">    res.send(<span class="string">"all method is call"</span>);</span><br><span class="line">    next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/test/:user'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">req,res</span>)</span>&#123;</span><br><span class="line">    res.send(<span class="string">"user: "</span> + req.params.user); </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>但是我们访问都只会返回一次。<br>Express提供了路由控制权转移的方法，即next()函数，通过调用则将控制权交给后面的规则</p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>陈柯伊</h4>
+    <p>梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年</p>
+</section>
+      <section class="share">
+   <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2016/01/21/前端知识收集/">
+        ← 前端知识收集
+    </a>
+    
+    
+    <a class="older-posts" href="/2016/01/06/nodeJsStudy10/">
+        node.js学习笔记(十)——工程的结构 →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    
+<section class="comment-box">
+    <!--高速版-->
+    <div id="SOHUCS" sid="https://coolmogu.com/2016/01/07/nodeJsStudy11/"></div>
+    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+    <script type="text/javascript">
+        window.changyan.api.config({
+        appid: 'cyt0WGpod',
+        conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
+        });
+    </script>
+
+</section>
+
+</div>
+
+
+
+</main>
+ 
+  <div id="toc" class="toc-article">
+    <div class="toc-title">文章目录</div>
+    <div class="toc-box">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、工作原理"><span class="toc-text">一、工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、创建路由规则"><span class="toc-text">二、创建路由规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、路径匹配"><span class="toc-text">三、路径匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、REST风格的路由规则"><span class="toc-text">四、REST风格的路由规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、控制权转移"><span class="toc-text">五、控制权转移</span></a></li></ol>
+    </div>
+
+</div>
+
+
+<script language="JavaScript" type="text/JavaScript">
+//运行文本域代码
+function runEx(cod1) {
+  cod=document.all(cod1)
+  var code=cod.value.replace(/‘|’/g,'\'');
+  if (code!=""){
+    var newwin=window.open('','',''); //打开一个窗口并赋给变量newwin。
+    newwin.opener = null // 防止代码对论谈页面修改
+    newwin.document.write(code); //向这个打开的窗口中写入代码code，这样就实现了运行代码功能。
+    newwin.document.close();
+  }
+}
+
+</script>
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

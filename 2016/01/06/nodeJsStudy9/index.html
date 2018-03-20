@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>node.js学习笔记(九)——Express框架入门介绍 | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2016-01-06T13:56:50.000Z" itemprop="datePublished">
+        2016-1-6 21:56:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/node-js学习笔记/'>node.js学习笔记</a>
+    
+    
+</span>
+    <h1 class="post-title">node.js学习笔记(九)——Express框架入门介绍</h1>
+    <span id="busuanzi_container_page_pv" class="readCount">
+      阅读量：
+    <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+
+    </span>
+    <section class="post-content">
+      <h3 id="一、为什么要用Express框架？"><a href="#一、为什么要用Express框架？" class="headerlink" title="一、为什么要用Express框架？"></a>一、为什么要用Express框架？</h3><p>Node.js由于不需要另外的HTTP服务器，因此减少了一层抽象，给性能带来不少的提升，同时也因此提高了开发难度，实现一个POST数据的表单。例如：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"title"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>PHP中获取POST请求参数可以直接用 <code>$_POST(&#39;title&#39;);</code><br>JAVA语言也可以用<code>request.getParameter(&#39;title&#39;)</code>；<br>而Node中获取就比较麻烦了，前几篇文章的例子中可以看到。<br>node.js虽然提供了HTTP模块，却不是让你直接用这个模块进行web开发的。http模块仅仅是一个HTTP服务器内核的封装。<br>使用express实现上述案例：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">var</span> app = express.createServer();</span><br><span class="line">app.use(express.bodyParser());</span><br><span class="line">app.all(<span class="string">'/'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">req,res</span>)</span>&#123;</span><br><span class="line">	res.send(req.body.title);</span><br><span class="line">&#125;);</span><br><span class="line">app.listen(<span class="number">3000</span>);</span><br></pre></td></tr></table></figure></p>
+<h3 id="二、Express框架"><a href="#二、Express框架" class="headerlink" title="二、Express框架"></a>二、Express框架</h3><p>npm提供了大量的第三方模块，其中不乏许多Web框架，我们没有必要重复造轮子，因此我们选择Express作为开发框架。<br>其提供了更高层的接口外，还实现了许多功能，如：<br>路由控制、模板解析支持、动态视图、用户会话、CSRF保护、静态文件服务、错误控制器、访问日志、缓存、插件支持等。</p>
+<h3 id="三、安装Express"><a href="#三、安装Express" class="headerlink" title="三、安装Express"></a>三、安装Express</h3><p><code>npm install -g express</code><br>安装完成之后使用<code>express -help</code> 检测是否安装成功<br>如果报错express不是一个命令， 则执行<code>npm install -g express-generator</code>即可<br>Express在初始化一个项目的时候需要指定模板引擎，模式支持jade和ejs，为了降低学习难度，建议使用ejs。</p>
+<h3 id="四、建立工程"><a href="#四、建立工程" class="headerlink" title="四、建立工程"></a>四、建立工程</h3><p>express -e pcat<br>当前目录出现了子目录pcat并产生了一些文件：<br><img src="http://i4.tietuku.com/724f4057ebf5adfc.png" alt=""><br>提示我们进入pcat目录执行npm install命令<br>无参数的npm install命令会检查当前目录下的package.json并自动安装所有指定的依赖。</p>
+<h3 id="五、启动服务器"><a href="#五、启动服务器" class="headerlink" title="五、启动服务器"></a>五、启动服务器</h3><p>window环境下：<br>执行<code>set DEBUG=pcat</code><br>再执行<code>npm start</code><br>访问localhost:3000即可访问。</p>
+<p>更多介绍见<a href="http://www.expressjs.com.cn/" target="_blank" rel="noopener">express官网</a></p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>陈柯伊</h4>
+    <p>梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年</p>
+</section>
+      <section class="share">
+   <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2016/01/06/nodeJsStudy10/">
+        ← node.js学习笔记(十)——工程的结构
+    </a>
+    
+    
+    <a class="older-posts" href="/2016/01/06/nodeJsStudy8/">
+        node.js学习笔记(八)——HTTP客户端 →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    
+<section class="comment-box">
+    <!--高速版-->
+    <div id="SOHUCS" sid="https://coolmogu.com/2016/01/06/nodeJsStudy9/"></div>
+    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+    <script type="text/javascript">
+        window.changyan.api.config({
+        appid: 'cyt0WGpod',
+        conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
+        });
+    </script>
+
+</section>
+
+</div>
+
+
+
+</main>
+ 
+  <div id="toc" class="toc-article">
+    <div class="toc-title">文章目录</div>
+    <div class="toc-box">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、为什么要用Express框架？"><span class="toc-text">一、为什么要用Express框架？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、Express框架"><span class="toc-text">二、Express框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、安装Express"><span class="toc-text">三、安装Express</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、建立工程"><span class="toc-text">四、建立工程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、启动服务器"><span class="toc-text">五、启动服务器</span></a></li></ol>
+    </div>
+
+</div>
+
+
+<script language="JavaScript" type="text/JavaScript">
+//运行文本域代码
+function runEx(cod1) {
+  cod=document.all(cod1)
+  var code=cod.value.replace(/‘|’/g,'\'');
+  if (code!=""){
+    var newwin=window.open('','',''); //打开一个窗口并赋给变量newwin。
+    newwin.opener = null // 防止代码对论谈页面修改
+    newwin.document.write(code); //向这个打开的窗口中写入代码code，这样就实现了运行代码功能。
+    newwin.document.close();
+  }
+}
+
+</script>
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

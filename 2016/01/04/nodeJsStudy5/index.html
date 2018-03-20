@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>node.js学习笔记(五)——常用工具util和事件EventEmitter | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2016-01-04T02:17:50.000Z" itemprop="datePublished">
+        2016-1-4 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/node-js学习笔记/'>node.js学习笔记</a>
+    
+    
+</span>
+    <h1 class="post-title">node.js学习笔记(五)——常用工具util和事件EventEmitter</h1>
+    <span id="busuanzi_container_page_pv" class="readCount">
+      阅读量：
+    <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+
+    </span>
+    <section class="post-content">
+      <h3 id="一、util全局变量"><a href="#一、util全局变量" class="headerlink" title="一、util全局变量"></a>一、util全局变量</h3><h4 id="1-util-inherits-constructor-superConstructor"><a href="#1-util-inherits-constructor-superConstructor" class="headerlink" title="1. util.inherits(constructor,superConstructor)"></a>1. <code>util.inherits(constructor,superConstructor)</code></h4><p>此方法是一个实现对象间原型继承的函数。javaScript通过原型赋值来实现继承。<br><a id="more"></a><br>例：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//inherits.js</span></span><br><span class="line"><span class="keyword">var</span> util = <span class="built_in">require</span>(<span class="string">'util'</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Base</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = <span class="string">'base'</span>;</span><br><span class="line">    <span class="keyword">this</span>.base = <span class="number">2012</span>;</span><br><span class="line">    <span class="keyword">this</span>.sayHello = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'hello '</span> + <span class="keyword">this</span>.name + <span class="string">' this year is '</span> + <span class="keyword">this</span>.base);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line">Base.prototype.showName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Sub</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = <span class="string">'sub'</span>;</span><br><span class="line">&#125;</span><br><span class="line">util.inherits(Sub, Base);</span><br><span class="line"><span class="comment">//原有输出</span></span><br><span class="line"><span class="keyword">var</span> objBase = <span class="keyword">new</span> Base();</span><br><span class="line">objBase.showName();</span><br><span class="line">objBase.sayHello();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(objBase);</span><br><span class="line"><span class="comment">//继承后的子类输出</span></span><br><span class="line"><span class="keyword">var</span> objSub = <span class="keyword">new</span> Sub();</span><br><span class="line">objSub.showName();</span><br><span class="line"><span class="comment">//objSub.sayHello(); 报错</span></span><br><span class="line"><span class="built_in">console</span>.log(objSub);</span><br></pre></td></tr></table></figure></p>
+<pre><code>执行结果：
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">base</span><br><span class="line">hello base <span class="keyword">this</span> year is <span class="number">2012</span></span><br><span class="line">Base &#123; <span class="attr">name</span>: <span class="string">'base'</span>, <span class="attr">base</span>: <span class="number">2012</span>, <span class="attr">sayHello</span>: [<span class="built_in">Function</span>] &#125;</span><br><span class="line">sub</span><br><span class="line">Sub &#123; <span class="attr">name</span>: <span class="string">'sub'</span> &#125;</span><br></pre></td></tr></table></figure>
+</code></pre><p>注意：Sub 仅仅继承了Base 在原型中定义的函数，而构造函数内部创造的 base 属 性和 sayHello 函数都没有被 Sub 继承。</p>
+<h4 id="2-util-inspect-object-showHidden-depth-colors"><a href="#2-util-inspect-object-showHidden-depth-colors" class="headerlink" title="2. util.inspect(object,[showHidden],[depth],[colors])"></a>2. <code>util.inspect(object,[showHidden],[depth],[colors])</code></h4><p>此方法是一个将任意对象转换 为字符串的方法，通常用于调试和错误输出。它至少接受一个参数 object，即要转换的对象。<br>showHidden 是一个可选参数，如果值为 true，将会输出更多隐藏信息。<br>depth 表示最大递归的层数，如果对象很复杂，你可以指定层数以控制输出信息的多 少。如果不指定depth，默认会递归2层，指定为 null 表示将不限递归层数完整遍历对象。 如果color 值为 true，输出格式将会以ANSI 颜色编码，通常用于在终端显示更漂亮 的效果。<br>特别要指出的是，util.inspect 并不会简单地直接把对象转换为字符串，即使该对 象定义了toString 方法也不会调用。</p>
+<h4 id="3-util-isArray-object"><a href="#3-util-isArray-object" class="headerlink" title="3.util.isArray(object)"></a>3.<code>util.isArray(object)</code></h4><p>如果给定的参数 “object” 是一个数组返回true，否则返回false。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> util = <span class="built_in">require</span>(<span class="string">'util'</span>);</span><br><span class="line"></span><br><span class="line">util.isArray([])</span><br><span class="line">  <span class="comment">// true</span></span><br><span class="line">util.isArray(<span class="keyword">new</span> <span class="built_in">Array</span>)</span><br><span class="line">  <span class="comment">// true</span></span><br><span class="line">util.isArray(&#123;&#125;)</span><br><span class="line">  <span class="comment">// false</span></span><br></pre></td></tr></table></figure></p>
+<p>类似的还有<code>util.isRegExp(object)</code>、<code>util.isDate(object)</code>、<code>util.isError(object)</code></p>
+<p>更多api点击<a href="http://nodeapi.ucdok.com/#/api/util.html" target="_blank" rel="noopener">参考链接</a></p>
+<h3 id="二、事件驱动"><a href="#二、事件驱动" class="headerlink" title="二、事件驱动"></a>二、事件驱动</h3><p>events是Node.js最重要的模板，原因是Node.js本身架构就是事件式的，而它提供了唯一的接口。events模块不仅用于用户代码与NOde.js下层事件循环的交互。还几乎被所有的模块依赖。</p>
+<h4 id="1-事件发射器"><a href="#1-事件发射器" class="headerlink" title="1.事件发射器"></a>1.事件发射器</h4><p>events模块只提供了一个对象——events.EventEmitter。EventEmitter的核心就是事件发射与时间监听器功能的封装。EventEmitter的每个事件由一个事件或若干个参数组成，事件名是一个字符串，通常表达一定的语义，对于每个事件，EventEmitter支持若干个事件监听器。当事件发射时，注册到这个事件的事件监听器被依次调用，事件参数作为回调函数参数传递。<br>例子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> events = <span class="built_in">require</span>(<span class="string">'events'</span>);</span><br><span class="line"><span class="comment">//实例化事件对象</span></span><br><span class="line"><span class="keyword">var</span> emitter = <span class="keyword">new</span> events.EventEmitter();</span><br><span class="line"><span class="comment">//注册事件监听1</span></span><br><span class="line">emitter.on(<span class="string">'someEvent'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">arg1,arg2</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Listener1'</span>,arg1,arg2);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">//注册事件监听2</span></span><br><span class="line">emitter.on(<span class="string">'someEvent'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">arg1,arg2</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Listener2'</span>,arg1,arg2);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">//触发事件</span></span><br><span class="line">emitter.emit(<span class="string">'someEvent'</span>,<span class="string">'cky'</span>,<span class="number">1991</span>);</span><br></pre></td></tr></table></figure></p>
+<p>执行结果：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Listener1 cky <span class="number">1991</span></span><br><span class="line">Listener2 cky <span class="number">1991</span></span><br></pre></td></tr></table></figure></p>
+<p>更多请参考<a href="http://nodeapi.ucdok.com/#/api/events.html" target="_blank" rel="noopener">api文档</a></p>
+<h4 id="2-error事件"><a href="#2-error事件" class="headerlink" title="2.error事件"></a>2.error事件</h4><p>EventEmitter定义了一个特殊的事件error，它包含错误的定义，我们在遇到异常的时候通常会发射error事件，当error事件被发射时，EventEmitter规定如果没有相应的监听器，Node.js会把它当作异常，退出程序打印调用栈，我们一般要为发射error的事件对象设置监听器，避免遇到错误后整个程序崩溃。</p>
+<h4 id="3-继承Event"><a href="#3-继承Event" class="headerlink" title="3.继承Event"></a>3.继承Event</h4><p>大多数时候我们不会直接使用EventEmitter，而是在对象中继承它，包括fs，net，http在内的。只要是支持事件相应的核心模块都是EventEmiiter的子类。<br>为什么这样做呢？</p>
+<ol>
+<li>具有某个实体功能的对象实现事件的符合语义，事件的监听和发射应该是一个对象的方法。</li>
+<li>javascript的对象机制是基于原型的，支持部分多重继承，继承EventEmitter不会打乱对象原有的继承关系。</li>
+</ol>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>陈柯伊</h4>
+    <p>梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年</p>
+</section>
+      <section class="share">
+   <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2016/01/04/nodeJsStudy6/">
+        ← node.js学习笔记(六)——文件操作
+    </a>
+    
+    
+    <a class="older-posts" href="/2015/12/11/nodeJsStudy4/">
+        node.js学习笔记(四)——全局对象与全局变量 →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    
+<section class="comment-box">
+    <!--高速版-->
+    <div id="SOHUCS" sid="https://coolmogu.com/2016/01/04/nodeJsStudy5/"></div>
+    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+    <script type="text/javascript">
+        window.changyan.api.config({
+        appid: 'cyt0WGpod',
+        conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
+        });
+    </script>
+
+</section>
+
+</div>
+
+
+
+</main>
+ 
+  <div id="toc" class="toc-article">
+    <div class="toc-title">文章目录</div>
+    <div class="toc-box">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、util全局变量"><span class="toc-text">一、util全局变量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-util-inherits-constructor-superConstructor"><span class="toc-text">1. util.inherits(constructor,superConstructor)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-util-inspect-object-showHidden-depth-colors"><span class="toc-text">2. util.inspect(object,[showHidden],[depth],[colors])</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-util-isArray-object"><span class="toc-text">3.util.isArray(object)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、事件驱动"><span class="toc-text">二、事件驱动</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-事件发射器"><span class="toc-text">1.事件发射器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-error事件"><span class="toc-text">2.error事件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-继承Event"><span class="toc-text">3.继承Event</span></a></li></ol></li></ol>
+    </div>
+
+</div>
+
+
+<script language="JavaScript" type="text/JavaScript">
+//运行文本域代码
+function runEx(cod1) {
+  cod=document.all(cod1)
+  var code=cod.value.replace(/‘|’/g,'\'');
+  if (code!=""){
+    var newwin=window.open('','',''); //打开一个窗口并赋给变量newwin。
+    newwin.opener = null // 防止代码对论谈页面修改
+    newwin.document.write(code); //向这个打开的窗口中写入代码code，这样就实现了运行代码功能。
+    newwin.document.close();
+  }
+}
+
+</script>
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

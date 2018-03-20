@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>js中文输入法字符串截断问题解决 | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2016-01-27T06:06:50.000Z" itemprop="datePublished">
+        2016-1-27 14:06:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+    <h1 class="post-title">js中文输入法字符串截断问题解决</h1>
+    <span id="busuanzi_container_page_pv" class="readCount">
+      阅读量：
+    <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+
+    </span>
+    <section class="post-content">
+      <p>最近遇到了一个需求：一个输入框最大输入字数为7个字，用户输入超出7个字时，显示警告提示，并且阻止用户输入。</p>
+<p>用input propertychange事件可以监听到用户的输入，在英文或者数字输入状态是没有问题的。但是在中文输入法输入情况下，不同浏览器有不同的表现。有的浏览器会在输入拼音时就会进入判断，如果拼音就已经超过7个字符，就不能再继续输入。<br>如下：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"test"</span>/&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"warn"</span>&gt;</span>不能输入超过7个字<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">        var test = $('#test');</span></span><br><span class="line"><span class="undefined">        test.on('input propertychange', function() &#123;</span></span><br><span class="line"><span class="undefined">            var value = $(this).val();</span></span><br><span class="line"><span class="undefined">            console.log('当前输入：'+value);</span></span><br><span class="line"><span class="undefined">            if(value.length&gt;7)&#123;</span></span><br><span class="line"><span class="undefined">                $(this).val(value.substring(0,7));</span></span><br><span class="line"><span class="undefined">                $('.warn').show()</span></span><br><span class="line"><span class="undefined">            &#125;else&#123;</span></span><br><span class="line"><span class="undefined">                $('.warn').hide();</span></span><br><span class="line"><span class="undefined">            &#125;</span></span><br><span class="line"><span class="undefined">        &#125;)</span></span><br><span class="line"><span class="undefined">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<textarea id="runCode1" name="textarea" rows="10" cols="60" class="runCode"><script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js"></script><style type="text/css">.warn{display: none;color: #f00;}</style><body><input id="test"><span class="warn">不能输入超过7个字</span><br>    <script type="text/javascript">var test = $(‘#test’);test.on(‘input propertychange’, function(){var value = $(this).val();console.log(‘当前输入：’+value);if(value.length&gt;7){$(this).val(value.substring(0,7));$(‘.warn’).show()}else{$(‘.warn’).hide();}})</script><body></body></body></textarea>
+
+<p><input style="cursor: hand" onclick="runEx('runCode1')" type="button" value="运行代码" class="runCode-btn"><br></p>
+<p>运行以上代码可以发现，比如我想输入“报价方案”时，如果打全拼根本无法打出来就被阻止了。在网上找了解决方案之后，发现了一些以前没听过的事件。</p>
+<blockquote>
+<h4 id="复合事件"><a href="#复合事件" class="headerlink" title="复合事件"></a>复合事件</h4><p>复合事件（composition event）是DOM3级事件中新添加的一类事件，用于处理IME的输入序列。IME（Input Method Editor，输入法编辑器）可以让用户输入在物理键盘上找不到的字符。复合事件就是针对检测和处理这种输入而设计的。<br>       （1）compositionstart：在IME的文本复合系统打开时触发，表示要开始输入了。<br>（2）compositionupdate：在向输入字段中插入新字符时触发。<br>（3）compositionend：在IME的文本复合系统关闭时触发，表示返回正常键盘的输入状态。</p>
+</blockquote>
+<p>用这个事件，我们可以实现中文输入法截断的问题了。如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"test"</span>/&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"warn"</span>&gt;</span>不能输入超过7个字<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">    var test = $('#test');</span></span><br><span class="line"><span class="undefined">    test.on('input propertychange change', function() &#123;</span></span><br><span class="line"><span class="undefined">        if($(this).prop('comStart')) return;    // 中文输入过程中不截断</span></span><br><span class="line"><span class="undefined">        var value = $(this).val();</span></span><br><span class="line"><span class="undefined">        console.log('当前输入：'+value);</span></span><br><span class="line"><span class="undefined">        if(value.length&gt;7)&#123;</span></span><br><span class="line"><span class="undefined">            $(this).val(value.substring(0,7));</span></span><br><span class="line"><span class="undefined">            $('.warn').show()</span></span><br><span class="line"><span class="undefined">        &#125;else&#123;</span></span><br><span class="line"><span class="undefined">            $('.warn').hide();</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined">    &#125;).on('compositionstart', function()&#123;</span></span><br><span class="line"><span class="undefined">        $(this).prop('comStart', true);</span></span><br><span class="line"><span class="undefined">        console.log('中文输入：开始');</span></span><br><span class="line"><span class="undefined">    &#125;).on('compositionend', function()&#123;</span></span><br><span class="line"><span class="undefined">        $(this).prop('comStart', false);</span></span><br><span class="line"><span class="undefined">        console.log('中文输入：结束');</span></span><br><span class="line"><span class="undefined">    &#125;);</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<textarea id="runCode2" name="textarea" rows="10" cols="60" class="runCode"><script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js"></script><style type="text/css">.warn{display: none;color: #f00;}</style><body><input id="test"><span class="warn">不能输入超过7个字</span><script type="text/javascript">var test = $(‘#test’);test.on(‘input propertychange change’, function(){if($(this).prop(‘comStart’)) return;var value = $(this).val();console.log(‘当前输入：’+value);if(value.length&gt;7){$(this).val(value.substring(0,7));$(‘.warn’).show()}else{$(‘.warn’).hide();}}).on(‘compositionstart’, function(){$(this).prop(‘comStart’, true);console.log(‘中文输入：开始’);}).on(‘compositionend’, function(){$(this).prop(‘comStart’, false);console.log(‘中文输入：结束’);});</script></body></textarea>
+
+<p><input style="cursor: hand" onclick="runEx('runCode2')" type="button" value="运行代码" class="runCode-btn"><br></p>
+<p><img src="http://i4.tietuku.com/e52018b653051022.jpg" alt="完美"></p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>陈柯伊</h4>
+    <p>梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年</p>
+</section>
+      <section class="share">
+   <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2016/02/17/2016年计划（目标）/">
+        ← 2016年计划（目标）
+    </a>
+    
+    
+    <a class="older-posts" href="/2016/01/21/前端知识收集/">
+        前端知识收集 →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    
+<section class="comment-box">
+    <!--高速版-->
+    <div id="SOHUCS" sid="https://coolmogu.com/2016/01/27/ChineseInputMethods/"></div>
+    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+    <script type="text/javascript">
+        window.changyan.api.config({
+        appid: 'cyt0WGpod',
+        conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
+        });
+    </script>
+
+</section>
+
+</div>
+
+
+
+</main>
+ 
+  <div id="toc" class="toc-article">
+    <div class="toc-title">文章目录</div>
+    <div class="toc-box">
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#复合事件"><span class="toc-text">复合事件</span></a></li></ol>
+    </div>
+
+</div>
+
+
+<script language="JavaScript" type="text/JavaScript">
+//运行文本域代码
+function runEx(cod1) {
+  cod=document.all(cod1)
+  var code=cod.value.replace(/‘|’/g,'\'');
+  if (code!=""){
+    var newwin=window.open('','',''); //打开一个窗口并赋给变量newwin。
+    newwin.opener = null // 防止代码对论谈页面修改
+    newwin.document.write(code); //向这个打开的窗口中写入代码code，这样就实现了运行代码功能。
+    newwin.document.close();
+  }
+}
+
+</script>
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

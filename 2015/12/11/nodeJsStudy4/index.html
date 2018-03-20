@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>node.js学习笔记(四)——全局对象与全局变量 | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2015-12-11T02:17:50.000Z" itemprop="datePublished">
+        2015-12-11 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/node-js学习笔记/'>node.js学习笔记</a>
+    
+    
+</span>
+    <h1 class="post-title">node.js学习笔记(四)——全局对象与全局变量</h1>
+    <span id="busuanzi_container_page_pv" class="readCount">
+      阅读量：
+    <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+
+    </span>
+    <section class="post-content">
+      <p>所有属性都可以在程序的任何地方访问，即全局变量。在javascript中，通常window是全局对象，而node.js的全局对象是global，所有全局变量都是global对象的属性，如：console、process等。<br><a id="more"></a></p>
+<h3 id="一、全局对象与全局变量"><a href="#一、全局对象与全局变量" class="headerlink" title="一、全局对象与全局变量"></a>一、全局对象与全局变量</h3><p> global最根本的作用是作为全局变量的宿主。满足以下条件成为全局变量。</p>
+<ol>
+<li>在最外层定义的变量</li>
+<li>全局对象的属性</li>
+<li>隐式定义的变量（未定义直接赋值的变量）<br>node.js中不可能在最外层定义变量，因为所有的用户代码都是属于当前模块的，而模块本身不是最外层上下文。node.js中也不提倡自定义全局变量。</li>
+</ol>
+<p><strong>Node提供以下几个全局对象，它们是所有模块都可以调用的</strong>。</p>
+<ul>
+<li><p>global：表示Node所在的全局环境，类似于浏览器的window对象。需要注意的是，如果在浏览器中声明一个全局变量，实际上是声明了一个全局对象的属性，比如var x = 1等同于设置window.x = 1，但是Node不是这样，至少在模块中不是这样（REPL环境的行为与浏览器一致）。在模块文件中，声明var x = 1，该变量不是global对象的属性，global.x等于undefined。这是因为模块的全局变量都是该模块私有的，其他模块无法取到。</p>
+</li>
+<li><p>process：该对象表示Node所处的当前进程，允许开发者与该进程互动。</p>
+</li>
+<li>console：指向Node内置的console模块，提供命令行环境中的标准输入、标准输出功能。</li>
+</ul>
+<p><strong>Node还提供一些全局函数</strong>。</p>
+<ul>
+<li>setTimeout()：用于在指定毫秒之后，运行回调函数。实际的调用间隔，还取决于系统因素。间隔的毫秒数在1毫秒到2,147,483,647毫秒（约24.8天）之间。如果超过这个范围，会被自动改为1毫秒。该方法返回一个整数，代表这个新建定时器的编号。</li>
+<li>clearTimeout()：用于终止一个setTimeout方法新建的定时器。</li>
+<li>setInterval()：用于每隔一定毫秒调用回调函数。由于系统因素，可能无法保证每次调用之间正好间隔指定的毫秒数，但只会多于这个间隔，而不会少于它。指定的毫秒数必须是1到2,147,483,647（大约24.8天）之间的整数，如果超过这个范围，会被自动改为1毫秒。该方法返回一个整数，代表这个新建定时器的编号。</li>
+<li>clearInterval()：终止一个用setInterval方法新建的定时器。</li>
+<li>require()：用于加载模块。</li>
+<li>Buffer()：用于操作二进制数据。</li>
+</ul>
+<p><strong>Node提供两个全局变量，都以两个下划线开头</strong>。</p>
+<p>_filename：指向当前运行的脚本文件名。<br>_dirname：指向当前运行的脚本所在的目录。<br>除此之外，还有一些对象实际上是模块内部的局部变量，指向的对象根据模块不同而不同，但是所有模块都适用，可以看作是伪全局变量，主要为module, module.exports, exports等。</p>
+<h3 id="二、-process"><a href="#二、-process" class="headerlink" title="二、 process"></a>二、 process</h3><p> 它用于描述当前Node.js进程状态的对象。提供了一个与操作系统的简单接口，通常写本地命令行程序的时候，会用到它。<br> 例：<br> <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//命令行输入 node argv.js 'cky' 1993</span></span><br><span class="line"><span class="comment">//argv.js</span></span><br><span class="line"><span class="built_in">console</span>.log(process.argv);</span><br><span class="line">process.stdout.write(<span class="string">'cky'</span>);</span><br></pre></td></tr></table></figure></p>
+<p> 运行结果：<br> <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[ <span class="string">'E:\\下载的东西\\node\\node.exe'</span>,</span><br><span class="line">  <span class="string">'D:\\myStudy\\nodeJsStudy\\process\\argv.js'</span>,</span><br><span class="line">  <span class="string">'cky'</span>,</span><br><span class="line">  <span class="string">'1993'</span> ]</span><br><span class="line">cky</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>process.argv是命令行参数数组，第一个输出是node程序所在位置，第二个输出是脚本文件所在位置，第三个输出开始是运行参数。</li>
+<li>process.stdout是标准输出流，通常我们使用的console.log()其底层是用process.stdout.write()实现的。</li>
+<li><p>process.stdin是标准的输入流，在初识时他是被暂停的。要想从标准输入流读取数据，必须恢复流，并手动编写流的事件的相应函数。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//恢复流</span></span><br><span class="line">process.stdin.resume();</span><br><span class="line">process.stdin.on(<span class="string">'data'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">    process.stdout.write(<span class="string">'read form'</span> +data.toString());</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>执行结果：<br><img src="http://i12.tietuku.com/1c4b90d94b2fb0e7.png" alt=""></p>
+</li>
+<li><p>process.nextTick(callback)的功能是为事件循环设置一项任务。Node.js会在下次事件循环调用callback。<br>Node.js适合IO密集型的应用，而不是计算密集型的应用。process.nextTick()提供了一个这样的工具，可以把复杂的工作拆散，变为较小的事件。将一个回调函数放在下次事件循环的顶部。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compute</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'I am a compute method'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">somethingComplited</span>(<span class="params">args</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'I am somthingComplited method'</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(args);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doSomething</span>(<span class="params">args,callback</span>)</span>&#123;</span><br><span class="line">    somethingComplited(args);</span><br><span class="line">    callback();</span><br><span class="line">&#125;</span><br><span class="line">doSomething(<span class="string">'12345'</span>,<span class="function"><span class="keyword">function</span> <span class="title">onEnd</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    compute();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>如果假设compute()和somethingComplited()是两个较为耗时的函数。以上的程序在调用doSomething时会先执行somethingComplited(args)后立即调用回调函数，在onEnd()中又会执行compute()，改写为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doSomething</span>(<span class="params">args,callback</span>)</span>&#123;</span><br><span class="line">    somethingComplited(args);</span><br><span class="line">    process.nextTick(callback);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用process.nextTick()后，改写后的程序会把上面耗时的操作拆分为两个事件，减少每个事件的执行事件，提高事件响应速度。<br>更多process API可参考 <a href="http://www.css88.com/archives/4548" target="_blank" rel="noopener">参考链接1</a>，<a href="http://www.nodejs.net/a/20121231/083747.html" target="_blank" rel="noopener">参考链接2</a></p>
+</li>
+</ol>
+<h3 id="三、console"><a href="#三、console" class="headerlink" title="三、console"></a>三、console</h3><p>用于提供控制台的标准输出，node.js沿用了这个标准，提供与习惯行为一致的console对象。</p>
+<ol>
+<li><p><code>console.log()</code> 向标准输出流打印字符并以换行符结束。<br>案例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">"hello"</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"hello%cky"</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"hello%cky"</span>,<span class="string">"cky"</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>console.error()</code>用法与标准console.log()相同，只是向标准错误流输出。</p>
+</li>
+<li><code>console.trace()</code>向标准错误流输出当前的调用栈。</li>
+</ol>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>陈柯伊</h4>
+    <p>梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年</p>
+</section>
+      <section class="share">
+   <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2016/01/04/nodeJsStudy5/">
+        ← node.js学习笔记(五)——常用工具util和事件EventEmitter
+    </a>
+    
+    
+    <a class="older-posts" href="/2015/12/03/nodeJsStudy3/">
+        node.js学习笔记(三)——模块与包 →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    
+<section class="comment-box">
+    <!--高速版-->
+    <div id="SOHUCS" sid="https://coolmogu.com/2015/12/11/nodeJsStudy4/"></div>
+    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+    <script type="text/javascript">
+        window.changyan.api.config({
+        appid: 'cyt0WGpod',
+        conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
+        });
+    </script>
+
+</section>
+
+</div>
+
+
+
+</main>
+ 
+  <div id="toc" class="toc-article">
+    <div class="toc-title">文章目录</div>
+    <div class="toc-box">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、全局对象与全局变量"><span class="toc-text">一、全局对象与全局变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、-process"><span class="toc-text">二、 process</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、console"><span class="toc-text">三、console</span></a></li></ol>
+    </div>
+
+</div>
+
+
+<script language="JavaScript" type="text/JavaScript">
+//运行文本域代码
+function runEx(cod1) {
+  cod=document.all(cod1)
+  var code=cod.value.replace(/‘|’/g,'\'');
+  if (code!=""){
+    var newwin=window.open('','',''); //打开一个窗口并赋给变量newwin。
+    newwin.opener = null // 防止代码对论谈页面修改
+    newwin.document.write(code); //向这个打开的窗口中写入代码code，这样就实现了运行代码功能。
+    newwin.document.close();
+  }
+}
+
+</script>
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

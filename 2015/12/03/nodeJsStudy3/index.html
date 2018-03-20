@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>node.js学习笔记(三)——模块与包 | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2015-12-03T02:17:50.000Z" itemprop="datePublished">
+        2015-12-3 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/node-js学习笔记/'>node.js学习笔记</a>
+    
+    
+</span>
+    <h1 class="post-title">node.js学习笔记(三)——模块与包</h1>
+    <span id="busuanzi_container_page_pv" class="readCount">
+      阅读量：
+    <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+
+    </span>
+    <section class="post-content">
+      <p>模块(Module)和包(package)是Node.js最重要的支柱。开发一个具有一定规模的程序不可能只用一个文件，通常需要把各个功能拆分、分装、然后组合起来。模块正是为了实现这种方式而诞生，而浏览器JavaScript中，脚本模块的拆分和组合通常使用HTML的script标签来实现，Node.js提供了require函数来调用其他模块，而且<strong>模块都是基于文件</strong>，机制非常简单，模块和包的区别是透明的，因此经常不做区分。<br><a id="more"></a></p>
+<h3 id="一、模块"><a href="#一、模块" class="headerlink" title="一、模块"></a>一、模块</h3><ol>
+<li><h4 id="什么是模块"><a href="#什么是模块" class="headerlink" title="什么是模块"></a>什么是模块</h4><p>模块和文件是一一对应的。一个Node.js文件就是一个模块，这个文件可能是JavaSript代码、JSON或者编译过的C/C++扩展。<br><code>var http = require(&#39;http&#39;)</code>，其中的<code>http</code>是Node.js的一个核心模块，通过require函数获取这个模块，然后使用其中的对象。</p>
+</li>
+<li><h4 id="创建及加载模块"><a href="#创建及加载模块" class="headerlink" title="创建及加载模块"></a>创建及加载模块</h4><p>(1). 创建模块<br>Node.js提供了exports和require两个对象，其中exports是模块公开的接口，require用于从外部获取一个模块的接口，即获取模块的exports对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//module.js</span></span><br><span class="line"><span class="keyword">var</span> name;</span><br><span class="line">exports.setName = <span class="function"><span class="keyword">function</span>(<span class="params">theName</span>)</span>&#123;</span><br><span class="line">    name = theName;</span><br><span class="line">&#125;;</span><br><span class="line">exports.sayHello = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'hello '</span>+ name);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//getModule.js</span></span><br><span class="line"><span class="keyword">var</span> myModule = <span class="built_in">require</span>(<span class="string">'./module'</span>);</span><br><span class="line">myModule.setName(<span class="string">'cky'</span>);</span><br><span class="line">myModule.sayHello();</span><br></pre></td></tr></table></figure>
+<p>执行getModule.js结果：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"hello cky"</span></span><br></pre></td></tr></table></figure>
+<p>(2). 单次加载</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//getModule2.js</span></span><br><span class="line"><span class="keyword">var</span> myModule1 = <span class="built_in">require</span>(<span class="string">'./module'</span>);</span><br><span class="line">myModule1.setName(<span class="string">'cky1'</span>);</span><br><span class="line"><span class="keyword">var</span> myModule2 = <span class="built_in">require</span>(<span class="string">'./module'</span>);</span><br><span class="line">myModule2.setName(<span class="string">'cky2'</span>);</span><br><span class="line">myModule1.sayHello();</span><br></pre></td></tr></table></figure>
+<p>执行getModule2.js结果：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"hello cky2"</span></span><br></pre></td></tr></table></figure>
+<p>以上的例子类似创建对象，但是和创建对象有本质区别。因为<strong>require不会重复加载模块</strong>，也就是无论调用多少次require，所获取到的模块都是同一个(见第四点说到的require查找策略)。</p>
+<p>(3). 覆盖exports<br>有时候我们只是想把一个对象封装到模块中，就可以这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//singleObject.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hello</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> name;</span><br><span class="line">    <span class="keyword">this</span>.setName = <span class="function"><span class="keyword">function</span>(<span class="params">theName</span>)</span>&#123;</span><br><span class="line">        name = theName;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.sayHello = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'hello'</span> + name);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = hello;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//getSingleObject.js</span></span><br><span class="line"><span class="keyword">var</span> hello = <span class="built_in">require</span>(<span class="string">'./singleObject'</span>);</span><br><span class="line"><span class="keyword">var</span> he1 = <span class="keyword">new</span> hello();</span><br><span class="line">he1.setName(<span class="string">'cky1'</span>);</span><br><span class="line">he1.sayHello();</span><br><span class="line"><span class="keyword">var</span> he2 = <span class="keyword">new</span> hello();</span><br><span class="line">he2.setName(<span class="string">'cky2'</span>);</span><br><span class="line">he2.sayHello();</span><br></pre></td></tr></table></figure>
+<p>执行getSingleObject.js结果：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"hello cky1"</span></span><br><span class="line"><span class="string">"hello cky2"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><h4 id="模块分类"><a href="#模块分类" class="headerlink" title="模块分类"></a>模块分类</h4><p>Node.js的模块分为两类，一类为原生（核心）模块，一类为文件模块。</p>
+<p>在文件模块中，又分为3类模块。这三类文件模块以后缀来区分，Node.js会根据后缀名来决定加载方法。</p>
+<ul>
+<li>.js。通过fs模块同步读取js文件并编译执行。</li>
+<li>.node。通过C/C++进行编写的Addon。通过dlopen方法进行加载。</li>
+<li>.json。读取文件，调用JSON.parse解析加载。</li>
+</ul>
+<p>Node.提供了exports和require两个对象,其中exports是模块公开的接口,require用于从外部获取一个模块接口,即所获取模块的exports对象.</p>
+</li>
+<li><h4 id="require查找策略"><a href="#require查找策略" class="headerlink" title="require查找策略"></a>require查找策略</h4><p><strong>原生模块</strong>在Node.js源代码编译的时候编译进了二进制执行文件，加载的速度最快。另一类<strong>文件模块</strong>是动态加载的，加载速度比原生模块慢。但是Node.js对原生模块和文件模块都进行了缓存，于是在第二次require时，是不会有重复开销的。尽管require方法极其简单，但是内部的加载却是十分复杂的，其加载优先级也各自不同。<br><img src="http://i12.tietuku.com/c914066941701bb7.jpg" alt="require查找策略"></p>
+<p>require方法接受以下几种参数的传递：</p>
+<ul>
+<li>http、fs、path等原生模块。</li>
+<li>./mod或../mod，相对路径的文件模块。</li>
+<li>/pathtomodule/mod，绝对路径的文件模块。</li>
+<li>mod，非原生模块的文件模块。</li>
+</ul>
+<p>当require一个文件模块时,从当前文件目录开始查找node_modules目录；然后依次进入父目录，查找父目录下的node_modules目录；依次迭代，直到根目录下的node_modules目录。</p>
+<p>简而言之，如果require绝对路径的文件，查找时不会去遍历每一个node_modules目录，其速度最快。其余流程如下：</p>
+<ol>
+<li>从module path数组中取出第一个目录作为查找基准。</li>
+<li>直接从目录中查找该文件，如果存在，则结束查找。如果不存在，则进行下一条查找。<br>尝试添加.js、.json、.node后缀后查找，如果存在文件，则结束查找。如果不存在，则进行下一条。</li>
+<li>尝试将require的参数作为一个包来进行查找，读取目录下的package.json文件，取得main参数指定的文件。</li>
+<li>尝试查找该文件，如果存在，则结束查找。如果不存在，则进行第3条查找。</li>
+<li>如果继续失败，则取出module path数组中的下一个目录作为基准查找，循环第1至5个步骤。</li>
+<li>如果继续失败，循环第1至6个步骤，直到module path中的最后一个值。</li>
+<li>如果仍然失败，则抛出异常。</li>
+</ol>
+</li>
+</ol>
+<h3 id="二、包"><a href="#二、包" class="headerlink" title="二、包"></a>二、包</h3><ol>
+<li>包的概念<br> 包是在模块基础上更深一步的抽象，Node.js的包类似于C/C++的函数库或者java的类库，他将某个独立的功能封装起来，用于发布、更新、依赖管理的版本控制。开发了npm来解决了包的发布和获取需求。</li>
+</ol>
+<p>这个待我之后补充。- -</p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>陈柯伊</h4>
+    <p>梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年</p>
+</section>
+      <section class="share">
+   <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2015/12/11/nodeJsStudy4/">
+        ← node.js学习笔记(四)——全局对象与全局变量
+    </a>
+    
+    
+    <a class="older-posts" href="/2015/12/02/nodeJsStudy2/">
+        node.js学习笔记(二)——node.js回调函数与事件 →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    
+<section class="comment-box">
+    <!--高速版-->
+    <div id="SOHUCS" sid="https://coolmogu.com/2015/12/03/nodeJsStudy3/"></div>
+    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+    <script type="text/javascript">
+        window.changyan.api.config({
+        appid: 'cyt0WGpod',
+        conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
+        });
+    </script>
+
+</section>
+
+</div>
+
+
+
+</main>
+ 
+  <div id="toc" class="toc-article">
+    <div class="toc-title">文章目录</div>
+    <div class="toc-box">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、模块"><span class="toc-text">一、模块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是模块"><span class="toc-text">什么是模块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#创建及加载模块"><span class="toc-text">创建及加载模块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#模块分类"><span class="toc-text">模块分类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#require查找策略"><span class="toc-text">require查找策略</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、包"><span class="toc-text">二、包</span></a></li></ol>
+    </div>
+
+</div>
+
+
+<script language="JavaScript" type="text/JavaScript">
+//运行文本域代码
+function runEx(cod1) {
+  cod=document.all(cod1)
+  var code=cod.value.replace(/‘|’/g,'\'');
+  if (code!=""){
+    var newwin=window.open('','',''); //打开一个窗口并赋给变量newwin。
+    newwin.opener = null // 防止代码对论谈页面修改
+    newwin.document.write(code); //向这个打开的窗口中写入代码code，这样就实现了运行代码功能。
+    newwin.document.close();
+  }
+}
+
+</script>
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

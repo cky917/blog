@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>归档 | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="home-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      <main class="content" role="main">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"></h3>
+    <div class="widget">
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+   
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2015-12-01T02:17:50.000Z" itemprop="datePublished">
+        2015-12-1 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/node-js学习笔记/'>node.js学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2015/12/01/nodeJsStudy1/">node.js学习笔记(一)——node.js异步式I/O与事件编程</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        Node.js最大的特性就是异步式IO与事件紧密结合的编程模式，这种模式与传统的同步式I/O线性的编程思路有很大的不同，因为控制流很大程度上靠事件和回调函数来组织。
+阻塞与线程1.同步式I/O(阻塞式I/O)：线程在执行过程中如果遇到磁盘读写或网络通信，通常要耗费较长的时间。这时操作系统会剥夺这个线程的CPU控制权，使其暂停执行，同时将资源让给其他的工作线程，这种线程调度方式称为阻塞。当I/O操作完毕时，操作系统将这个线程的阻塞状态解除
+      
+      </p>
+      
+      <p>
+          <a href="/2015/12/01/nodeJsStudy1/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2015-11-25T02:17:50.000Z" itemprop="datePublished">
+        2015-11-25 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2015/11/25/jQueryPerformanceOptimization/">jQuery性能优化</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>jQuery已经成为前端开发中重要的类库之一，也是前端开发er的一个利器，了解到如何正确使用jQuery达到最佳性能是一个很重要的事。下面从各个方面来总结一下jQuery性能优化技巧和注意事项。<br>
+      
+      </p>
+      
+      <p>
+          <a href="/2015/11/25/jQueryPerformanceOptimization/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2015-11-20T02:17:50.000Z" itemprop="datePublished">
+        2015-11-20 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2015/11/20/不是只有“if else”/">不是只有if和else</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        在我们写javascript函数的时候，经常会使用到条件判断，使用得最多的就是if else进行判断了。使用得多了渐渐会特别依赖这个最简单的方法，而导致整个函数里好多if else,甚至嵌套很多层。仔细研究，我们会发现用一大段if else的逻辑，其实用其他方法，一句话就能够完全实现同样的功能。
+初级替代之一：三元表达式var max = a&gt;b?a:b;
+三元表达式的规则就是，当”?”前的表达式为true时，返回”:”前的值，否
+      
+      </p>
+      
+      <p>
+          <a href="/2015/11/20/不是只有“if else”/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2015-11-20T02:17:50.000Z" itemprop="datePublished">
+        2015-11-20 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/css学习心得/'>css学习心得</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2015/11/20/各种居中布局的css实现方法/">垂直居中布局的几种css实现方法</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>在开发中经常会需要实现一些居中布局问题，今天来总结一下垂直居中布局的css实现方法。<br>
+      
+      </p>
+      
+      <p>
+          <a href="/2015/11/20/各种居中布局的css实现方法/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2015-11-20T02:10:50.000Z" itemprop="datePublished">
+        2015-11-20 10:10:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2015/11/20/数组的常用方法/">Array类型对象的一些常用方法</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>Aarry类型是js中很常见的类型，Js原生就给了它一些很方便的方法供我们使用，不需要我们去实现。现在我们来总结一下这些常用的方法。<br>
+      
+      </p>
+      
+      <p>
+          <a href="/2015/11/20/数组的常用方法/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2015-11-09T02:17:50.000Z" itemprop="datePublished">
+        2015-11-9 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/css学习心得/'>css学习心得</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2015/11/09/Less is more/">Less is more</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>工作中为了模块化，我们会采用less进行开发。所以充分了解less的使用方法可以使开发变得更加有效率。<br>
+      
+      </p>
+      
+      <p>
+          <a href="/2015/11/09/Less is more/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2015-11-06T02:17:50.000Z" itemprop="datePublished">
+        2015-11-6 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/二次元/'>二次元</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2015/11/06/请问您今天要来点兔子吗/">请问您今天要来点兔子吗</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        再次推一下萌出血的点兔第二季ED（循环洗脑版！！）顺便markdown 嵌入视频测试~ 
+iframe部分的代码是从A站拷的 科科
+
+
+      
+      </p>
+      
+      <p>
+          <a href="/2015/11/06/请问您今天要来点兔子吗/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2015-10-28T02:17:50.000Z" itemprop="datePublished">
+        2015-10-28 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/矫情不是病/'>矫情不是病</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2015/10/28/请问，你也是一只蘑菇吗/">请问，你也是一只蘑菇吗</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>我博客名字的来源。<br>
+      
+      </p>
+      
+      <p>
+          <a href="/2015/10/28/请问，你也是一只蘑菇吗/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2015-09-30T02:17:50.000Z" itemprop="datePublished">
+        2015-9-30 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2015/09/30/JavaScript实践/">JavaScript实践</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        
+命名代码是给人(别人或者1个星期后的 自己)阅读和修改的 
+給变量和函数一个简单易懂的名字 
+可维护性++
+ 以功能命名,而不是表现  isOverSeven() × VS isLegalAge() √ 
+// 不好的命名
+aaaa  
+x1  
+f  
+hengxian  
+createNewUserIfTheInputIsValida
+te
+   避免全局变量
+
+我们无法拥有代码的控制权
+
+
+不易维护 
+牵一发而动全身 
+易被覆盖
+      
+      </p>
+      
+      <p>
+          <a href="/2015/09/30/JavaScript实践/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2015-09-23T12:46:25.000Z" itemprop="datePublished">
+        2015-9-23 20:46:25 
+      </time>
+    
+    
+    | 
+    <a href='/tags/web前端知识/'>web前端知识</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2015/09/23/浏览器的重绘与重排/">浏览器的重绘与重排</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>前端开发的过程中，我们不仅要实现设计师提供的炫酷设计稿，同时还要考虑到用最好的方式，最优的性能去实现它。为此，我们需要了解浏览器的重绘与重排概念。<br>
+      
+      </p>
+      
+      <p>
+          <a href="/2015/09/23/浏览器的重绘与重排/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <nav class="pagination" role="pagination">
+    <a class="newer-posts" href="/archives/page/3/">← Newer Posts</a>
+    <span class="page-number">Page 4 of 5</span>
+    <a class="older-posts" href="/archives/page/5/">Older Posts →</a>
+  </nav>
+</main>
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

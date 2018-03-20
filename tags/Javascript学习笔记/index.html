@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>标签: Javascript学习笔记 | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="home-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      <main class="content" role="main">
+  
+   
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"></h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript学习笔记/">Javascript学习笔记</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css学习心得/">css学习心得</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js学习笔记/">node.js学习笔记</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue源码学习/">vue源码学习</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web前端知识/">web前端知识</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二次元/">二次元</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/体会感悟/">体会感悟</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/生活琐事/">生活琐事</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/矫情不是病/">矫情不是病</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2017-08-27T06:06:50.000Z" itemprop="datePublished">
+        2017-8-27 14:06:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2017/08/27/postMessage-api/">postMessage解决跨域、跨窗口消息传递</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>最近遇到一个需求，页面嵌入了iframe框，iframe框里是一个Im在线聊天对话框。在用户切换聊天对象时，外层页面也需要获取当前用户正在聊天的对方的userid。但是由于im页面是嵌入的iframe，外层父页面既无法监听切换聊天对象的事件，也无法获取里面的dom元素，会报跨域的错误。为了解决这一问题，可以使用html5的API<code>postMessage</code>.</p>
+      
+      </p>
+      
+      <p>
+          <a href="/2017/08/27/postMessage-api/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2016-01-27T06:06:50.000Z" itemprop="datePublished">
+        2016-1-27 14:06:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2016/01/27/ChineseInputMethods/">js中文输入法字符串截断问题解决</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        最近遇到了一个需求：一个输入框最大输入字数为7个字，用户输入超出7个字时，显示警告提示，并且阻止用户输入。
+用input propertychange事件可以监听到用户的输入，在英文或者数字输入状态是没有问题的。但是在中文输入法输入情况下，不同浏览器有不同的表现。有的浏览器会在输入拼音时就会进入判断，如果拼音就已经超过7个字符，就不能再继续输入。如下：1234567891011121314&lt;input id="test"/&gt;
+      
+      </p>
+      
+      <p>
+          <a href="/2016/01/27/ChineseInputMethods/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2015-11-25T02:17:50.000Z" itemprop="datePublished">
+        2015-11-25 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2015/11/25/jQueryPerformanceOptimization/">jQuery性能优化</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>jQuery已经成为前端开发中重要的类库之一，也是前端开发er的一个利器，了解到如何正确使用jQuery达到最佳性能是一个很重要的事。下面从各个方面来总结一下jQuery性能优化技巧和注意事项。<br>
+      
+      </p>
+      
+      <p>
+          <a href="/2015/11/25/jQueryPerformanceOptimization/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2015-11-20T02:17:50.000Z" itemprop="datePublished">
+        2015-11-20 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2015/11/20/不是只有“if else”/">不是只有if和else</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        在我们写javascript函数的时候，经常会使用到条件判断，使用得最多的就是if else进行判断了。使用得多了渐渐会特别依赖这个最简单的方法，而导致整个函数里好多if else,甚至嵌套很多层。仔细研究，我们会发现用一大段if else的逻辑，其实用其他方法，一句话就能够完全实现同样的功能。
+初级替代之一：三元表达式var max = a&gt;b?a:b;
+三元表达式的规则就是，当”?”前的表达式为true时，返回”:”前的值，否
+      
+      </p>
+      
+      <p>
+          <a href="/2015/11/20/不是只有“if else”/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2015-11-20T02:10:50.000Z" itemprop="datePublished">
+        2015-11-20 10:10:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2015/11/20/数组的常用方法/">Array类型对象的一些常用方法</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>Aarry类型是js中很常见的类型，Js原生就给了它一些很方便的方法供我们使用，不需要我们去实现。现在我们来总结一下这些常用的方法。<br>
+      
+      </p>
+      
+      <p>
+          <a href="/2015/11/20/数组的常用方法/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2015-09-30T02:17:50.000Z" itemprop="datePublished">
+        2015-9-30 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2015/09/30/JavaScript实践/">JavaScript实践</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        
+命名代码是给人(别人或者1个星期后的 自己)阅读和修改的 
+給变量和函数一个简单易懂的名字 
+可维护性++
+ 以功能命名,而不是表现  isOverSeven() × VS isLegalAge() √ 
+// 不好的命名
+aaaa  
+x1  
+f  
+hengxian  
+createNewUserIfTheInputIsValida
+te
+   避免全局变量
+
+我们无法拥有代码的控制权
+
+
+不易维护 
+牵一发而动全身 
+易被覆盖
+      
+      </p>
+      
+      <p>
+          <a href="/2015/09/30/JavaScript实践/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2015-08-18T02:17:50.000Z" itemprop="datePublished">
+        2015-8-18 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2015/08/18/用js原生实现Ajax的get和post/">用js原生实现Ajax的get和post</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>虽然jquery的ajax挺方便，但是了解了原生实现的原理也是很不错的。而且封装好的原生Js Ajax用起来也挺方便的~ XD~<br>
+      
+      </p>
+      
+      <p>
+          <a href="/2015/08/18/用js原生实现Ajax的get和post/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2015-07-25T02:17:50.000Z" itemprop="datePublished">
+        2015-7-25 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2015/07/25/好玩的cookie/">好玩的cookie</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>最近接触了cookie，发现浏览器cookie真的挺好玩的，前端做的事也可以在网页关闭或刷新后依然存在，多难得啊（被用户清除了cookie就没办法了…）。cookie可以帮助前端实现一些用户行为储存，进而实现一些针对用户的操作。<br>
+      
+      </p>
+      
+      <p>
+          <a href="/2015/07/25/好玩的cookie/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <nav class="pagination" role="pagination">
+    
+    <span class="page-number">Page 1 of 1</span>
+    
+  </nav>
+</main>
+
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>vue源码学习笔记--初始化流程 | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2018-03-08T03:48:00.000Z" itemprop="datePublished">
+        2018-3-8 11:48:00 
+      </time>
+    
+    
+    | 
+    <a href='/tags/vue源码学习/'>vue源码学习</a>
+    
+    
+</span>
+    <h1 class="post-title">vue源码学习笔记--初始化流程</h1>
+    <span id="busuanzi_container_page_pv" class="readCount">
+      阅读量：
+    <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+
+    </span>
+    <section class="post-content">
+      <p><a href="https://github.com/cky917/vue-source-code-study" target="_blank" rel="noopener">学习代码仓库</a></p>
+<a id="more"></a>
+<h1 id="初始化Vue流程"><a href="#初始化Vue流程" class="headerlink" title="初始化Vue流程"></a>初始化Vue流程</h1><p><a href="https://github.com/vuejs/vue/blob/dev/src/core/index.js" target="_blank" rel="noopener">入口</a></p>
+<p><code>./core/instance/index.js</code><br>定义了一个构造函数</p>
+<p>然后执行了以下方法，给构造函数的原型加了一些属性和方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">initMixin(Vue)</span><br><span class="line">stateMixin(Vue)</span><br><span class="line">eventsMixin(Vue)</span><br><span class="line">lifecycleMixin(Vue)</span><br><span class="line">renderMixin(Vue)</span><br></pre></td></tr></table></figure>
+<h2 id="初始化原型（实例）的方法和属性"><a href="#初始化原型（实例）的方法和属性" class="headerlink" title="初始化原型（实例）的方法和属性"></a>初始化原型（实例）的方法和属性</h2><p><a href="https://github.com/vuejs/vue/blob/dev/src/core/instance/init.js" target="_blank" rel="noopener">initMixin</a>方法给原型增加了<code>_init</code>方法，也就是每次执行<code>new Vew()</code>的时候都会调用。具体的后面再说。// TODO</p>
+<p><a href="https://github.com/vuejs/vue/blob/dev/src/core/instance/state.js" target="_blank" rel="noopener">stateMixin</a>给原型挂载了<code>$data</code>、<code>$props</code>属性，并重写了它们的<code>getter</code>,分别读取实例的<code>_data</code>和<code>_props</code>。<br>然后挂载了<code>$set</code>、<code>$del</code>、<code>$watch</code>方法，这些后面再细看。 // TODO</p>
+<p><a href="https://github.com/vuejs/vue/blob/dev/src/core/instance/events.js" target="_blank" rel="noopener">eventMixin</a>给原型挂载了<code>$on</code>、<code>$once</code>、<code>$off</code>、<code>$emit</code>方法，后续细看。// TODO</p>
+<p><a href="https://github.com/vuejs/vue/blob/dev/src/core/instance/lifecycle.js" target="_blank" rel="noopener">lifecycleMixin</a> 方法给原型定义了<code>_update</code>方法、以及<code>$forceUpdate</code>、<code>$destroy</code>, 后续细看 // TODO</p>
+<p><a href="https://github.com/vuejs/vue/blob/dev/src/core/instance/render.js" target="_blank" rel="noopener">renderMixin</a>方法给原型定义了<code>$nextTick</code>方法，并且执行了<code>installRenderHelpers</code>方法给原型增加了一系列私有的方法，和<code>_render</code>方法,后续细看 //TODO</p>
+<p>最后抛出Vue构造函数</p>
+<h2 id="初始化全局api"><a href="#初始化全局api" class="headerlink" title="初始化全局api"></a>初始化全局api</h2><p>然后执行<a href="https://github.com/vuejs/vue/blob/dev/src/core/global-api/index.js" target="_blank" rel="noopener">initGlobalApi(Vue)</a>方法，将一些方法和属性挂在构造函数上成为全局api<br>如：</p>
+<ul>
+<li><code>Vue.config</code>（全局配置 <a href="https://cn.vuejs.org/v2/api/#silent" target="_blank" rel="noopener">文档</a>)</li>
+<li><code>Vue.util</code>(暴露出来的方法，但不是作为全局api考虑的，不建议使用)</li>
+<li><code>Vue.set</code> <a href="https://cn.vuejs.org/v2/api/#Vue-set" target="_blank" rel="noopener">文档</a></li>
+<li><code>Vue.delete</code> <a href="https://cn.vuejs.org/v2/api/#Vue-delete" target="_blank" rel="noopener">文档</a></li>
+<li><code>Vue.nextTick</code> <a href="https://cn.vuejs.org/v2/api/#Vue-nextTick" target="_blank" rel="noopener">文档</a></li>
+</ul>
+<p>然后初始化options<br><code>Vue.options = Object.create(null)</code></p>
+<p><code>Vue.options.components</code>、<br><code>Vue.options.directives</code>、<br><code>Vue.options.filters</code> 都为一个空对象( <code>Object.create(null)</code>)</p>
+<p>将这个状态的构造函数保存到<code>Vue.options._base</code><br>然后执行<br><code>extend(Vue.options.components, builtInComponents)</code></p>
+<p><a href="https://github.com/vuejs/vue/blob/dev/src/core/components/keep-alive.js" target="_blank" rel="noopener">builtInComponents</a>返回的是一个对象</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  name: <span class="string">'keep-alive'</span>,</span><br><span class="line">  abstract: <span class="literal">true</span>,</span><br><span class="line"></span><br><span class="line">  props: &#123;</span><br><span class="line">    include: patternTypes,</span><br><span class="line">    exclude: patternTypes,</span><br><span class="line">    max: [<span class="built_in">String</span>, <span class="built_in">Number</span>]</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  created () &#123;</span><br><span class="line">    <span class="keyword">this</span>.cache = <span class="built_in">Object</span>.create(<span class="literal">null</span>)</span><br><span class="line">    <span class="keyword">this</span>.keys = []</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  destroyed () &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> <span class="keyword">this</span>.cache) &#123;</span><br><span class="line">      pruneCacheEntry(<span class="keyword">this</span>.cache, key, <span class="keyword">this</span>.keys)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  watch: &#123;</span><br><span class="line">    include (val: string | <span class="built_in">RegExp</span> | <span class="built_in">Array</span>&lt;string&gt;) &#123;</span><br><span class="line">      pruneCache(<span class="keyword">this</span>, name =&gt; matches(val, name))</span><br><span class="line">    &#125;,</span><br><span class="line">    exclude (val: string | <span class="built_in">RegExp</span> | <span class="built_in">Array</span>&lt;string&gt;) &#123;</span><br><span class="line">      pruneCache(<span class="keyword">this</span>, name =&gt; !matches(val, name))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  render () &#123;</span><br><span class="line">    <span class="comment">// 后面再细看</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为<code>Vue.options.components</code>之前是初始化的一个空对象，所以<code>extend</code>处理之后，现在它变成了上述代码</p>
+<p>然后顺序调用</p>
+<ul>
+<li><a href="https://github.com/vuejs/vue/blob/dev/src/core/global-api/use.js" target="_blank" rel="noopener">initUse(Vue)</a></li>
+<li><a href="https://github.com/vuejs/vue/blob/dev/src/core/global-api/mixin.js" target="_blank" rel="noopener">initMixin(Vue)</a></li>
+<li><a href="https://github.com/vuejs/vue/blob/dev/src/core/global-api/extend.js" target="_blank" rel="noopener">initExtend(Vue)</a></li>
+<li><a href="https://github.com/vuejs/vue/blob/dev/src/core/global-api/assets.js" target="_blank" rel="noopener">initAssetRegisters(Vue)</a></li>
+</ul>
+<p>然后给<code>Vue.prototype</code>增加了<code>$isServer</code>、<code>$ssrContext</code><br>两个字段<br>最后<code>Vue</code>增加了<code>version</code>字段</p>
+<p>所以在还未进行任何操作，只是引入了Vue时，Vue的状态如下</p>
+<p><img src="/images/1.png"></p>
+<p><img src="/images/2.png"></p>
+<p><img src="/images/3.png"></p>
+<p><img src="/images/4.png"></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank" rel="noopener">Object.defineProperty</a></p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>陈柯伊</h4>
+    <p>梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年</p>
+</section>
+      <section class="share">
+   <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2018/03/09/vue-source-code-study-2/">
+        ← vue源码学习笔记--全局api解析
+    </a>
+    
+    
+    <a class="older-posts" href="/2018/02/28/typescript3/">
+        TypeScript学习笔记 - 函数 →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    
+<section class="comment-box">
+    <!--高速版-->
+    <div id="SOHUCS" sid="https://coolmogu.com/2018/03/08/vue-source-code-study-1/"></div>
+    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+    <script type="text/javascript">
+        window.changyan.api.config({
+        appid: 'cyt0WGpod',
+        conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
+        });
+    </script>
+
+</section>
+
+</div>
+
+
+
+</main>
+ 
+  <div id="toc" class="toc-article">
+    <div class="toc-title">文章目录</div>
+    <div class="toc-box">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#初始化Vue流程"><span class="toc-text">初始化Vue流程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#初始化原型（实例）的方法和属性"><span class="toc-text">初始化原型（实例）的方法和属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#初始化全局api"><span class="toc-text">初始化全局api</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#知识点"><span class="toc-text">知识点</span></a></li></ol></li></ol>
+    </div>
+
+</div>
+
+
+<script language="JavaScript" type="text/JavaScript">
+//运行文本域代码
+function runEx(cod1) {
+  cod=document.all(cod1)
+  var code=cod.value.replace(/‘|’/g,'\'');
+  if (code!=""){
+    var newwin=window.open('','',''); //打开一个窗口并赋给变量newwin。
+    newwin.opener = null // 防止代码对论谈页面修改
+    newwin.document.write(code); //向这个打开的窗口中写入代码code，这样就实现了运行代码功能。
+    newwin.document.close();
+  }
+}
+
+</script>
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

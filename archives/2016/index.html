@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>归档: 2016 | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="home-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      <main class="content" role="main">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"></h3>
+    <div class="widget">
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+   
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2016-07-25T06:06:50.000Z" itemprop="datePublished">
+        2016-7-25 14:06:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/web前端知识/'>web前端知识</a>,
+    
+    <a href='/tags/node-js学习笔记/'>node.js学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2016/07/25/pm2-node-service/">使用pm2+github将node项目一键部署到远程服务器</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>每次在本地跑Node项目自娱自乐总不是很爽，一直想把自己的node项目部署到服务器上。但是我对于后端和运维知识我还是处于小白阶段，今天研究了一下午，总算是成功把自己的node项目搞了上去，又学到了新姿势。本文将介绍怎么从零开始，获得服务器，并将node项目通过github+pm2部署到远程服务器。<br>
+      
+      </p>
+      
+      <p>
+          <a href="/2016/07/25/pm2-node-service/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2016-03-25T09:28:50.000Z" itemprop="datePublished">
+        2016-3-25 17:28:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/web前端知识/'>web前端知识</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2016/03/25/introduction-jquery-deferred-objects/">关于jQuery的Deferred对象介绍（译）</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        (趁着毕设要求，翻译了一篇文章，顺便放上来。英文不好翻了2天才翻完，/(ㄒoㄒ)/~~如有错误欢迎指正。)原文链接:An Introduction to jQuery’s Deferred Objects
+长久以来，javascript的开发者习惯于使用回调函数去执行某些任务。一个常见的例子就是当某些事件比如click或者keypress执行的时候，通过addEventListener()添加回调函数。这样做的好处是，回调函数很简单，让
+      
+      </p>
+      
+      <p>
+          <a href="/2016/03/25/introduction-jquery-deferred-objects/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2016-02-24T01:34:50.000Z" itemprop="datePublished">
+        2016-2-24 09:34:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/web前端知识/'>web前端知识</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2016/02/24/利用fiddler进行前端调试/">利用Fiddler进行前端调试</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        最近刚get了一个很方便前端调试的新技能，特别在已上线网页上修复bug的时候调试很实用，比如我在本地改了一个test1.js文件想要测试效果，但是又不想很麻烦地推到测试环境，就可以用这个工具把线上的test1.js文件请求到自己的本地test1.js文件，这样你的代码可以直接进行调试了。
+首先我们要用的工具是Fiddler，这是一个强大的工具，在这里我就不详细介绍了，有兴趣的可以去了解一下慕课网：Fiddler工具的使用。
+我们直接进入
+      
+      </p>
+      
+      <p>
+          <a href="/2016/02/24/利用fiddler进行前端调试/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2016-02-17T02:17:50.000Z" itemprop="datePublished">
+        2016-2-17 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/生活琐事/'>生活琐事</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2016/02/17/2016年计划（目标）/">2016年计划（目标）</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>农历新年也已经过完了，我也该给自己打打鸡血，制定一个2016年的目标了。<br>
+      
+      </p>
+      
+      <p>
+          <a href="/2016/02/17/2016年计划（目标）/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2016-01-27T06:06:50.000Z" itemprop="datePublished">
+        2016-1-27 14:06:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2016/01/27/ChineseInputMethods/">js中文输入法字符串截断问题解决</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        最近遇到了一个需求：一个输入框最大输入字数为7个字，用户输入超出7个字时，显示警告提示，并且阻止用户输入。
+用input propertychange事件可以监听到用户的输入，在英文或者数字输入状态是没有问题的。但是在中文输入法输入情况下，不同浏览器有不同的表现。有的浏览器会在输入拼音时就会进入判断，如果拼音就已经超过7个字符，就不能再继续输入。如下：1234567891011121314&lt;input id="test"/&gt;
+      
+      </p>
+      
+      <p>
+          <a href="/2016/01/27/ChineseInputMethods/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2016-01-21T06:55:50.000Z" itemprop="datePublished">
+        2016-1-21 14:55:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/web前端知识/'>web前端知识</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2016/01/21/前端知识收集/">前端知识收集</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>整理了一些自己比较感兴趣的前端知识比较好的博文或者网址<br>
+      
+      </p>
+      
+      <p>
+          <a href="/2016/01/21/前端知识收集/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2016-01-07T06:08:50.000Z" itemprop="datePublished">
+        2016-1-7 14:08:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/node-js学习笔记/'>node.js学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2016/01/07/nodeJsStudy11/">node.js学习笔记(十一)——路由控制</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        一、工作原理当访问http://localhost:3000， 浏览器会向服务器发送请求，包括请求的方法、路径、HTTP协议版本和请求头信息。app会解析请求的路径，调用相应的逻辑，route/index.js中有 router.get(&#39;/&#39;,function(){})通过res.render(&#39;index&#39;,{title:&quot;cky&quot;})调用视图模板index，传递title变量，最
+      
+      </p>
+      
+      <p>
+          <a href="/2016/01/07/nodeJsStudy11/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2016-01-06T15:16:50.000Z" itemprop="datePublished">
+        2016-1-6 23:16:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/node-js学习笔记/'>node.js学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2016/01/06/nodeJsStudy10/">node.js学习笔记(十)——工程的结构</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <h3 id="一、app-js工程的入口"><a href="#一、app-js工程的入口" class="headerlink" title="一、app.js工程的入口"></a>一、app.js工程的入口</h3><p>分析app.js代码：<br>
+      
+      </p>
+      
+      <p>
+          <a href="/2016/01/06/nodeJsStudy10/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2016-01-06T13:56:50.000Z" itemprop="datePublished">
+        2016-1-6 21:56:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/node-js学习笔记/'>node.js学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2016/01/06/nodeJsStudy9/">node.js学习笔记(九)——Express框架入门介绍</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        一、为什么要用Express框架？Node.js由于不需要另外的HTTP服务器，因此减少了一层抽象，给性能带来不少的提升，同时也因此提高了开发难度，实现一个POST数据的表单。例如：1234&lt;form&gt;	&lt;input type="text" name="title"/&gt;	&lt;input type="submit"/&gt;&lt;/form&gt;
+PHP中获取POST请求参数可以直接用 $_POST(&#3
+      
+      </p>
+      
+      <p>
+          <a href="/2016/01/06/nodeJsStudy9/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2016-01-06T02:19:50.000Z" itemprop="datePublished">
+        2016-1-6 10:19:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/node-js学习笔记/'>node.js学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2016/01/06/nodeJsStudy8/">node.js学习笔记(八)——HTTP客户端</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        一、http模块提供了两个函数http.request和http.get。功能是作为客户端向HTTP服务器发起请求。
+1. http.request(options,callback)http.request发起HTTP请求，接受两个参数，option是一个类似关联数组的对象，表示请求的参数，callback是请求的回调函数，option常用的参数如下：
+
+
+
+参数
+含义
+
+
+
+
+host
+请求网站的域名或IP地址
+
+
+port
+请求网
+      
+      </p>
+      
+      <p>
+          <a href="/2016/01/06/nodeJsStudy8/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <nav class="pagination" role="pagination">
+    
+    <span class="page-number">Page 1 of 2</span>
+    <a class="older-posts" href="/archives/2016/page/2/">Older Posts →</a>
+  </nav>
+</main>
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>jQuery性能优化 | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2015-11-25T02:17:50.000Z" itemprop="datePublished">
+        2015-11-25 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+    <h1 class="post-title">jQuery性能优化</h1>
+    <span id="busuanzi_container_page_pv" class="readCount">
+      阅读量：
+    <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+
+    </span>
+    <section class="post-content">
+      <p>jQuery已经成为前端开发中重要的类库之一，也是前端开发er的一个利器，了解到如何正确使用jQuery达到最佳性能是一个很重要的事。下面从各个方面来总结一下jQuery性能优化技巧和注意事项。<br><a id="more"></a></p>
+<h3 id="一、使用合适的选择器"><a href="#一、使用合适的选择器" class="headerlink" title="一、使用合适的选择器"></a>一、使用合适的选择器</h3><p><strong>$(‘#id’)</strong><br>使用id来定位DOM元素无疑是提高性能的最佳方式，因为这会直接调用本地方法<code>document.getElementById()</code>。<br>如果这样找不到所需要的元素，可以使用find()方法。<code>$(&quot;#content&quot;).find(&quot;div&quot;);</code>为了提高性能，建议从最近的id元素开始往下搜索。</p>
+<p><strong>$(‘p’),$(‘div’),$(‘input’)</strong><br>标签选择器也不错，因为jQuery是直接调用本地方法<code>document.getElementsByTagName()</code>。</p>
+<p><strong>$(‘.class’)</strong><br>对于比较新的浏览器，它支持本地方法<code>document.getElementsByClassName()</code>。但是对于ie8及以下版本浏览器，只能通过DOM搜索的方法来实现，这无疑会带来一些性能的影响。建议有选择地使用。</p>
+<p><strong>$(“[attribute=value]”)</strong><br>对于利用属性来定位DOM元素，本地javascript并没有方法直接实现，大多是使用DOM搜索的方式来达到效果。很多现代浏览器支持querySelectAll()方法，但是不同浏览器的性能还是有区别。总体来说，使用这种方式性能不是非常理想，所以为了获得更好的优化效果，建议尽量避免这种对性能有害的方式。</p>
+<p><strong>$(“:hidden”)</strong><br>和上面利用属性定位DOM元素一样，这种伪选择器也同样没有直接在本地javascript方法中实现，并且jQuery需要搜索每一个元素来定位这个选择器，这将对性能带来比较大的影响，所以建议尽量不要使用。如果非要使用，请先使用ID选择器定位父元素然后再使用该选择器，这样对性能优化有帮助。</p>
+<ul>
+<li><strong>尽量使用ID选择器</strong></li>
+<li><strong>尽量给选择器指定上下文</strong></li>
+</ul>
+<h3 id="二、缓存对象"><a href="#二、缓存对象" class="headerlink" title="二、缓存对象"></a>二、缓存对象</h3><p>其实这是javascript也需要注意的地方<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//bad</span></span><br><span class="line">$(<span class="string">"#light"</span>).bind(<span class="string">'click'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;...&#125;);</span><br><span class="line">$(<span class="string">"#light"</span>).css(<span class="string">'border'</span>,<span class="string">"1px solid red"</span>);</span><br><span class="line">$(<span class="string">"#light"</span>).fadeIn(<span class="string">"slow"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//good</span></span><br><span class="line"><span class="keyword">var</span> light = $(<span class="string">"#light"</span>);</span><br><span class="line">light.bind(<span class="string">'click'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;...&#125;);</span><br><span class="line">light.css(<span class="string">'border'</span>,<span class="string">"1px solid red"</span>);</span><br><span class="line">light.fadeIn(<span class="string">"slow"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>本例中用链式方式将更加简洁，上面只是为了说明缓存变量的重要性。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//链式</span></span><br><span class="line"><span class="keyword">var</span> light = $(<span class="string">"#light"</span>);</span><br><span class="line">light.bind(<span class="string">'click'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;...&#125;)</span><br><span class="line">    .css(<span class="string">'border'</span>,<span class="string">"1px solid red"</span>)</span><br><span class="line">    .fadeIn(<span class="string">"slow"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>如果打算在其他函数中使用jQuery对象，那么可以把它们缓存到全局环境中。如下代码所示：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.$my = &#123;</span><br><span class="line">    head : $(<span class="string">'head'</span>),</span><br><span class="line">    light: $(<span class="string">'#light'</span>),</span><br><span class="line">    light_button: $(<span class="string">"#light_button"</span>)</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dosomething</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//现在可以引用存储结构并操作它们</span></span><br><span class="line">    <span class="keyword">var</span> script = docuement.creatElement(<span class="string">"script"</span>);</span><br><span class="line">    $my.head.append(script);</span><br><span class="line">    <span class="comment">// 当你在函数内部操作时，可以继续将查询存入全局对象中去</span></span><br><span class="line">    $my.cool_results = $(<span class="string">"#some_ul li"</span>);</span><br><span class="line">    $my.other_results = $(<span class="string">"#some"</span>);</span><br><span class="line">    <span class="comment">// 全局函数作为一个普通的jquery对象去使用</span></span><br><span class="line">    $my.other_results.css(<span class="string">"border-color"</span>,<span class="string">"red"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>记住，永远不要让相同的选择器在你的代码里出现多次。</p>
+<h3 id="三、事件代理"><a href="#三、事件代理" class="headerlink" title="三、事件代理"></a>三、事件代理</h3><p>每一个JavaScript事件（例如click、mouseover等）都会冒泡到父级节点。当我们需要给多个元素调用同个函数时，这点会很好用。比如,我们要为一个表格绑定这样的行为：点击td后，把背景色设置为红色，代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//bad</span></span><br><span class="line">$(<span class="string">"#mytable td"</span>).click(functuon()&#123;</span><br><span class="line">   $(<span class="keyword">this</span>).css(<span class="string">'background'</span>,<span class="string">'red'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>假如有100个td元素，在使用以上方式时，绑定了100个事件，这将带来很负面的性能影响。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//good</span></span><br><span class="line">$(<span class="string">"#mytable"</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> $clicked = $(e.target);<span class="comment">//e.target 捕捉到触发的目标元素</span></span><br><span class="line">    $clicked.css(<span class="string">'background'</span>,<span class="string">'red'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>在这种方式中，只为一个元素绑定了事件，明显优于之前那种。<br>在jQuery 1.7中，提供了新的方式on()来帮助我们将整个事件监听封装到一个便利的方法中。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//good</span></span><br><span class="line">$(<span class="string">"#mytable"</span>).on(<span class="string">'click'</span>,<span class="string">'td'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">    $(<span class="keyword">this</span>).css(<span class="string">'background'</span>,<span class="string">'red'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="四、将你的代码转换为jQuery插件"><a href="#四、将你的代码转换为jQuery插件" class="headerlink" title="四、将你的代码转换为jQuery插件"></a>四、将你的代码转换为jQuery插件</h3><p>如果每次都需要用一定的时间去开发类似的代码，那么可以考虑将代码变成插件。它能够使你的代码有更好的重用性，并且能够有效组织代码。创建插件的代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params">$</span>)</span>&#123;</span><br><span class="line">    $.fn.pulgName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="comment">//code</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)(jQuery)</span><br></pre></td></tr></table></figure></p>
+<h3 id="五、合理利用HTML的data属性"><a href="#五、合理利用HTML的data属性" class="headerlink" title="五、合理利用HTML的data属性"></a>五、合理利用HTML的data属性</h3><p>HTML5的data属性可以帮助我们插入数据，特别是前后端的数据交换。jQuery的data()方法可以自动得到数据。例子：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"d1"</span> <span class="attr">data-role</span>=<span class="string">"page"</span> <span class="attr">data-last-value</span>=<span class="string">"43"</span> <span class="attr">data-options</span>=<span class="string">'&#123;"name":"John"&#125;'</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>读取数据：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"#d1"</span>).data(<span class="string">"role"</span>);  <span class="comment">//page</span></span><br><span class="line">$(<span class="string">"#d1"</span>).data(<span class="string">"last-value"</span>);  <span class="comment">//43</span></span><br><span class="line">$(<span class="string">"#d1"</span>).data(<span class="string">"options"</span>).name;  <span class="comment">//John</span></span><br></pre></td></tr></table></figure></p>
+<p><em>——总结来自《锋利的jQuery》</em></p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>陈柯伊</h4>
+    <p>梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年</p>
+</section>
+      <section class="share">
+   <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2015/12/01/nodeJsStudy1/">
+        ← node.js学习笔记(一)——node.js异步式I/O与事件编程
+    </a>
+    
+    
+    <a class="older-posts" href="/2015/11/20/不是只有“if else”/">
+        不是只有if和else →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    
+<section class="comment-box">
+    <!--高速版-->
+    <div id="SOHUCS" sid="https://coolmogu.com/2015/11/25/jQueryPerformanceOptimization/"></div>
+    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+    <script type="text/javascript">
+        window.changyan.api.config({
+        appid: 'cyt0WGpod',
+        conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
+        });
+    </script>
+
+</section>
+
+</div>
+
+
+
+</main>
+ 
+  <div id="toc" class="toc-article">
+    <div class="toc-title">文章目录</div>
+    <div class="toc-box">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、使用合适的选择器"><span class="toc-text">一、使用合适的选择器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、缓存对象"><span class="toc-text">二、缓存对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、事件代理"><span class="toc-text">三、事件代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、将你的代码转换为jQuery插件"><span class="toc-text">四、将你的代码转换为jQuery插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、合理利用HTML的data属性"><span class="toc-text">五、合理利用HTML的data属性</span></a></li></ol>
+    </div>
+
+</div>
+
+
+<script language="JavaScript" type="text/JavaScript">
+//运行文本域代码
+function runEx(cod1) {
+  cod=document.all(cod1)
+  var code=cod.value.replace(/‘|’/g,'\'');
+  if (code!=""){
+    var newwin=window.open('','',''); //打开一个窗口并赋给变量newwin。
+    newwin.opener = null // 防止代码对论谈页面修改
+    newwin.document.write(code); //向这个打开的窗口中写入代码code，这样就实现了运行代码功能。
+    newwin.document.close();
+  }
+}
+
+</script>
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

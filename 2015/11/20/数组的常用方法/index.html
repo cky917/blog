@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>Array类型对象的一些常用方法 | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2015-11-20T02:10:50.000Z" itemprop="datePublished">
+        2015-11-20 10:10:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+    <h1 class="post-title">Array类型对象的一些常用方法</h1>
+    <span id="busuanzi_container_page_pv" class="readCount">
+      阅读量：
+    <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+
+    </span>
+    <section class="post-content">
+      <p>Aarry类型是js中很常见的类型，Js原生就给了它一些很方便的方法供我们使用，不需要我们去实现。现在我们来总结一下这些常用的方法。<br><a id="more"></a><br><strong> splice() </strong></p>
+<p>第一个介绍的是最强大的数组方法<code>splice()</code>，它既可以用于插入数组项，还能用于删除和替换。<br><code>splice()</code>方法接受参数，第一个参数是删除数组项的起始位置，第二个参数是删除数组项个数，后面的参数是在删除后添加的数组项内容。<br><code>splice()</code>返回的是从原始数组中删除的数组项，若没有删除，则返回空数组。</p>
+<p>删除：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>,<span class="string">"blue"</span>,<span class="string">"black"</span>,<span class="string">"green"</span>,<span class="string">"white"</span>]; </span><br><span class="line">colors.splice(<span class="number">0</span>,<span class="number">2</span>); <span class="comment">//返回["red","blue"]，此时colors 为["black","green","white"]</span></span><br></pre></td></tr></table></figure></p>
+<p>插入：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>,<span class="string">"blue"</span>,<span class="string">"black"</span>,<span class="string">"green"</span>,<span class="string">"white"</span>]; </span><br><span class="line">colors.splice(<span class="number">2</span>,<span class="number">0</span>,<span class="string">"aaa"</span>,<span class="string">"bbb"</span>); <span class="comment">//返回空数组，此时colors 为["red", "blue", "aaa", "bbb", "black", "green", "white"]</span></span><br></pre></td></tr></table></figure></p>
+<p>替换：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>,<span class="string">"blue"</span>,<span class="string">"black"</span>,<span class="string">"green"</span>,<span class="string">"white"</span>]; </span><br><span class="line">colors.splice(<span class="number">2</span>,<span class="number">1</span>,<span class="string">"aaa"</span>); <span class="comment">//返回["black"], 此时colors为["red", "blue","aaa", "green", "white"]</span></span><br></pre></td></tr></table></figure></p>
+<p><strong> toString() 与 valueOf() </strong></p>
+<p>调用数组的<code>toString()</code>方法会返回由数组中每个值的字符串形式拼接而成的一个以逗号分隔的字符串。而调用数组的<code>valueOf()</code>方法返回的还是数组。<br>例：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>,<span class="string">"blue"</span>,<span class="string">"black"</span>];</span><br><span class="line">colors.toString(); <span class="comment">//"red,blue,black"</span></span><br><span class="line">colors.valueOf(); <span class="comment">//["red", "blue", "black"]</span></span><br></pre></td></tr></table></figure></p>
+<p><strong> join() </strong></p>
+<p>数组继承的toString()、valueOf()方法，在默认情况下逗号以逗号分隔字符串的形式返回，而如果使用<code>join()</code>方法，则可以使用不同的分隔符来构建这个字符串。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>,<span class="string">"blue"</span>,<span class="string">"black"</span>];</span><br><span class="line">colors.join(<span class="string">","</span>); <span class="comment">//"red,blue,black"</span></span><br><span class="line">colors.join(<span class="string">"|"</span>); <span class="comment">//"red|blue|black"</span></span><br><span class="line">colors.join(<span class="string">""</span>);<span class="comment">//"redblueblack"</span></span><br></pre></td></tr></table></figure></p>
+<p><strong> push() 和 unshift() </strong></p>
+<p>这两个方法的功能刚好相反。<br><code>push()</code>方法可以接受任意数量的参数，把它们逐个添加到数组<strong>末尾</strong>，并返回新数组长度。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>,<span class="string">"blue"</span>,<span class="string">"black"</span>];</span><br><span class="line">colors.push(<span class="string">"aaa"</span>,<span class="string">"bbb"</span>); <span class="comment">//返回5</span></span><br><span class="line">alert(colors);  <span class="comment">//["red", "blue", "black", "aaa", "bbb"]</span></span><br></pre></td></tr></table></figure></p>
+<p><code>unshift()</code>方法可以接受任意数量的参数，把它们逐个添加到数组<strong>前端</strong>，并返回新数组长度。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>,<span class="string">"blue"</span>,<span class="string">"black"</span>];</span><br><span class="line">colors.push(<span class="string">"aaa"</span>,<span class="string">"bbb"</span>); <span class="comment">//返回5</span></span><br><span class="line">alert(colors);  <span class="comment">//["aaa", "bbb","red", "blue", "black"]</span></span><br></pre></td></tr></table></figure></p>
+<p><strong> pop() 和 shift() </strong></p>
+<p>这两个方法的功能也是相反的<br><code>pop()</code>方法从数组末尾移除<strong>最后一项</strong>，减少数组的length值，然后返回移除的项。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>,<span class="string">"blue"</span>,<span class="string">"black"</span>];</span><br><span class="line">colors.pop(); <span class="comment">//返回 "black"</span></span><br></pre></td></tr></table></figure></p>
+<p><code>shift()</code>方法从数组末尾移除<strong>第一项</strong>，减少数组的length值，然后返回移除的项。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>,<span class="string">"blue"</span>,<span class="string">"black"</span>];</span><br><span class="line">colors.pop(); <span class="comment">//返回 "red"</span></span><br></pre></td></tr></table></figure></p>
+<p>我们可以结合push()和pop()方法，实现类似<strong>栈</strong>的LIFO(Last-in-First-out)后进先出。<br>也可以结合unshift()和shift()方法，实现类似<strong>队列</strong>的FIFO(First-in-First-out)先进先出。</p>
+<p><strong> reverse() 与 sort() </strong></p>
+<p><code>reverse()</code>方法会反转数组项的顺序,返回经过排序后的数组。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>,<span class="string">"blue"</span>,<span class="string">"black"</span>];</span><br><span class="line">colors.reverse(); <span class="comment">//返回["black", "blue", "red"]</span></span><br></pre></td></tr></table></figure></p>
+<p><code>sort()</code>方法按升序排列数组项，但是由于它其实是先调用数组项的<code>toString()</code>方法，然后比较的是字符串，所以如果需要比较数字大小的时候，建议给其传一个比较函数。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compare</span>(<span class="params">value1,value2</span>)</span>&#123; <span class="comment">//按升序</span></span><br><span class="line">   <span class="keyword">return</span> value1-value2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> values = [<span class="number">0</span>,<span class="number">1</span>,<span class="number">33</span>,<span class="number">12</span>,<span class="number">4</span>];</span><br><span class="line">values.sort(compare);<span class="comment">// [0, 1, 4, 12, 33]</span></span><br></pre></td></tr></table></figure></p>
+<p><strong> slice() </strong><br><code>slice()</code>方法能够给予当前数组中的一或多个项创建一个新数组。slice()方法可接受一或两个参数，即要返回项的起始和结束位置。<br>在只有一个参数的情况下，slice()方法返回从参数指定位置到当前数组末尾的所有项。<br>如果有两个参数，则返回起始和结束位置之间的项——但不包括结束位置的项。 注意,slice()方法不会影响原始数组。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>,<span class="string">"blue"</span>,<span class="string">"black"</span>,<span class="string">"green"</span>,<span class="string">"white"</span>];</span><br><span class="line">colors.slice(<span class="number">1</span>); <span class="comment">//["blue", "black", "green", "white"]</span></span><br><span class="line">colors.slice(<span class="number">1</span>,<span class="number">4</span>); <span class="comment">//["blue", "black", "green"]</span></span><br></pre></td></tr></table></figure></p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>陈柯伊</h4>
+    <p>梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年</p>
+</section>
+      <section class="share">
+   <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2015/11/20/各种居中布局的css实现方法/">
+        ← 垂直居中布局的几种css实现方法
+    </a>
+    
+    
+    <a class="older-posts" href="/2015/11/09/Less is more/">
+        Less is more →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    
+<section class="comment-box">
+    <!--高速版-->
+    <div id="SOHUCS" sid="https://coolmogu.com/2015/11/20/数组的常用方法/"></div>
+    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+    <script type="text/javascript">
+        window.changyan.api.config({
+        appid: 'cyt0WGpod',
+        conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
+        });
+    </script>
+
+</section>
+
+</div>
+
+
+
+</main>
+ 
+  <div id="toc" class="toc-article">
+    <div class="toc-title">文章目录</div>
+    <div class="toc-box">
+        
+    </div>
+
+</div>
+
+
+<script language="JavaScript" type="text/JavaScript">
+//运行文本域代码
+function runEx(cod1) {
+  cod=document.all(cod1)
+  var code=cod.value.replace(/‘|’/g,'\'');
+  if (code!=""){
+    var newwin=window.open('','',''); //打开一个窗口并赋给变量newwin。
+    newwin.opener = null // 防止代码对论谈页面修改
+    newwin.document.write(code); //向这个打开的窗口中写入代码code，这样就实现了运行代码功能。
+    newwin.document.close();
+  }
+}
+
+</script>
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

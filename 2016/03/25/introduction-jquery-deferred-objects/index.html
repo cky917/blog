@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>关于jQuery的Deferred对象介绍（译） | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2016-03-25T09:28:50.000Z" itemprop="datePublished">
+        2016-3-25 17:28:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/web前端知识/'>web前端知识</a>
+    
+    
+</span>
+    <h1 class="post-title">关于jQuery的Deferred对象介绍（译）</h1>
+    <span id="busuanzi_container_page_pv" class="readCount">
+      阅读量：
+    <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+
+    </span>
+    <section class="post-content">
+      <p>(趁着毕设要求，翻译了一篇文章，顺便放上来。英文不好翻了2天才翻完，/(ㄒoㄒ)/~~如有错误欢迎指正。)<br>原文链接:<a href="http://www.sitepoint.com/introduction-jquery-deferred-objects/" target="_blank" rel="noopener">An Introduction to jQuery’s Deferred Objects</a></p>
+<p>长久以来，javascript的开发者习惯于使用回调函数去执行某些任务。一个常见的例子就是当某些事件比如<code>click</code>或者<code>keypress</code>执行的时候，通过<code>addEventListener()</code>添加回调函数。这样做的好处是，回调函数很简单，让工作能够很方便地完成，不幸的是，当你的网页变得越来越复杂而且你需要执行许多异步请求时，它们变得越来越难以处理。</p>
+<p>ECMAScript2015引进了一个原生的方法去处理这种情况：promise。如果你不知道什么是promise，你可以读一读这篇文章<a href="http://www.sitepoint.com/overview-javascript-promises/" target="_blank" rel="noopener">An Overview of JavaScript Promises</a>。jQuery推出了它自己风格的promise，就是 <strong>Deferred对象</strong> 。它在promise被引入ECMAScript之前几年就被引入了jqurey，在这篇文章里，我会讨论一下什么是<code>Deferred</code>对象，还有它解决了什么问题。</p>
+<h2 id="一个简单的历史介绍"><a href="#一个简单的历史介绍" class="headerlink" title="一个简单的历史介绍"></a>一个简单的历史介绍</h2><p><code>Deferred</code>对象在jQuery1.5版本被引入，它能让回调函数成为一个回调队列，继而被链式调用，它还能处理同步或者异步函数的成功或者失败状态。从此以后，它成为了一个课题被讨论和研究，也有一些批评的声音，伴随着批评和它也发生了许多改变。这里有两篇对它的批判性的文章：<a href="https://blog.domenic.me/youre-missing-the-point-of-promises/" target="_blank" rel="noopener">You’re Missing the Point of Promises</a>和<a href="https://thewayofcode.wordpress.com/tag/jquery-deferred-broken/" target="_blank" rel="noopener">JavaScript Promises and why jQuery implementation is broken</a>。</p>
+<p>连同<a href="http://api.jquery.com/Types/#Promise" target="_blank" rel="noopener">Promise对象</a>,Deferred代表了jQuery对于Promises的实现。在jQuery1.X版本和2.x版本里，deferred对象依附于<a href="http://wiki.commonjs.org/wiki/Promises/A" target="_blank" rel="noopener">the CommonJS Promises/A proposal</a>，这个提案被作为<a href="https://promisesaplus.com/" target="_blank" rel="noopener">Promises/A+ proposal</a>的基础，而原生的promises就是在此基础上建立的。正如前面所提到的，jQuery没有依附于 Promises/A+的原因是它在这之前就已经产生了。</p>
+<p>因为jQuery是一个先驱者，还由于向后兼容问题，在原生javascript里使用promise与在jQuery1.x、2.x版本里使用都有一些区别。而且，由于jQuery遵循了一个不同的提案，这个框架和其他实现了promises的框架比如<a href="https://github.com/kriskowal/q" target="_blank" rel="noopener">the Q library</a>是互不兼容的。</p>
+<p>在即将到来的 <strong>jQuery 3</strong> 版本里，改进了与原生的Promises(在ECMAScript 2015被实现的)的兼容性。虽然有些主要的方法（then())还是由于向后兼容的原因和原生的Promises有些差别，但是其使用习惯已经越来越接近规范标准了。</p>
+<p></p><h2 id="callbackJquery">jQuery中的回调</h2><br>为了理解为什么你需要使用<code>Deferred</code>对象，让我们先讨论一个例子。当你使用jQuery的时候，一定经常使用它的ajax方法去处理异步请求。为了理解这个例子，让我们假设你正在开发一个网页并且正在向Github的API发送Ajax请求。你的目标是收到用户的仓库列表，找到最近更新过的仓库，找到第一个名为’README.md’的文件，最终接收到这个文件的内容。基于以上的描述，你每一个Ajax请求可能都会是在上一个步骤完成的时候发送，换句话说，这些请求必须在一个队列中执行。<p></p>
+<p>让我们把这些描述转换为代码（请注意我没有使用真的Github的API），我们得到以下代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> username = <span class="string">'testuser'</span>;</span><br><span class="line"><span class="keyword">var</span> fileToSearch = <span class="string">'README.md'</span>;</span><br><span class="line"></span><br><span class="line">$.getJSON(<span class="string">'https://api.github.com/user/'</span> + username + <span class="string">'/repositories'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">repositories</span>) </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">var</span> lastUpdatedRepository = repositories[<span class="number">0</span>].name;</span><br><span class="line"></span><br><span class="line">  $.getJSON(<span class="string">'https://api.github.com/user/'</span> + username + <span class="string">'/repository/'</span> + lastUpdatedRepository + <span class="string">'/files'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">files</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> README = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; files.length; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (files[i].name.indexOf(fileToSearch) &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        README = files[i].path;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $.getJSON(<span class="string">'https://api.github.com/user/'</span> + username + <span class="string">'/repository/'</span> + lastUpdatedRepository + <span class="string">'/file/'</span> + README + <span class="string">'/content'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">content</span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'The content of the file is: '</span> + content);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>正如你在这个例子里看到的，为了达到目的，我们必须嵌套执行Ajax请求。这让我们的代码变得可读性比较差。在我们必须嵌套使用大量的回调，或者需要一个独立的回调函数需要和另一个函数以同步的方式执行时，我们通常称这种情况为“回调地狱”。</p>
+<p>为了让这种情况变好一点，你可以将我上面写的匿名函数提取出来命名。然而，这样改变也没啥帮助，我们仍然发现我们身处于回调地狱中。下面，我们就走进<code>Deferred</code>对象和<code>Promise</code>对象吧。</p>
+<h2 id="Deferred对象和Promise对象"><a href="#Deferred对象和Promise对象" class="headerlink" title="Deferred对象和Promise对象"></a>Deferred对象和Promise对象</h2><p>Deferred对象可以在执行异步操作的时候使用，比如Ajax请求和动画。在jQuery里，<code>Promise</code>对象创建于<code>Deferred</code>对象或者<code>jQuery</code>对象。它拥有<code>Deferred</code>对象下的方法，如：<code>always()</code>,<code>done()</code>,<code>fail()</code>,<code>state()</code>,和<code>then()</code>。我会在下面介绍这些方法。</p>
+<p>如果你是来自原生javascript世界的，你可能会对这两个对象的存在感到很困惑。为什么我们要有两个对象（<code>Deferred</code>和<code>Promise</code>），而原生Javascript只有一个（<code>Promise</code>)？为了解释他们的不同和他们的用例，我在我的书中对他们进行了类比<a href="https://www.manning.com/books/jquery-in-action-third-edition" target="_blank" rel="noopener">jQuery in Action, Third Edition</a>。</p>
+<p>一个使用<code>Deferred</code>对象的典型情况是，如果你正在编写一个函数去处理异步操作，并且可能会返回一个值（返回一个错误或者不返回值也行）。在这种情况下，你的函数是值的“生产者”，而且你希望阻止用户去改变<code>Deferred</code>的状态。当你是这个函数的消费者时，你就要使用<code>promise</code>。</p>
+<p>为了阐明这个观点，让我们假设你希望实现一个基于promise的 <code>timeout()</code>方法(下面是这个<a href="#creatingapromisebasedsettimeoutfunction">例子的代码</a>。你负责写这个函数，但是必须等到获得一个时间的数字（在这个等待的情况下没有值返回），这让你成为一个“生产者”。你这个函数的“消费者”不需要关心去resolve它或者reject它，“消费者”只需要能够在Deferred执行完成后、失败后、或者进程中添加函数。另外，你想要确保你的“消费者”不能resolve或reject这个Deferred对象。为了达到这个目标，你需要在你创建的<code>timeoout()</code>函数中返回<code>Deferred</code>的<code>promise</code>对象，而不是<code>Deferred</code>对象本身。这样做之后，你能确保除了你的<code>timeout()</code>函数以外，没有人能够调用<code>resolve()</code>和<code>reject()</code>方法。</p>
+<p>你可以在<a href="http://stackoverflow.com/questions/17308172/deferred-versus-promise" target="_blank" rel="noopener">StackOverflow question</a>了解更多关于jQuery的Deferred对象和Promise对象的区别。</p>
+<p>现在你知道这些对象是什么了，让我们来了解一下这些方法的作用。</p>
+<h2 id="Deferred对象的方法"><a href="#Deferred对象的方法" class="headerlink" title="Deferred对象的方法"></a>Deferred对象的方法</h2><p><code>Deferred</code>对象非常灵活，提供了很多方法满足你的需求。它可以被创建为<code>jQuery.Deferred()</code>，方法如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> deferred = jQuery.Deferred();</span><br></pre></td></tr></table></figure></p>
+<p>或者，你也可以用<code>$</code>创建：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> deferred = $.Deferred();</span><br></pre></td></tr></table></figure></p>
+<p>一旦创建，这个<code>Deferred</code>对象就暴露了一些方法，除了那些不赞成使用的和被移除的方法，它暴露的方法有：</p>
+<ul>
+<li><code>always(callbacks[, callbacks, ..., callbacks]):</code> 在无论Deferred对象resolved还是rejected的时候都会执行。</li>
+<li><code>done(callbacks[, callbacks, ..., callbacks]):</code> 当Deferred对象resolved的时候执行。</li>
+<li><code>fail(callbacks[, callbacks, ..., callbacks]):</code> 当Deferred对象rejected的时候执行。</li>
+<li><code>notify([argument, ..., argument]):</code> 根据给定的 args参数 调用Deferred对象上进行中的回调 （progressCallbacks）。</li>
+<li><code>notifyWith(context[, argument, ..., argument]):</code> 根据给定的上下文（context）和args递延调用Deferred对象上进行中的回调（progressCallbacks ）。</li>
+<li><code>progress(callbacks[, callbacks, ..., callbacks])</code>:当Deferred（延迟）对象生成进度通知时，调用添加处理程序。</li>
+<li><code>promise([target]):</code> Return a Deferred‘s Promise object.</li>
+<li><code>reject([argument, ..., argument]):</code> 拒绝Deferred（延迟）对象，并根据给定的args参数调用任何失败回调函数（failCallbacks）。</li>
+<li><code>rejectWith(context[, argument, ..., argument]):</code>拒绝Deferred（延迟）对象，并根据给定的 context和args参数调用任何失败回调函数（failCallbacks）。</li>
+<li><code>resolve([argument, ..., argument]):</code> 解决Deferred（延迟）对象，并根据给定的args参数调用任何完成回调函数（doneCallbacks）。</li>
+<li><code>resolveWith(context[, argument, ..., argument]):</code> 解决Deferred（延迟）对象，并根据给定的 context和args参数调用任何完成回调函数（doneCallbacks）。</li>
+<li><code>state():</code>确定一个Deferred（延迟）对象的当前状态。</li>
+<li><code>then(resolvedCallback[, rejectedCallback[, progressCallback]]):</code> 当Deferred（延迟）对象解决，拒绝或仍在进行中时，调用添加处理程序。</li>
+</ul>
+<p>通过这些方法的描述，让我们能够更明显地了解到jQuery文档中的术语和ECMAScript标准里的区别。在ECMAScript标准里，一个promise对象被称作resolved是在他完成或者被拒绝的时候。然而，在jQuery文档里，resolved描述的只是在ECMAScript中的完成状态。</p>
+<p>Deferred提供了大量的方法，在本篇文章中不能全部介绍到。不过，在下面的内容中，我会展示一些<code>Deferred</code>对象和<code>Promise</code>对象的使用的例子。首先，我来会用Deferred对象重写一下在<a href="#callbackJquery">jQuery中的回调</a>中的那段代码，然后我会把“生产者和消费者”的比喻再解释一下。</p>
+<h2 id="用Deferred对象完成Ajax请求队列"><a href="#用Deferred对象完成Ajax请求队列" class="headerlink" title="用Deferred对象完成Ajax请求队列"></a>用Deferred对象完成Ajax请求队列</h2><p>在这个章节我会展示怎么用Deferred对象和它的一些方法去提高<a href="#callbackJquery">jQuery中的回调</a>里的那段代码的可读性，在开始探索之前，我们必须要明白我们需要用到哪些方法。</p>
+<p>根据我们的需求和上面列出的方法列表，很明显我们可以用<code>done()</code>或者<code>then()</code>方法去管理成功的状态。由于你们大多数可能已经习惯于使用Javascript的<code>Promise</code>对象，在这个例子中，我会选择使用<code>then()</code>方法。在这两个方法最重要的一个区别是<code>then()</code>方法能够<br>将接收到的值作为参数传递给其他在后面调用的<code>then()</code>、<code>done()</code>、<code>fail()</code>或<code>progress()</code>方法。</p>
+<p>最后的代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> username = <span class="string">'testuser'</span>;</span><br><span class="line"><span class="keyword">var</span> fileToSearch = <span class="string">'README.md'</span>;</span><br><span class="line"></span><br><span class="line">$.getJSON(<span class="string">'https://api.github.com/user/'</span> + username + <span class="string">'/repositories'</span>)</span><br><span class="line">    .then(<span class="function"><span class="keyword">function</span>(<span class="params">repositories</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> repositories[<span class="number">0</span>].name;</span><br><span class="line">    &#125;)</span><br><span class="line">    .then(<span class="function"><span class="keyword">function</span>(<span class="params">lastUpdatedRepository</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> $.getJSON(<span class="string">'https://api.github.com/user/'</span> + username + <span class="string">'/repository/'</span> + lastUpdatedRepository + <span class="string">'/files'</span>);</span><br><span class="line">    &#125;)</span><br><span class="line">    .then(<span class="function"><span class="keyword">function</span>(<span class="params">files</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> README = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; files.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (files[i].name.indexOf(fileToSearch) &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">                README = files[i].path;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> README;</span><br><span class="line">    &#125;)</span><br><span class="line">    .then(<span class="function"><span class="keyword">function</span>(<span class="params">README</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> $.getJSON(<span class="string">'https://api.github.com/user/'</span> + username + <span class="string">'/repository/'</span> + lastUpdatedRepository + <span class="string">'/file/'</span> + README + <span class="string">'/content'</span>);</span><br><span class="line">    &#125;)</span><br><span class="line">    .then(<span class="function"><span class="keyword">function</span>(<span class="params">content</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(content);</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>正如你看到的，这段代码比之前的可读性好了很多，因为我们能把每一个步骤拆开看，它们都同一级，没有嵌套。</p>
+<p></p><h2 id="creatingapromisebasedsettimeoutfunction">创造一个基于Promise的setTimeout函数</h2><br>你也许知道，<code>setTimeout()</code>能在指定的时间后执行回调函数。它的两个元素（回调函数和时间）都应该作为参数被提供。让我们假设你想要1秒后在控制台打印一段信息。使用<code>setTimeout()</code>，你可以达到这个目的：<p></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(</span><br><span class="line">  <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'I waited for 1 second!'</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="number">1000</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>正如你所见，第一个参数是一个想要被执行的函数，第二个是多少需要等待的毫秒数。这个函数一向很有用，但是如果你想用通过<code>Deferred</code>队列实现呢？</p>
+<p>在下面我会告诉你怎么用jQuery提供的<code>Promise</code>对象完成一个基于promise的<code>setTimeout()</code>函数。</p>
+<p>最后的代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">timeout</span>(<span class="params">milliseconds</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Create a new Deferred object</span></span><br><span class="line">    <span class="keyword">var</span> deferred = $.Deferred();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Resolve the Deferred after the amount of time specified by milliseconds</span></span><br><span class="line">    setTimeout(deferred.resolve, milliseconds);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Return the Deferred's Promise object</span></span><br><span class="line">    <span class="keyword">return</span> deferred.promise();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">timeout(<span class="number">1000</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'I waited for 1 second!'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>我定义了一个<code>timeout()</code>函数，包裹了javaScript的原生<code>setTimeout()</code>方法。在<code>timeout()</code>方法里我创建了一个新的<code>Deferred</code>对象去管理异步任务，在<code>milliseconds</code>时间后<code>deferred</code>对象被设置为resolve状态。在这种情况下，<code>timeout()</code>函数是这个值的生产者，所以它创建了<code>Deferred</code>对象还返回了<code>Promise</code>对象。通过这样，我能确保这个函数的调用者（消费者）不能够resolve或者reject这个<code>Deferred</code>对象。事实上，这个调用者只能添加函数去执行，和使用<code>done()</code>,<code>faile()</code>等方法。</p>
+<h2 id="jQuery-1-x-2-x-与-jQuery-3的区别"><a href="#jQuery-1-x-2-x-与-jQuery-3的区别" class="headerlink" title="jQuery 1.x/2.x 与 jQuery 3的区别"></a>jQuery 1.x/2.x 与 jQuery 3的区别</h2><p>在第一个例子里，我们创建了一段代码去查找一个名为”README.md”的文件，但是我们没有处理这个文件没有被找到的情况。这种情况应该被称作失败的情况，当失败发送时，我们可能需要去打断这个队列直接结束。如果这样做的话它会很自然的抛出一个异常，取到这个异常后被fail()这个方法执行，就像你在js里面用的catch()方法一样。</p>
+<p>遵循Promises/A和Promises/A+的库（比如jQuery3.x），抛出的异常是被转换为rejection然后调用错误回调函数，比如<code>fail()</code>，被捕获的异常会作为参数传递进去。</p>
+<p>在jQuery1.x和2.x版本中，未被捕获的异常会终止程序的执行，这些版本下允许抛出的异常冒泡，通常是达到<code>window.onerror</code>。如果没有定义函数去处理这个异常，这个异常信息会在控制台显示，而且会中断代码执行。</p>
+<p>为了更好的理解他们不同的地方，让我们看看这个例子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> deferred = $.Deferred();</span><br><span class="line">deferred</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'An error message'</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">  .then(</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'First success function'</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'First failure function'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  )</span><br><span class="line">  .then(</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'Second success function'</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'Second failure function'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">deferred.resolve();</span><br></pre></td></tr></table></figure></p>
+<p>在jQuery3.x版本中，会打印信息”First failure function”和”Second success function”到控制台。原因就和我上面说的一样，一个抛出的异常会被转变为<code>rejection</code>，然后错误处理函数会在这时候被调用。而且，一旦异常被管理到（在这个例子中传递给了第二个<code>then()</code>），接下来的成功回调函数会被调用（本例中的第三个<code>then()</code>）。</p>
+<p>在jQuery1.x和2.x版本中，只有第一个函数（抛出异常的函数）会执行，然后你会看到在控制台输出了”Uncaught Error: An error message”。</p>
+<p><strong>jQuery 1.x/2.x</strong></p>
+<iframe class="" id="" data-url="http://jsbin.com/nozege/embed?js,console" src="http://jsbin.com/nozege/embed?js,console" style="border: 1px solid rgb(170, 170, 170); width: 100%; min-height: 300px; height: 200px;"></iframe><br><strong>jQuery3</strong><br><iframe class="" id="" data-url="http://jsbin.com/kifazi/embed?js,console" src="http://jsbin.com/kifazi/embed?js,console" style="border: 1px solid rgb(170, 170, 170); width: 100%; min-height: 300px; height: 200px;"></iframe>
+
+<p>为了进一步提高它与ECMAScript 2015的兼容性，jQuery3也给<code>Deferred</code>和<code>Promise</code>对象添加了一个<code>catch()</code>方法。它是被定义来处理<code>Deferred</code>对象<code>rejected</code>或者 它的<code>Promise</code>对象处于rejected的情况：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deferred.catch(rejectedCallback)</span><br></pre></td></tr></table></figure></p>
+<p>这个方法只是<code>then(null,rejectedCallback)</code>的简写形式。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在这篇文章里，我向你介绍了jQuery对于promises的实现方式。Promises让你不用很麻烦地让异步函数并行起来，也不用在回调函数里嵌套回调函数再嵌套回调函数……</p>
+<p>除此之外，我也介绍了jQuery3怎么提升它和原生promise的兼容性。尽管老版本的jQuery和ECMAScript 2015的还有比较明显的不同，<code>Deferred</code>对象仍然是一个令人难以置信的强大的工具。作为一个专业的开发者，随着项目难度的增加，你会发现你会经常用到它。</p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>陈柯伊</h4>
+    <p>梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年</p>
+</section>
+      <section class="share">
+   <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2016/07/25/pm2-node-service/">
+        ← 使用pm2+github将node项目一键部署到远程服务器
+    </a>
+    
+    
+    <a class="older-posts" href="/2016/02/24/利用fiddler进行前端调试/">
+        利用Fiddler进行前端调试 →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    
+<section class="comment-box">
+    <!--高速版-->
+    <div id="SOHUCS" sid="https://coolmogu.com/2016/03/25/introduction-jquery-deferred-objects/"></div>
+    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+    <script type="text/javascript">
+        window.changyan.api.config({
+        appid: 'cyt0WGpod',
+        conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
+        });
+    </script>
+
+</section>
+
+</div>
+
+
+
+</main>
+ 
+  <div id="toc" class="toc-article">
+    <div class="toc-title">文章目录</div>
+    <div class="toc-box">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一个简单的历史介绍"><span class="toc-text">一个简单的历史介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#callbackJquery"><span class="toc-text">jQuery中的回调</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deferred对象和Promise对象"><span class="toc-text">Deferred对象和Promise对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deferred对象的方法"><span class="toc-text">Deferred对象的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用Deferred对象完成Ajax请求队列"><span class="toc-text">用Deferred对象完成Ajax请求队列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#creatingapromisebasedsettimeoutfunction"><span class="toc-text">创造一个基于Promise的setTimeout函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jQuery-1-x-2-x-与-jQuery-3的区别"><span class="toc-text">jQuery 1.x/2.x 与 jQuery 3的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+    </div>
+
+</div>
+
+
+<script language="JavaScript" type="text/JavaScript">
+//运行文本域代码
+function runEx(cod1) {
+  cod=document.all(cod1)
+  var code=cod.value.replace(/‘|’/g,'\'');
+  if (code!=""){
+    var newwin=window.open('','',''); //打开一个窗口并赋给变量newwin。
+    newwin.opener = null // 防止代码对论谈页面修改
+    newwin.document.write(code); //向这个打开的窗口中写入代码code，这样就实现了运行代码功能。
+    newwin.document.close();
+  }
+}
+
+</script>
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

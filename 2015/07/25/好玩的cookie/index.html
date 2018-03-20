@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>好玩的cookie | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2015-07-25T02:17:50.000Z" itemprop="datePublished">
+        2015-7-25 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+    <h1 class="post-title">好玩的cookie</h1>
+    <span id="busuanzi_container_page_pv" class="readCount">
+      阅读量：
+    <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+
+    </span>
+    <section class="post-content">
+      <p>最近接触了cookie，发现浏览器cookie真的挺好玩的，前端做的事也可以在网页关闭或刷新后依然存在，多难得啊（被用户清除了cookie就没办法了…）。cookie可以帮助前端实现一些用户行为储存，进而实现一些针对用户的操作。<br><a id="more"></a><br>cookie的增删查改也并不难，但是有一些细节还是得注意。</p>
+<p><strong><em>cookie的设置/修改封装函数</em></strong></p>
+<ol>
+<li>直接也可以设置:<code>document.cookie= &#39;name=value&#39;</code>;</li>
+<li>更推荐封装函数：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置expires</span></span><br><span class="line"><span class="comment">// var date=new Date(); </span></span><br><span class="line"><span class="comment">// var expiresDays=10; </span></span><br><span class="line"><span class="comment">// 将date设置为10天以后的时间 </span></span><br><span class="line"><span class="comment">// date.setTime(date.getTime()+expiresDays*24*3600*1000); </span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setCookie</span>(<span class="params">name,value,expires,path,domain,secure</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> cookie = <span class="built_in">encodeURIComponent</span>(name) + <span class="string">'='</span> +<span class="built_in">encodeURIComponent</span>(value);</span><br><span class="line">    <span class="keyword">if</span>(expires)&#123;</span><br><span class="line">        cookie += <span class="string">';expires='</span> + expires.toGMTString();<span class="comment">//失效时间</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(path)&#123;</span><br><span class="line">        cookie += <span class="string">';path='</span> +path;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(domain)&#123;</span><br><span class="line">        cookie +=<span class="string">';secure'</span> + secure;<span class="comment">//http协议时生效，默认false</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">document</span>.cookie = cookie;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//用法：set("loginSuc","yes",date,path,domain,secure)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><strong><em>cookie的获取封装函数</em></strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">   <span class="built_in">String</span>.prototype.trim=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="comment">//去除字符串两端空格</span></span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.replace(<span class="regexp">/(^\s*)|(\s*$)/g</span>, ”); </span><br><span class="line">     &#125;</span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">getcookie</span>(<span class="params">Name</span>) </span>&#123;</span><br><span class="line">       <span class="keyword">var</span> cookie = &#123;&#125;;</span><br><span class="line">       <span class="keyword">var</span> all = <span class="built_in">document</span>.cookie;</span><br><span class="line">      <span class="keyword">if</span> (all === <span class="string">''</span>)</span><br><span class="line">           <span class="keyword">return</span> cookie;</span><br><span class="line">       <span class="keyword">var</span> list = all.split(<span class="string">'; '</span>);</span><br><span class="line">       <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; list.length; i++) &#123;</span><br><span class="line">           <span class="keyword">var</span> item = list[i];</span><br><span class="line">           <span class="keyword">var</span> p = item.indexOf(<span class="string">'='</span>);</span><br><span class="line">           <span class="keyword">var</span> name = item.substring(<span class="number">0</span>, p);</span><br><span class="line">           name = <span class="built_in">decodeURIComponent</span>(name).trim();<span class="comment">//注意这里有个坑，除了第一个name，后面的name前面都有一个空格，所以要处理掉前面的空格才行；</span></span><br><span class="line">           <span class="keyword">var</span> value = item.substring(p + <span class="number">1</span>);</span><br><span class="line">           value = <span class="built_in">decodeURIComponent</span>(value);</span><br><span class="line">           cookie[name] = value;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> cookie[Name];</span><br><span class="line">   &#125;</span><br><span class="line"><span class="comment">//用法：getCookie("loginSuc");</span></span><br></pre></td></tr></table></figure>
+<p><strong><em>cookie的删除函数封装</em></strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">removeCookie</span>(<span class="params">name</span>) </span>&#123; </span><br><span class="line">    <span class="keyword">var</span> exp = <span class="keyword">new</span> <span class="built_in">Date</span>(); </span><br><span class="line">    exp.setTime(exp.getTime() - <span class="number">1</span>); </span><br><span class="line">    <span class="keyword">var</span> cval=getCookie(name); </span><br><span class="line">    <span class="keyword">if</span>(cval!=<span class="literal">null</span>) <span class="built_in">document</span>.cookie= name + <span class="string">"="</span>+cval+<span class="string">";expires="</span>+exp.toGMTString(); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用cookie我们可以设置用户的登录状态，亦或是点击了不再显示后就设置一个不再显示的cookie,通过获取cookie来达到效果。感觉棒棒哒！</p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>陈柯伊</h4>
+    <p>梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年</p>
+</section>
+      <section class="share">
+   <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2015/08/18/用js原生实现Ajax的get和post/">
+        ← 用js原生实现Ajax的get和post
+    </a>
+    
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    
+<section class="comment-box">
+    <!--高速版-->
+    <div id="SOHUCS" sid="https://coolmogu.com/2015/07/25/好玩的cookie/"></div>
+    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+    <script type="text/javascript">
+        window.changyan.api.config({
+        appid: 'cyt0WGpod',
+        conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
+        });
+    </script>
+
+</section>
+
+</div>
+
+
+
+</main>
+ 
+  <div id="toc" class="toc-article">
+    <div class="toc-title">文章目录</div>
+    <div class="toc-box">
+        
+    </div>
+
+</div>
+
+
+<script language="JavaScript" type="text/JavaScript">
+//运行文本域代码
+function runEx(cod1) {
+  cod=document.all(cod1)
+  var code=cod.value.replace(/‘|’/g,'\'');
+  if (code!=""){
+    var newwin=window.open('','',''); //打开一个窗口并赋给变量newwin。
+    newwin.opener = null // 防止代码对论谈页面修改
+    newwin.document.write(code); //向这个打开的窗口中写入代码code，这样就实现了运行代码功能。
+    newwin.document.close();
+  }
+}
+
+</script>
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>使用pm2+github将node项目一键部署到远程服务器 | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2016-07-25T06:06:50.000Z" itemprop="datePublished">
+        2016-7-25 14:06:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/web前端知识/'>web前端知识</a>,
+    
+    <a href='/tags/node-js学习笔记/'>node.js学习笔记</a>
+    
+    
+</span>
+    <h1 class="post-title">使用pm2+github将node项目一键部署到远程服务器</h1>
+    <span id="busuanzi_container_page_pv" class="readCount">
+      阅读量：
+    <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+
+    </span>
+    <section class="post-content">
+      <p>每次在本地跑Node项目自娱自乐总不是很爽，一直想把自己的node项目部署到服务器上。但是我对于后端和运维知识我还是处于小白阶段，今天研究了一下午，总算是成功把自己的node项目搞了上去，又学到了新姿势。本文将介绍怎么从零开始，获得服务器，并将node项目通过github+pm2部署到远程服务器。<br><a id="more"></a></p>
+<h3 id="服务器环境搭建"><a href="#服务器环境搭建" class="headerlink" title="服务器环境搭建"></a>服务器环境搭建</h3><h4 id="购买服务器"><a href="#购买服务器" class="headerlink" title="购买服务器"></a>购买服务器</h4><p>(已有服务器的可以跳过此步骤)。<br>我是用的腾讯的云服务器，因为腾讯云还是比较良心，云服务器开放了免费体验功能（不知道之后会不会关闭），很适合我们这种新手先试用再购买。通过这个【<a href="https://www.qcloud.com/act/try?t=cvm" target="_blank" rel="noopener">链接</a>】申请了免费试用。申请成功后，就会收到该改主机的信息。我选择的1核CPU、1GB内存,系统为CentOS 7.2 64位。也许在你看到这篇文章的时候，服务器也过期了- -</p>
+<hr>
+<p>现在我换成了国外的vps 便宜好用还能翻墙 嚯嚯嚯。</p>
+<h4 id="登录云服务器"><a href="#登录云服务器" class="headerlink" title="登录云服务器"></a>登录云服务器</h4><p>在本机终端输入以下命令即可连接上云服务器，然后需要输入给你的初始密码。<br><code>ssh root@服务器公网ip</code></p>
+<h4 id="安装相关文件"><a href="#安装相关文件" class="headerlink" title="安装相关文件"></a>安装相关文件</h4><p>更新yum（云服务器自带的包管理工具）：<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum <span class="keyword">update</span> -<span class="built_in">y</span></span><br></pre></td></tr></table></figure></p>
+<p>更新完毕后，安装Node.js：<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum <span class="keyword">install</span> nodejs -y</span><br></pre></td></tr></table></figure></p>
+<p>安装Npm：<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum <span class="keyword">install</span> npm -y</span><br></pre></td></tr></table></figure></p>
+<p>安装pm2：<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="keyword">install</span> pm2 -g</span><br></pre></td></tr></table></figure></p>
+<p>分别执行<code>node -v</code>、<code>npm -v</code>、<code>pm2 -v</code>查看是否安装成功，如果没有安装成功，前面加上<code>sudo</code>命令重试</p>
+<h4 id="服务器端创建新用户（可选）"><a href="#服务器端创建新用户（可选）" class="headerlink" title="服务器端创建新用户（可选）"></a>服务器端创建新用户（可选）</h4><p>为服务器安全起见，创建用户(用户名：yourName)：<br><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">useradd yourName</span></span><br></pre></td></tr></table></figure></p>
+<p>设置密码：<br><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">passwd yourName</span></span><br></pre></td></tr></table></figure></p>
+<p>添加sudo权限：<br><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">usermod -aG wheel yourName</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="服务器端关闭root用户的ssh访问-可选-："><a href="#服务器端关闭root用户的ssh访问-可选-：" class="headerlink" title="服务器端关闭root用户的ssh访问(可选)："></a>服务器端关闭root用户的ssh访问(可选)：</h4><p>为服务器安全起见，关闭root账户的远程访问。<br>打开配置文件：<br><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi <span class="regexp">/etc/</span>ssh<span class="regexp">/sshd_config</span></span><br></pre></td></tr></table></figure></p>
+<p>按下<code>i</code>,切换vi为输入状态<br>找到如下设置，删除前面的<code>#</code>，并修改yes为no：<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">PermitRootLogin</span> <span class="literal">no</span></span><br></pre></td></tr></table></figure></p>
+<p>按下<code>esc</code>，切换vi为命令状态，然后输入<code>:wq</code>回车保存退出<br>保存文件后，重启sshd服务：<br><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">service sshd restart</span></span><br></pre></td></tr></table></figure></p>
+<p>退出root账户，并使用新创建用户访问。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">ssh</span> <span class="selector-tag">yourName</span>@服务器公网<span class="keyword">ip</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h3><p>本文的操作环境是<br>本地：Mac OSX<br>远端服务器：腾讯云ECS（1核CPU、1GB内存），IP：119.29.101.229，系统为CentOS 7.2 64位<br>采用的技术：Node.js + Express.js<br>Github：账户名：cky917<br>以下命令全部带入我的账号，<strong>自己使用时记得替换为自己的账号</strong>。<br>本文对于Git基本操作和node也不做详细讲解。</p>
+<h3 id="本地创建node项目"><a href="#本地创建node项目" class="headerlink" title="本地创建node项目"></a>本地创建node项目</h3><p>具体如何创建，本文不详细讨论。假设已经建立好一个名为pm2Demo的项目。</p>
+<h3 id="github建立链接"><a href="#github建立链接" class="headerlink" title="github建立链接"></a>github建立链接</h3><p>登录云服务器，安装git，生成ssh-key。然后将云服务器的ssh-key加到自己的github中。<br>在本地执行同样的操作。</p>
+<p>进入本地项目目录./pm2Demo，将本地项目与github远程仓库建立连接。<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git remote <span class="keyword">add</span><span class="bash"> origin https://github.com/cky917/pm2Demo.git</span></span><br><span class="line"><span class="bash">git push -u origin master</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="pm2部署"><a href="#pm2部署" class="headerlink" title="pm2部署"></a>pm2部署</h3><p>pm2的介绍可以看看这篇<a href="https://segmentfault.com/a/1190000002539204" target="_blank" rel="noopener">文章</a><br>详细的部署步骤也可以看<a href="http://pm2.keymetrics.io/docs/usage/deployment/#considerations" target="_blank" rel="noopener">官方配置文档</a></p>
+<p>本地安装pm2之后执行<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p<span class="name">m2</span> ecosystem</span><br></pre></td></tr></table></figure></p>
+<p>会生成一个ecosystem.config.js(版本原因，也可能是ecosystem.json)文件，打开该文件进行配置。修改<code>script</code>配置为node项目启动文件。<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">apps :</span> [</span><br><span class="line">    <span class="comment">//由于我们此次只有一个项目,我们只配置一个app</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">name      :</span> <span class="string">"pm2Demo"</span>,</span><br><span class="line">      <span class="string">script    :</span> <span class="string">"./bin/www"</span>,</span><br></pre></td></tr></table></figure></p>
+<p>其余关于app部分的配置，可见<a href="http://pm2.keymetrics.io/docs/usage/application-declaration/" target="_blank" rel="noopener">官方文档</a>;</p>
+<p>再配置部署部分：<br><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">deploy </span>: &#123;</span><br><span class="line">    <span class="attribute">production </span>: &#123;<span class="comment">//生产环境部署配置</span></span><br><span class="line">      <span class="attribute">user </span>: <span class="string">"cky"</span>,<span class="comment">//登录远程服务器的用户名</span></span><br><span class="line">      <span class="attribute">host </span>: <span class="string">"119.29.101.229"</span>,<span class="comment">//远程服务器的IP或hostname，此处可以是数组同步部署多个服务器</span></span><br><span class="line">      <span class="attribute">ref  </span>: <span class="string">"origin/master"</span>,<span class="comment">//远端名称及分支名</span></span><br><span class="line">      <span class="attribute">repo </span>: <span class="string">"git@github.com:cky917/pm2Demo.git"</span>,<span class="comment">//git仓库地址</span></span><br><span class="line">      <span class="attribute">path </span>: <span class="string">"/home/cky/www/production/pm2Demo"</span>,<span class="comment">//远程服务器部署目录，需要填写user具备写入权限的目录</span></span><br><span class="line">      <span class="string">"post-deploy"</span> : <span class="string">"npm install &amp;&amp; pm2 startOrRestart ecosystem.config.js --env production"</span>,<span class="comment">//部署后需要执行的命令</span></span><br><span class="line">      <span class="string">"env"</span>  : &#123;</span><br><span class="line">        <span class="string">"NODE_ENV"</span>: <span class="string">"production"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attribute">dev </span>: &#123;<span class="comment">//开发环境部署配置</span></span><br><span class="line">      <span class="attribute">user </span>: <span class="string">"cky"</span>,</span><br><span class="line">      <span class="attribute">host </span>: <span class="string">"119.29.101.229"</span>,</span><br><span class="line">      <span class="attribute">ref  </span>: <span class="string">"origin/dev"</span>,</span><br><span class="line">      <span class="attribute">repo </span>: <span class="string">"git@github.com:cky917/pm2Demo.git"</span>,</span><br><span class="line">      <span class="attribute">path </span>: <span class="string">"/home/cky/www/dev/pm2Demo"</span>,</span><br><span class="line">      <span class="string">"post-deploy"</span> : <span class="string">"npm install &amp;&amp; pm2 startOrRestart ecosystem.config.js --env dev"</span>,</span><br><span class="line">      <span class="attribute">env  </span>: &#123;</span><br><span class="line">        <span class="attribute">NODE_ENV</span>: <span class="string">"dev"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码我们部署了2个环境，当然你得有对应的分支。<br>改好后，我们将ecosystem.config.js代码提交到远程github仓库去，<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">add</span><span class="bash"> .</span></span><br><span class="line"><span class="bash">git commit -m <span class="string">"update ecosystem"</span></span></span><br><span class="line"><span class="bash">git push</span></span><br></pre></td></tr></table></figure></p>
+<p>在云服务器端执行以下命令，将<code>http://github.com</code>加入known_hosts：<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keyscan -t rsa github.com <span class="meta">&gt;&gt; </span>~<span class="regexp">/.ssh/known</span>_hosts</span><br></pre></td></tr></table></figure></p>
+<p>因为pm2的部署是通过ssh进行的，因此需要开通本地到远程服务器的无密码登录，同样，在Mac下，通过ssh-keygen生成RSA公钥，并拷贝到远程服务器：<br><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp ~<span class="regexp">/.ssh/id</span>_rsa.pub cky<span class="variable">@119</span>.<span class="number">29.101</span>.<span class="number">229</span><span class="symbol">:/home/cky/</span>.ssh/authorized_keys</span><br></pre></td></tr></table></figure></p>
+<p>在本地执行命令把文件目录初始化到服务器端：<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pm2 deploy &lt;configuration_file&gt; &lt;environment&gt; <span class="built_in">setup</span></span><br><span class="line"><span class="comment">//比如：</span></span><br><span class="line">pm2 deploy ecosystem.<span class="built_in">config</span>.js production <span class="built_in">setup</span></span><br></pre></td></tr></table></figure></p>
+<p>如果没有问题，会输出<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  ...</span><br><span class="line">  ○ setup complete</span><br><span class="line">--&gt; Success</span><br></pre></td></tr></table></figure></p>
+<h3 id="一键部署代码到服务器"><a href="#一键部署代码到服务器" class="headerlink" title="一键部署代码到服务器"></a>一键部署代码到服务器</h3><p>在本地./pm2Demo项目下，输入以下命令部署代码到服务器<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pm2 deploy ecosystem<span class="selector-class">.config</span><span class="selector-class">.js</span> production</span><br></pre></td></tr></table></figure></p>
+<p>会看到输出以下信息，表示部署成功：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">Use</span> <span class="string">`pm2 show &lt;id|name&gt;`</span> <span class="keyword">to</span> <span class="keyword">get</span> more details about an app</span><br><span class="line">  ○ hook <span class="keyword">test</span></span><br><span class="line">  ○ successfully deployed origin/<span class="keyword">master</span></span><br><span class="line"><span class="comment">--&gt; Success</span></span><br></pre></td></tr></table></figure></p>
+<p>现在，你的代码已经被部署，而且项目也启动了。<br>pm2部署命令列表如下：<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">pm2 deploy <span class="symbol">&lt;configuration_file&gt;</span> <span class="symbol">&lt;environment&gt;</span> <span class="symbol">&lt;command&gt;</span></span><br><span class="line">  Command<span class="variable">s:</span></span><br><span class="line">    setup                run remote setup commands</span><br><span class="line">    <span class="keyword">update</span>               <span class="keyword">update</span> deploy <span class="keyword">to</span> the latest release</span><br><span class="line">    revert [n]           revert <span class="keyword">to</span> [n]<span class="keyword">th</span> <span class="keyword">last</span> deployment <span class="built_in">or</span> <span class="number">1</span></span><br><span class="line">    curr[ent]            output current release commit</span><br><span class="line">    <span class="keyword">prev</span>[ious]           output <span class="keyword">previous</span> release commit</span><br><span class="line">    exec|run <span class="symbol">&lt;cmd&gt;</span>       <span class="keyword">execute</span> the given <span class="symbol">&lt;cmd&gt;</span></span><br><span class="line">    <span class="keyword">list</span>                 <span class="keyword">list</span> <span class="keyword">previous</span> deploy commits</span><br><span class="line">    [ref]                deploy <span class="keyword">to</span> [ref], the <span class="string">"ref"</span> setting, <span class="built_in">or</span> latest <span class="keyword">tag</span></span><br></pre></td></tr></table></figure></p>
+<p>在这里我发现了一个问题，就是如果我的分支代码更新了，我执行部署更新命令拉取的提交记录还是初始化时的提交记录，我必须删掉服务器上的文件夹，重新执行初始化和部署的操作，不知道是本来就这样还是哪里出了问题，暂时没找到原因- -。</p>
+<p>部署成功后，在远程服务器端输入<code>netstat -antp</code>查看端口情况。可以看到3000端口已经可以访问。<br>输入<a href="http://119.29.101.229:3000/" target="_blank" rel="noopener">http://119.29.101.229:3000/</a> 就能访问到项目了（我把我简陋的毕设项目搞了上去 - -,管理员账户root,密码123 有兴趣可以登录试一下）</p>
+<h3 id="设置开机自动启动"><a href="#设置开机自动启动" class="headerlink" title="设置开机自动启动"></a>设置开机自动启动</h3><p>可以通过pm2 startup来实现开机自启动。细节可<a href="http://pm2.keymetrics.io/docs/usage/startup/" target="_blank" rel="noopener">参考</a>。大致流程如下</p>
+<ol>
+<li>通过<code>pm2 save</code>保存当前进程状态。</li>
+<li>通过<code>pm2 startup [platform]</code>生成开机自启动的命令。（记得查看控制台输出）</li>
+<li>将步骤2生成的命令，粘贴到控制台进行，搞定。</li>
+</ol>
+<h3 id="nginx反向代理"><a href="#nginx反向代理" class="headerlink" title="nginx反向代理"></a>nginx反向代理</h3><p>通过nginx反向代理，可以让服务器上某端口，指向指定域名的80端口，这样访问时就不需要加端口号了。<br>详细见<a href="http://pm2.keymetrics.io/docs/tutorials/pm2-nginx-production-setup" target="_blank" rel="noopener">官方文档</a><br>首先我们要在云服务器上安装nginx:<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum <span class="keyword">install</span> nginx</span><br></pre></td></tr></table></figure></p>
+<p>安装成功后，启动nginx服务：<br><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service nginx <span class="literal">start</span></span><br></pre></td></tr></table></figure></p>
+<p>使用命令<code>nginx -t</code>查找nginx配置文件，并使用vi命令修改该配置文件。<br>我的配置如下</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">user nginx;</span><br><span class="line">worker_processes auto;</span><br><span class="line">error_log <span class="string">/var/log/nginx/error.log</span>;</span><br><span class="line">pid <span class="string">/run/nginx.pid</span>;</span><br><span class="line"><span class="comment"># Load dynamic modules. See /usr/share/nginx/README.dynamic.</span></span><br><span class="line">include <span class="string">/usr/share/nginx/modules/</span>*<span class="string">.conf</span>;</span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections 1024;</span><br><span class="line">&#125;</span><br><span class="line">http &#123;</span><br><span class="line">  upstream my_nodejs_upstream &#123;</span><br><span class="line">    server 127.0.0.1<span class="function">:3000</span>;</span><br><span class="line">    keepalive 64;</span><br><span class="line">  &#125;</span><br><span class="line">  server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name   www.chenkeyi.com;<span class="string">//</span>你的域名</span><br><span class="line">    access_log  <span class="string">/var/log/nginx/bysj.log</span>;</span><br><span class="line">    error_log <span class="string">/var/log/nginx/bysj.error.log</span>;</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_<span class="keyword">set</span>_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_<span class="keyword">set</span>_header Host $http_host;</span><br><span class="line">        proxy_<span class="keyword">set</span>_header X-NginX-Proxy <span class="literal">true</span>;</span><br><span class="line">        proxy_http_<span class="keyword">version</span> 1.1;</span><br><span class="line">        proxy_pass http:<span class="string">//my_nodejs_upstream/</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改完后<code>service nginx restart</code>重启nginx</p>
+<h3 id="解析域名"><a href="#解析域名" class="headerlink" title="解析域名"></a>解析域名</h3><p>这个在腾讯云和阿里云等都提供解析域名服务。</p>
+<p>配置成功：<a href="http://bysj.chenkeyi.com" target="_blank" rel="noopener">bysj.chenkeyi.com</a>可以访问。</p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>陈柯伊</h4>
+    <p>梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年</p>
+</section>
+      <section class="share">
+   <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2017/01/05/my2016and2017/">
+        ← 2016年总结和2017年目标
+    </a>
+    
+    
+    <a class="older-posts" href="/2016/03/25/introduction-jquery-deferred-objects/">
+        关于jQuery的Deferred对象介绍（译） →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    
+<section class="comment-box">
+    <!--高速版-->
+    <div id="SOHUCS" sid="https://coolmogu.com/2016/07/25/pm2-node-service/"></div>
+    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+    <script type="text/javascript">
+        window.changyan.api.config({
+        appid: 'cyt0WGpod',
+        conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
+        });
+    </script>
+
+</section>
+
+</div>
+
+
+
+</main>
+ 
+  <div id="toc" class="toc-article">
+    <div class="toc-title">文章目录</div>
+    <div class="toc-box">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#服务器环境搭建"><span class="toc-text">服务器环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#购买服务器"><span class="toc-text">购买服务器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#登录云服务器"><span class="toc-text">登录云服务器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#安装相关文件"><span class="toc-text">安装相关文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#服务器端创建新用户（可选）"><span class="toc-text">服务器端创建新用户（可选）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#服务器端关闭root用户的ssh访问-可选-："><span class="toc-text">服务器端关闭root用户的ssh访问(可选)：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#环境说明"><span class="toc-text">环境说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#本地创建node项目"><span class="toc-text">本地创建node项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#github建立链接"><span class="toc-text">github建立链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pm2部署"><span class="toc-text">pm2部署</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一键部署代码到服务器"><span class="toc-text">一键部署代码到服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设置开机自动启动"><span class="toc-text">设置开机自动启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx反向代理"><span class="toc-text">nginx反向代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解析域名"><span class="toc-text">解析域名</span></a></li></ol>
+    </div>
+
+</div>
+
+
+<script language="JavaScript" type="text/JavaScript">
+//运行文本域代码
+function runEx(cod1) {
+  cod=document.all(cod1)
+  var code=cod.value.replace(/‘|’/g,'\'');
+  if (code!=""){
+    var newwin=window.open('','',''); //打开一个窗口并赋给变量newwin。
+    newwin.opener = null // 防止代码对论谈页面修改
+    newwin.document.write(code); //向这个打开的窗口中写入代码code，这样就实现了运行代码功能。
+    newwin.document.close();
+  }
+}
+
+</script>
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>
