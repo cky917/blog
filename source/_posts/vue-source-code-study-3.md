@@ -488,7 +488,7 @@ get () {
   }
 ```
 
-其他细节代码就不细说了，现在完善了代码，执行以下代码后：
+其他细节代码就不细说了，现在完善了代码执行以下代码后
 
 ```javascript
 var a = new Vue3({
@@ -537,7 +537,7 @@ a.$watch('age', function(newValue, oldValue) {
 
 其中`Dep.id`为1的是对`name`值的依赖收集器，它下面有id为1、4、6的`watcher`。
 `Dep.id`为2的是对`age`的依赖收集器，它的收集的订阅者有`id`为2、3、5、6、7的`watcher`
-`id`为6的`watcher`因为用到了`name`和`age`2个值，所以上面都有他，而它的`deps`字段也能看出来
+`id`为6的`watcher`因为用到了`name`和`age`2个值，所以上面都有他，而它的`deps`字段也能看出来。
 ## 参考
 
 [Vue的数据依赖实现原理简析](https://segmentfault.com/a/1190000010014281)
