@@ -1,5 +1,5 @@
 title: blog折腾小记，and神器推荐
-date: 2017-10-17 21:25:00
+date: 2018-03-22 15:38:00
 tags: 生活琐事
 ---
 这2天把博客换了个域名，那个`coolmogu`的域名不准备续费了- -，目前都强制302到了这个域名。跟着这个[教程](https://www.gaoshilei.com/2017/10/30/hexo-init/)搞了https+github的`webhook`，域名前面有个绿色的标志看上去就是爽~~ 
