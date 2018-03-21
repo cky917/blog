@@ -12,7 +12,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://coolmogu.com
+url: http://coolmogu.com
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -69,4 +69,5 @@ theme: mabao-theme
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: git@github.com:cky917/blog.git
+  repo: https://github.com/cky917/blog
+  branch: gh-pages
