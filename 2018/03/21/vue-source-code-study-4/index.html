@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>vue源码学习笔记--事件机制 | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2018-03-21T13:40:00.000Z" itemprop="datePublished">
+        2018-3-21 21:40:00 
+      </time>
+    
+    
+    | 
+    <a href='/tags/vue源码学习/'>vue源码学习</a>
+    
+    
+</span>
+    <h1 class="post-title">vue源码学习笔记--事件机制</h1>
+    <span id="busuanzi_container_page_pv" class="readCount">
+      阅读量：
+    <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+
+    </span>
+    <section class="post-content">
+      <p>今天来看看vue的事件相关方法，本来想先看模板渲染和虚拟dom相关的内容，但是看了2天之后，感觉那一块内容很多而且难- -，所以先啃这块比较简单一点的骨头好了。<br><a id="more"></a><br>在实例化<code>Vue</code>的时候，初始化过程会调用一个<code>initEvent</code>函数，<a href="https://github.com/vuejs/vue/blob/dev/src/core/instance/events.js" target="_blank" rel="noopener">initEvent</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">initEvents</span> (<span class="params">vm: Component</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// _events对象来缓存事件</span></span><br><span class="line">  vm._events = <span class="built_in">Object</span>.create(<span class="literal">null</span>)</span><br><span class="line">  vm._hasHookEvent = <span class="literal">false</span></span><br><span class="line">  <span class="comment">// init parent attached events</span></span><br><span class="line">  <span class="comment">// 模板事件相关，先不说</span></span><br><span class="line">  <span class="comment">// const listeners = vm.$options._parentListeners</span></span><br><span class="line">  <span class="comment">// if (listeners) &#123;</span></span><br><span class="line">  <span class="comment">//   updateComponentListeners(vm, listeners)</span></span><br><span class="line">  <span class="comment">// &#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在初始化事件的方法里，主要是生成了一个<code>vm._events</code>对象来缓存事件，<code>vm._hasHookEvent</code>来标识是否有钩子事件</p>
+<p><code>Vue</code>提供了4个实例方法供我们注册和触发事件。<a href="https://cn.vuejs.org/v2/api/#vm-on" target="_blank" rel="noopener">vm.$on</a>、<a href="https://cn.vuejs.org/v2/api/#vm-once" target="_blank" rel="noopener">vm.$once</a>、<a href="https://cn.vuejs.org/v2/api/#vm-off" target="_blank" rel="noopener">vm.$off</a>、<a href="https://cn.vuejs.org/v2/api/#vm-emit" target="_blank" rel="noopener">vm.$emit</a></p>
+<p>下面来分别看看它们的实现</p>
+<h2 id="vm-on"><a href="#vm-on" class="headerlink" title="vm.$on"></a>vm.$on</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> hookRE = <span class="regexp">/^hook:/</span></span><br><span class="line">Vue.prototype.$on = <span class="function"><span class="keyword">function</span> (<span class="params">event: string | Array&lt;string&gt;, fn: Function</span>): <span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> vm: Component = <span class="keyword">this</span></span><br><span class="line">  <span class="comment">// 如果传入的event是数组，则循环每个event，递归调用$on绑定</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(event)) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = event.length; i &lt; l; i++) &#123;</span><br><span class="line">      <span class="keyword">this</span>.$on(event[i], fn)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 如果vm._events[event]是一个数组，里面储存了触发这个事件时的回调方法定义</span></span><br><span class="line">    <span class="comment">// 如果存在就直接push，否则初始化[]</span></span><br><span class="line">    (vm._events[event] || (vm._events[event] = [])).push(fn)</span><br><span class="line">    <span class="comment">// optimize hook:event cost by using a boolean flag marked at registration</span></span><br><span class="line">    <span class="comment">// instead of a hash lookup</span></span><br><span class="line">    <span class="comment">// 如果event包含 hook:xx 则标记_hasHookEvent为true</span></span><br><span class="line">    <span class="keyword">if</span> (hookRE.test(event)) &#123;</span><br><span class="line">      vm._hasHookEvent = <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> vm</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="vm-emit"><a href="#vm-emit" class="headerlink" title="vm.$emit"></a>vm.$emit</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">Vue.prototype.$emit = <span class="function"><span class="keyword">function</span> (<span class="params">event: string</span>): <span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> vm: Component = <span class="keyword">this</span></span><br><span class="line">  <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> lowerCaseEvent = event.toLowerCase()</span><br><span class="line">    <span class="keyword">if</span> (lowerCaseEvent !== event &amp;&amp; vm._events[lowerCaseEvent]) &#123;</span><br><span class="line">      <span class="comment">// 如果小写形式的event被注册了，但是本身传入的不是小写形式，则友情提示</span></span><br><span class="line">      <span class="comment">// tip(</span></span><br><span class="line">      <span class="comment">//   `Event "$&#123;lowerCaseEvent&#125;" is emitted in component ` +</span></span><br><span class="line">      <span class="comment">//   `$&#123;formatComponentName(vm)&#125; but the handler is registered for "$&#123;event&#125;". ` +</span></span><br><span class="line">      <span class="comment">//   `Note that HTML attributes are case-insensitive and you cannot use ` +</span></span><br><span class="line">      <span class="comment">//   `v-on to listen to camelCase events when using in-DOM templates. ` +</span></span><br><span class="line">      <span class="comment">//   `You should probably use "$&#123;hyphenate(event)&#125;" instead of "$&#123;event&#125;".`</span></span><br><span class="line">      <span class="comment">// )</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 该event的回调函数列表</span></span><br><span class="line">  <span class="keyword">let</span> cbs = vm._events[event]</span><br><span class="line">  <span class="keyword">if</span> (cbs) &#123;</span><br><span class="line">    cbs = cbs.length &gt; <span class="number">1</span> ? toArray(cbs) : cbs</span><br><span class="line">    <span class="comment">// 将剩余的参数转为数组</span></span><br><span class="line">    <span class="keyword">const</span> args = toArray(<span class="built_in">arguments</span>, <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = cbs.length; i &lt; l; i++) &#123;</span><br><span class="line">      <span class="comment">// 依次调用回调函数</span></span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        cbs[i].apply(vm, args)</span><br><span class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        handleError(e, vm, <span class="string">`event handler for "<span class="subst">$&#123;event&#125;</span>"`</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> vm</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行以下代码试试</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a.$on(<span class="string">'say'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'say'</span> + name)</span><br><span class="line">&#125;)</span><br><span class="line">a.$on(<span class="string">'say'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'say2'</span>)</span><br><span class="line">&#125;)</span><br><span class="line">a.$on(<span class="string">'sing'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">song</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'sing a song: '</span> + song)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/15.png"><br><img src="/images/16.png"><br>可以看到事件注册到了<code>_events</code>里，然后<code>$emit</code>触发。而且方法返回的是<code>vm</code>实例，所以我们还可以进行链式调用<br><img src="/images/17.png"></p>
+<h2 id="vm-off"><a href="#vm-off" class="headerlink" title="vm.$off"></a>vm.$off</h2><blockquote>
+<p>参数：<br><code>{string | Array&lt;string&gt;} event</code> (只在 2.2.2+ 支持数组)<br><code>{Function} [callback]</code></p>
+</blockquote>
+<blockquote>
+<p>用法：</p>
+<ul>
+<li>移除自定义事件监听器。</li>
+<li>如果没有提供参数，则移除所有的事件监听器；</li>
+<li>如果只提供了事件，则移除该事件所有的监听器；</li>
+<li>如果同时提供了事件与回调，则只移除这个回调的监听器。</li>
+</ul>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">Vue.prototype.$off = <span class="function"><span class="keyword">function</span> (<span class="params">event?: string | Array&lt;string&gt;, fn?: Function</span>): <span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> vm: Component = <span class="keyword">this</span></span><br><span class="line">  <span class="comment">// all</span></span><br><span class="line">  <span class="comment">// 如果没有提供参数，则移除所有事件监听，_events设为空对象</span></span><br><span class="line">  <span class="keyword">if</span> (!<span class="built_in">arguments</span>.length) &#123;</span><br><span class="line">    vm._events = <span class="built_in">Object</span>.create(<span class="literal">null</span>)</span><br><span class="line">    <span class="keyword">return</span> vm</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// array of events</span></span><br><span class="line">  <span class="comment">// 如果传了数组event，则循环递归调用$off移除每个event</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(event)) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = event.length; i &lt; l; i++) &#123;</span><br><span class="line">      <span class="keyword">this</span>.$off(event[i], fn)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> vm</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// specific event</span></span><br><span class="line">  <span class="comment">// 单个event，如果没被注册，则返回</span></span><br><span class="line">  <span class="keyword">const</span> cbs = vm._events[event]</span><br><span class="line">  <span class="keyword">if</span> (!cbs) &#123;</span><br><span class="line">    <span class="keyword">return</span> vm</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 如果没有传入fn，则这个event的回调全部清空</span></span><br><span class="line">  <span class="keyword">if</span> (!fn) &#123;</span><br><span class="line">    vm._events[event] = <span class="literal">null</span></span><br><span class="line">    <span class="keyword">return</span> vm</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 如果传了fn, 则循环回调列表删除该fn</span></span><br><span class="line">  <span class="keyword">if</span> (fn) &#123;</span><br><span class="line">    <span class="comment">// specific handler</span></span><br><span class="line">    <span class="keyword">let</span> cb</span><br><span class="line">    <span class="keyword">let</span> i = cbs.length</span><br><span class="line">    <span class="keyword">while</span> (i--) &#123;</span><br><span class="line">      cb = cbs[i]</span><br><span class="line">      <span class="comment">// cb.fn见$once</span></span><br><span class="line">      <span class="keyword">if</span> (cb === fn || cb.fn === fn) &#123;</span><br><span class="line">        cbs.splice(i, <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> vm</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="vm-once"><a href="#vm-once" class="headerlink" title="vm.$once"></a>vm.$once</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Vue.prototype.$once = <span class="function"><span class="keyword">function</span> (<span class="params">event: string, fn: Function</span>): <span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> vm: Component = <span class="keyword">this</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">on</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    vm.$off(event, on)</span><br><span class="line">    fn.apply(vm, <span class="built_in">arguments</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 在$on方法注册event，且重新定义一个回调，在回调里调$off方法移除事件绑定，把原来的fn赋值给on.fn</span></span><br><span class="line">  on.fn = fn</span><br><span class="line">  vm.$on(event, on)</span><br><span class="line">  <span class="keyword">return</span> vm</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="hook-event"><a href="#hook-event" class="headerlink" title="hook event"></a>hook event</h2><p>之前说的<code>_hasHookEvent</code>，用于标识是否有注册过钩子函数，钩子函数的单独注册就是用下面的方法。我感觉这个单独注册钩子函数的主要作用还是用于测试方便。平时使用还是在<code>options</code>里直接定义的多。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.$on(<span class="string">'hook:created'</span>, created)</span><br><span class="line"><span class="keyword">this</span>.$on(<span class="string">'hook:mounted'</span>, mounted)</span><br><span class="line"><span class="keyword">this</span>.$on(<span class="string">'hook:destroyed'</span>, destroyed)</span><br></pre></td></tr></table></figure>
+<p>生命周期钩子函数等会在指定时期的代码内部调用<code>callHook</code>方法进行触发</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">callHook</span> (<span class="params">vm: Component, hook: string</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> handlers = vm.$options[hook]</span><br><span class="line">  <span class="keyword">if</span> (handlers) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, j = handlers.length; i &lt; j; i++) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        handlers[i].call(vm)</span><br><span class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        handleError(e, vm, <span class="string">`<span class="subst">$&#123;hook&#125;</span> hook`</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (vm._hasHookEvent) &#123;</span><br><span class="line">    vm.$emit(<span class="string">'hook:'</span> + hook)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>陈柯伊</h4>
+    <p>梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年</p>
+</section>
+      <section class="share">
+   <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2018/05/07/ip-proxy-request/">
+        ← 纪念一下发布的第一个npm模块
+    </a>
+    
+    
+    <a class="older-posts" href="/2018/03/21/blog-transfer/">
+        blog折腾小记，and神器推荐 →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    
+<section class="comment-box">
+    <!--高速版-->
+    <div id="SOHUCS" sid="http://blog.chenkeyi.com/2018/03/21/vue-source-code-study-4/"></div>
+    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+    <script type="text/javascript">
+        window.changyan.api.config({
+        appid: 'cyt0WGpod',
+        conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
+        });
+    </script>
+
+</section>
+
+</div>
+
+
+
+</main>
+ 
+  <div id="toc" class="toc-article">
+    <div class="toc-title">文章目录</div>
+    <div class="toc-box">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#vm-on"><span class="toc-text">vm.$on</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vm-emit"><span class="toc-text">vm.$emit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vm-off"><span class="toc-text">vm.$off</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vm-once"><span class="toc-text">vm.$once</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hook-event"><span class="toc-text">hook event</span></a></li></ol>
+    </div>
+
+</div>
+
+
+<script language="JavaScript" type="text/JavaScript">
+//运行文本域代码
+function runEx(cod1) {
+  cod=document.all(cod1)
+  var code=cod.value.replace(/‘|’/g,'\'');
+  if (code!=""){
+    var newwin=window.open('','',''); //打开一个窗口并赋给变量newwin。
+    newwin.opener = null // 防止代码对论谈页面修改
+    newwin.document.write(code); //向这个打开的窗口中写入代码code，这样就实现了运行代码功能。
+    newwin.document.close();
+  }
+}
+
+</script>
+
+      
+<footer class="site-footer">
+  
+  <a class="subscribe icon-feed" href="atom.xml"><span class="tooltip">Subscribe!</span></a>
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

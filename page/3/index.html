@@ -17,6 +17,8 @@
   <meta name="generator" content="一只很酷的蘑菇">
   
   
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
   
 
   
@@ -45,6 +47,94 @@
       <main class="content" role="main">
   
    
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2016-02-17T02:17:50.000Z" itemprop="datePublished">
+        2016-2-17 10:17:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/生活琐事/'>生活琐事</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2016/02/17/2016年计划（目标）/">2016年计划（目标）</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>农历新年也已经过完了，我也该给自己打打鸡血，制定一个2016年的目标了。<br>
+      
+      </p>
+      
+      <p>
+          <a href="/2016/02/17/2016年计划（目标）/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2016-01-27T06:06:50.000Z" itemprop="datePublished">
+        2016-1-27 14:06:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/Javascript学习笔记/'>Javascript学习笔记</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2016/01/27/ChineseInputMethods/">js中文输入法字符串截断问题解决</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        最近遇到了一个需求：一个输入框最大输入字数为7个字，用户输入超出7个字时，显示警告提示，并且阻止用户输入。
+用input propertychange事件可以监听到用户的输入，在英文或者数字输入状态是没有问题的。但是在中文输入法输入情况下，不同浏览器有不同的表现。有的浏览器会在输入拼音时就会进入判断，如果拼音就已经超过7个字符，就不能再继续输入。如下：1234567891011121314&lt;input id="test"/&gt;
+      
+      </p>
+      
+      <p>
+          <a href="/2016/01/27/ChineseInputMethods/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2016-01-21T06:55:50.000Z" itemprop="datePublished">
+        2016-1-21 14:55:50 
+      </time>
+    
+    
+    | 
+    <a href='/tags/web前端知识/'>web前端知识</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2016/01/21/前端知识收集/">前端知识收集</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>整理了一些自己比较感兴趣的前端知识比较好的博文或者网址<br>
+      
+      </p>
+      
+      <p>
+          <a href="/2016/01/21/前端知识收集/" class="excerpt-link">阅读更多...</a>
+      </p>
+      
+    </section>
+  </article>
   
   <article class="post">
     <header class="post-header">
@@ -266,93 +356,6 @@ port
     </section>
   </article>
   
-  <article class="post">
-    <header class="post-header">
-      <span class="post-meta">
-      <time datetime="2015-12-11T02:17:50.000Z" itemprop="datePublished">
-        2015-12-11 10:17:50 
-      </time>
-    
-    
-    | 
-    <a href='/tags/node-js学习笔记/'>node.js学习笔记</a>
-    
-    
-</span>
-      <h2 class="post-title"><a href="/2015/12/11/nodeJsStudy4/">node.js学习笔记(四)——全局对象与全局变量</a></h2>
-    </header>
-    <section class="post-excerpt">
-      <p>
-      
-        <p>所有属性都可以在程序的任何地方访问，即全局变量。在javascript中，通常window是全局对象，而node.js的全局对象是global，所有全局变量都是global对象的属性，如：console、process等。<br>
-      
-      </p>
-      
-      <p>
-          <a href="/2015/12/11/nodeJsStudy4/" class="excerpt-link">阅读更多...</a>
-      </p>
-      
-    </section>
-  </article>
-  
-  <article class="post">
-    <header class="post-header">
-      <span class="post-meta">
-      <time datetime="2015-12-03T02:17:50.000Z" itemprop="datePublished">
-        2015-12-3 10:17:50 
-      </time>
-    
-    
-    | 
-    <a href='/tags/node-js学习笔记/'>node.js学习笔记</a>
-    
-    
-</span>
-      <h2 class="post-title"><a href="/2015/12/03/nodeJsStudy3/">node.js学习笔记(三)——模块与包</a></h2>
-    </header>
-    <section class="post-excerpt">
-      <p>
-      
-        <p>模块(Module)和包(package)是Node.js最重要的支柱。开发一个具有一定规模的程序不可能只用一个文件，通常需要把各个功能拆分、分装、然后组合起来。模块正是为了实现这种方式而诞生，而浏览器JavaScript中，脚本模块的拆分和组合通常使用HTML的script标签来实现，Node.js提供了require函数来调用其他模块，而且<strong>模块都是基于文件</strong>，机制非常简单，模块和包的区别是透明的，因此经常不做区分。<br>
-      
-      </p>
-      
-      <p>
-          <a href="/2015/12/03/nodeJsStudy3/" class="excerpt-link">阅读更多...</a>
-      </p>
-      
-    </section>
-  </article>
-  
-  <article class="post">
-    <header class="post-header">
-      <span class="post-meta">
-      <time datetime="2015-12-02T02:17:50.000Z" itemprop="datePublished">
-        2015-12-2 10:17:50 
-      </time>
-    
-    
-    | 
-    <a href='/tags/node-js学习笔记/'>node.js学习笔记</a>
-    
-    
-</span>
-      <h2 class="post-title"><a href="/2015/12/02/nodeJsStudy2/">node.js学习笔记(二)——node.js回调函数与事件</a></h2>
-    </header>
-    <section class="post-excerpt">
-      <p>
-      
-        一、回调函数1.异步读取文件123456789var fs = require('fs');fs.readFile('file.txt','utf-8',function(err,data)&#123;    if(err)&#123;        console.log(err);    &#125;else&#123;        console.log(data);    &#125;&#125;);console.log('
-      
-      </p>
-      
-      <p>
-          <a href="/2015/12/02/nodeJsStudy2/" class="excerpt-link">阅读更多...</a>
-      </p>
-      
-    </section>
-  </article>
-  
   <nav class="pagination" role="pagination">
     <a class="newer-posts" href="/page/2/">← Newer Posts</a>
     <span class="page-number">Page 3 of 5</span>
@@ -362,6 +365,8 @@ port
 
       
 <footer class="site-footer">
+  
+  <a class="subscribe icon-feed" href="atom.xml"><span class="tooltip">Subscribe!</span></a>
   
   <div class="inner">
 <section>友情链接：
