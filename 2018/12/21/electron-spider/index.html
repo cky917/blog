@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>使用electron实现爬虫 | 一只很酷的蘑菇</title>
+  <meta name="description" content="互联网、前端技术博客，也有二次元和一些生活记录" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="baidu-site-verification" content="2Ph3a2r39z" />
+  <meta baidu-gxt-verify-token="2e0d112276ed33a792f971a57f49e4d0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <meta name="generator" content="一只很酷的蘑菇">
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+
+  
+
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 0" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">一只很酷的蘑菇</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2018-12-21T09:22:22.000Z" itemprop="datePublished">
+        2018-12-21 17:22:22 
+      </time>
+    
+    
+    | 
+    <a href='/tags/web前端知识/'>web前端知识</a>
+    
+    
+</span>
+    <h1 class="post-title">使用electron实现爬虫</h1>
+    <span id="busuanzi_container_page_pv" class="readCount">
+      阅读量：
+    <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+
+    </span>
+    <section class="post-content">
+      <p>果然用浏览器访问才是王道…<br><a id="more"></a></p>
+<h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>之前自己帮朋友搞一个爬虫小项目。需求说是很简单：用excel批量导入链接，每天定时访问这些链接，然后爬取该页面的相关信息，再存入excel，可以导出。</p>
+<p>最开始搞的时候，确实还挺简单，拿着几个链接在本地测试很快就搞好了，然而一放上我的小水管vps就不行了，实际使用的时候是批量爬几百几千个网址。而且爬的是国内某知名网站，肯定是对于爬虫有防御机制，爬着爬着就给我返回一堆不知所云的文字了，也就是该网站把我的vps拉入ip限制黑名单了。</p>
+<p>为了解决问题我试了好多种方法</p>
+<ol>
+<li><p>每个网址间隔几秒到十几秒访问， 同链接的爬取结果缓存一段时间。(ip还是会被封，无效)</p>
+</li>
+<li><p>用无数个代理ip访问，这个是很多爬虫的方法。大多数有效的代理ip要花钱，价格不菲。为了获取免费的代理ip，我又去爬一个免费代理ip的网址来获取代理ip，甚至搞了个<a href="https://github.com/cky917/ipProxyRequest" target="_blank" rel="noopener">项目</a>。搞的很复杂然而免费的代理ip很快就会过期，还有延时长的问题，爬取效率也很低。</p>
+</li>
+<li><p>2方法虽然略慢 但是还是解决了问题一阵子。然而尴尬的事情出现了，我爬的免费代理的网页，也把我墙了。。另外还有个问题，这爬虫一直挂在我的小水管服务器上定时爬，占了我服务器的流量，我还得保证它的运行，很不划算。</p>
+</li>
+</ol>
+<p>最后突然想到，网站一般通过区分浏览器访问和机器访问来反爬，如果我就是用浏览器访问的呢？所以想到了electron，并且这东西可以编译成windows、mac软件直接安装在电脑本地，再也不用在我的小水管上爬了，简直完美。</p>
+<h2 id="大概思路"><a href="#大概思路" class="headerlink" title="大概思路"></a>大概思路</h2><ul>
+<li>初始化项目</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">npm install -g vue-cli</span><br><span class="line">vue init simulatedgreg/electron-vue electron-spider</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> Install dependencies and run your app</span><br><span class="line">cd electron-spider</span><br><span class="line">yarn # or npm install</span><br><span class="line">yarn run dev # or npm run dev</span><br></pre></td></tr></table></figure>
+<ul>
+<li>主要页面</li>
+</ul>
+<p>由于是例子，直接改生成项目里的<code>landingPage.vue</code>页面了，我们爬一下<a href="https://juejin.im" target="_blank" rel="noopener">掘金</a>，直接上代码吧</p>
+<p>大致思路，用<code>webview</code>打开需要爬取的网址，该<code>webview</code> <code>preload</code>一个js文件，该文件可以访问新页面并且进行dom读取等操作（类似在浏览器控制台里执行js）。通过electron的相关进程直接通信的api和事件，进行数据传输。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"wrapper"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span></span></span><br><span class="line"><span class="tag">      @<span class="attr">click</span>=<span class="string">"doSearch"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">:disabled</span>=<span class="string">"isSearching"</span>&gt;</span>开始爬取<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span>=<span class="string">"isSearching"</span>&gt;</span></span><br><span class="line">      爬取中, url: &#123;&#123;url&#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 爬取网址的webview, 该页面 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">webview</span> <span class="attr">class</span>=<span class="string">"search-webview"</span> <span class="attr">id</span>=<span class="string">"webview"</span> <span class="attr">src</span>=<span class="string">""</span> <span class="attr">autosize</span>=<span class="string">"on"</span> <span class="attr">minwidth</span>=<span class="string">"1"</span> <span class="attr">minheight</span>=<span class="string">"1"</span> <span class="attr">:preload</span>=<span class="string">"fileName"</span>&gt;</span><span class="tag">&lt;/<span class="name">webview</span>&gt;</span></span><br><span class="line">    文章列表</span><br><span class="line">    <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">li</span> <span class="attr">v-for</span>=<span class="string">"post in posts"</span> <span class="attr">:key</span>=<span class="string">"post.link"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">:href</span>=<span class="string">"post.link"</span> <span class="attr">target</span>=<span class="string">"_blank"</span>&gt;</span>&#123;&#123; post.title &#125;&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">import path from 'path'</span></span><br><span class="line"><span class="undefined">export default &#123;</span></span><br><span class="line"><span class="undefined">  name: 'landing-page',</span></span><br><span class="line"><span class="undefined">  data () &#123;</span></span><br><span class="line"><span class="undefined">    return &#123;</span></span><br><span class="line"><span class="undefined">      isSearching: false,</span></span><br><span class="line"><span class="undefined">      url: 'https://juejin.im',</span></span><br><span class="line"><span class="undefined">      posts: [],</span></span><br><span class="line"><span class="undefined">      webview: null,</span></span><br><span class="line"><span class="undefined">      // preload的文件地址</span></span><br><span class="line"><span class="undefined">      fileName: `file://$&#123;path.join(__static, '/doSearch.js')&#125;`</span></span><br><span class="line"><span class="undefined">    &#125;</span></span><br><span class="line"><span class="undefined">  &#125;,</span></span><br><span class="line"><span class="undefined">  mounted () &#123;</span></span><br><span class="line"><span class="undefined">    this.webview = document.getElementById('webview')</span></span><br><span class="line"><span class="undefined">    this.webview.addEventListener('ipc-message', this.receiveMessage)</span></span><br><span class="line"><span class="undefined">  &#125;,</span></span><br><span class="line"><span class="undefined">  methods: &#123;</span></span><br><span class="line"><span class="undefined">    receiveMessage (e) &#123;</span></span><br><span class="line"><span class="undefined">      const result = JSON.parse(e.args[0])</span></span><br><span class="line"><span class="undefined">      this.posts = result || []</span></span><br><span class="line"><span class="undefined">      this.isSearching = false</span></span><br><span class="line"><span class="undefined">    &#125;,</span></span><br><span class="line"><span class="undefined">    searchHanlder () &#123;</span></span><br><span class="line"><span class="undefined">      this.webview.send('ping', 'xxxx')</span></span><br><span class="line"><span class="undefined">    &#125;,</span></span><br><span class="line"><span class="undefined">    /** 开始爬取 */</span></span><br><span class="line"><span class="undefined">    doSearch () &#123;</span></span><br><span class="line"><span class="undefined">      const &#123; url, isSearching &#125; = this</span></span><br><span class="line"><span class="undefined">      if (isSearching) return</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">      const webview = this.webview</span></span><br><span class="line"><span class="undefined">      webview.src = url</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">      this.isSearching = true</span></span><br><span class="line"><span class="undefined">      this.searchUrl = url</span></span><br><span class="line"><span class="undefined">      webview.addEventListener('dom-ready', this.searchHanlder)</span></span><br><span class="line"><span class="undefined">    &#125;</span></span><br><span class="line"><span class="undefined">  &#125;</span></span><br><span class="line"><span class="undefined">&#125;</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">.search-webview&#123;</span></span><br><span class="line"><span class="undefined">  display: block;</span></span><br><span class="line"><span class="undefined">  visibility: hidden;</span></span><br><span class="line"><span class="undefined">  height: 0;</span></span><br><span class="line"><span class="undefined">&#125;</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>doSearch.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ipcRenderer = <span class="built_in">require</span>(<span class="string">'electron'</span>).ipcRenderer</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getPostList</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> postElems = <span class="built_in">document</span>.querySelectorAll(<span class="string">'.entry-list&gt;li.item'</span>)</span><br><span class="line">  <span class="keyword">const</span> list = []</span><br><span class="line">  postElems.forEach(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> linkElem = item.querySelector(<span class="string">'.title-row a'</span>) || &#123;&#125;</span><br><span class="line">    list.push(&#123;</span><br><span class="line">      title: linkElem.innerText || <span class="string">''</span>,</span><br><span class="line">      link: linkElem.href || <span class="string">''</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">return</span> list</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 延迟时间等dom渲染</span></span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> list = getPostList()</span><br><span class="line">    ipcRenderer.sendToHost(<span class="string">'data'</span>, <span class="built_in">JSON</span>.stringify(list))</span><br><span class="line">  &#125;, <span class="number">100</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">main()</span><br></pre></td></tr></table></figure>
+<p>全部代码在<a href="https://github.com/cky917/electron-spider" target="_blank" rel="noopener">https://github.com/cky917/electron-spider</a></p>
+<p>利用<code>electron</code>能做好多事，比如定时操作、本地存储等等。</p>
+<h2 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h2><p>这个“小项目”当时真是折磨了我好久，也了解了好多反爬的知识，网站反爬策略越来越丰富，除了ip频率控制、浏览器注入cookie判断、甚至有网站会判断鼠标移动之类的用户操作来判断你是不是机器人，当然还有最有效的验证码机制。爬虫和反爬之间的斗智斗勇，感觉就是技术的博弈。爬虫其实对网站还是有影响的，最好要控制频率，不要恶意进行爬取，不然你还是可能会被封ip。</p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>陈柯伊</h4>
+    <p>梦想一克拉 热血一卡车 眼泪一酒瓶 熬夜一光年</p>
+</section>
+      <section class="share">
+   <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    
+    <a class="older-posts" href="/2018/05/07/ip-proxy-request/">
+        纪念一下发布的第一个npm模块 →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    
+<section class="comment-box">
+    <!--高速版-->
+    <div id="SOHUCS" sid="http://blog.chenkeyi.com/2018/12/21/electron-spider/"></div>
+    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+    <script type="text/javascript">
+        window.changyan.api.config({
+        appid: 'cyt0WGpod',
+        conf: 'prod_9f27eeee1e3fc8f350351d688de22e09'
+        });
+    </script>
+
+</section>
+
+</div>
+
+
+
+</main>
+ 
+  <div id="toc" class="toc-article">
+    <div class="toc-title">文章目录</div>
+    <div class="toc-box">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前情提要"><span class="toc-text">前情提要</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#大概思路"><span class="toc-text">大概思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后话"><span class="toc-text">后话</span></a></li></ol>
+    </div>
+
+</div>
+
+
+<script language="JavaScript" type="text/JavaScript">
+//运行文本域代码
+function runEx(cod1) {
+  cod=document.all(cod1)
+  var code=cod.value.replace(/‘|’/g,'\'');
+  if (code!=""){
+    var newwin=window.open('','',''); //打开一个窗口并赋给变量newwin。
+    newwin.opener = null // 防止代码对论谈页面修改
+    newwin.document.write(code); //向这个打开的窗口中写入代码code，这样就实现了运行代码功能。
+    newwin.document.close();
+  }
+}
+
+</script>
+
+      
+<footer class="site-footer">
+  
+  <a class="subscribe icon-feed" href="atom.xml"><span class="tooltip">Subscribe!</span></a>
+  
+  <div class="inner">
+<section>友情链接：
+  <a href="https://wangfeia.com/" target="_blank" rel="nofollow">WangF Blog</a> |
+  <a href="http://neras.github.io/" target="_blank" rel="nofollow">有只妖怪</a> |
+  <a href="http://www.cnblogs.com/observernotes/" target="_blank" rel="nofollow">observernote</a> |
+  <a href="http://tangyc.top/" target="_blank" rel="nofollow">前端唐小胖</a>|
+  <a href="http://lyhfe.com/" target="_blank" rel="nofollow">lyhper Blog</a>
+<a href="https://haofly.net/" target="_blank" rel="nofollow">豪翔天下</a>
+</section>
+     <section class="copyright">All content copyright <a href="/">一只很酷的蘑菇</a> &copy; 2015 &bull; All rights reserved. </section>
+     <section class="poweredby">渝ICP备15005710号 |  Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a> </section>
+  </div>
+  <span id="busuanzi_container_site_uv">
+      本站访客数<span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span>人次
+    </span>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</footer>
+
+      <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+  </div>
+</div>
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home" target="_blank" href="/"><span>博客主页</span></a>
+
+          <a class="icon-news" target="_blank" href="/tags/Javascript学习笔记/"><span>博客目录</span></a>
+
+          <a class="icon-image" target="_blank" href="/my-project/"><span>我的项目</span></a>
+
+          <a class="icon-wiki" target="_blank" href="http://github.com/cky917"><span>github</span></a>
+
+          <a class="icon-mail" target="_blank" href="/about-me/"><span>关于我</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>
