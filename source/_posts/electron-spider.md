@@ -40,7 +40,7 @@ yarn run dev # or npm run dev
 
 由于是例子，直接改生成项目里的`landingPage.vue`页面了，我们爬一下[掘金](https://juejin.im)，直接上代码吧
 
-大致思路，用`webview`打开需要爬取的网址，该`webview` `preload`一个js文件，该文件可以访问新页面并且进行dom读取等操作（类似在浏览器控制台里执行js）。通过electron的相关进程直接通信的api和事件，进行数据传输。
+大致思路，用`webview`打开需要爬取的网址，该`webview` `preload`一个js文件，该文件可以访问新页面并且进行dom读取等操作（类似在浏览器控制台里执行js）。通过electron的相关进程直接通信的api和事件，进行数据传输，主页面拿到数据后可以存储起来或者做别的事。
 
 ```html
 <template>
@@ -142,6 +142,11 @@ function main () {
 
 main()
 ```
+
+效果：
+
+<img src="/images/electron-spider.gif"/>
+
 
 全部代码在[https://github.com/cky917/electron-spider](https://github.com/cky917/electron-spider)
 
