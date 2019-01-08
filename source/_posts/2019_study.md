@@ -23,3 +23,9 @@ tags: 学习笔记
 **2019/01/07** 周一
 
 - [在 JavaScript ES6+ 中从零开始学习函数式编程&组合式软件编写系列译文](https://juejin.im/post/5a0275406fb9a04506710bbc) 的 11-14 部分
+
+**2019/01/08** 周二
+
+- [在 JavaScript ES6+ 中从零开始学习函数式编程&组合式软件编写系列译文](https://juejin.im/post/5a0275406fb9a04506710bbc) 的 15-18 部分
+
+- [JavaScript 代码简洁之道](https://juejin.im/post/5c24b7a851882509a76875e8)
