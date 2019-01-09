@@ -29,3 +29,7 @@ tags: 学习笔记
 - [在 JavaScript ES6+ 中从零开始学习函数式编程&组合式软件编写系列译文](https://juejin.im/post/5a0275406fb9a04506710bbc) 的 15-18 部分
 
 - [JavaScript 代码简洁之道](https://juejin.im/post/5c24b7a851882509a76875e8)
+
+**2019/01/09** 周三
+
+- [现代javascript教程-正则表达式](https://zh.javascript.info/regular-expressions) 的 1-7 部分
