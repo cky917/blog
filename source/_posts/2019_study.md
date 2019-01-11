@@ -36,6 +36,5 @@ tags: 学习笔记
 
 **2019/01/10** 周四
 
-- [现代javascript教程-正则表达式](https://zh.javascript.info/regular-expressions) 的 8-15 部分
-
-[学习笔记](https://blog.chenkeyi.com/2019/01/11/regexp-study)
+- [现代javascript教程-正则表达式](https://zh.javascript.info/regular-expressions) 的 8-15 部分，
+  [学习笔记](https://blog.chenkeyi.com/blog/regexp-study/)
