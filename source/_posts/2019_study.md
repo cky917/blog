@@ -38,3 +38,9 @@ tags: 学习笔记
 
 - [现代javascript教程-正则表达式](https://zh.javascript.info/regular-expressions) 的 8-15 部分，
   [学习笔记](https://blog.chenkeyi.com/blog/regexp-study/)
+
+**2019/01/14** 周一
+
+- [https://zh.javascript.info/object-basics](Objects（对象）：基础知识)
+
+今天做了几道codewar的题，晚上有事所以没怎么学习。
