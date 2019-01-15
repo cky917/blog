@@ -44,3 +44,9 @@ tags: 学习笔记
 - [https://zh.javascript.info/object-basics](Objects（对象）：基础知识)
 
 今天做了几道codewar的题，晚上有事所以没怎么学习。
+
+**2019/01/15** 周二
+
+- [https://zh.javascript.info/advanced-functions](Advanced working with functions)
+
+- codewar做一题。ps:现在越来越觉得函数式编程好用了
