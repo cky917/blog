@@ -41,12 +41,12 @@ tags: 学习笔记
 
 **2019/01/14** 周一
 
-- [https://zh.javascript.info/object-basics](Objects（对象）：基础知识)
+- [Objects（对象）：基础知识](https://zh.javascript.info/object-basics)
 
 今天做了几道codewar的题，晚上有事所以没怎么学习。
 
 **2019/01/15** 周二
 
-- [https://zh.javascript.info/advanced-functions](Advanced working with functions)
+- [Advanced working with functions](https://zh.javascript.info/advanced-functions)
 
 - codewar做一题。ps:现在越来越觉得函数式编程好用了
