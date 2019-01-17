@@ -50,3 +50,9 @@ tags: 学习笔记
 - [Advanced working with functions](https://zh.javascript.info/advanced-functions)
 
 - codewar做一题。ps:现在越来越觉得函数式编程好用了
+
+**2019/01/16** 周三
+
+- [对象、类和继承](https://zh.javascript.info/object-oriented-programming)
+
+- [Document](https://zh.javascript.info/document)
