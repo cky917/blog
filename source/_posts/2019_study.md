@@ -56,3 +56,7 @@ tags: 学习笔记
 - [对象、类和继承](https://zh.javascript.info/object-oriented-programming)
 
 - [Document](https://zh.javascript.info/document)
+
+**2019/01/17** 周四
+
+- [事件简介](https://zh.javascript.info/events)
