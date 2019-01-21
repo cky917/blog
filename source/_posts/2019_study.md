@@ -60,3 +60,7 @@ tags: 学习笔记
 **2019/01/17** 周四
 
 - [事件简介](https://zh.javascript.info/events)
+
+**2019/01/21** 周一
+
+- [事件细节](https://zh.javascript.info/event-details)
