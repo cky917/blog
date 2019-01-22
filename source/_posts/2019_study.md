@@ -64,3 +64,12 @@ tags: 学习笔记
 **2019/01/21** 周一
 
 - [事件细节](https://zh.javascript.info/event-details)
+
+**2019/01/22** 周二
+
+- [表单、控件](https://zh.javascript.info/forms-controls)
+- [动画](https://zh.javascript.info/animation)
+- [Promises, async/await](https://zh.javascript.info/async)
+- [网络请求：AJAX 和 COMET](https://zh.javascript.info/xmlhttprequest)
+
+做了2道codewar 明天准备看react了
