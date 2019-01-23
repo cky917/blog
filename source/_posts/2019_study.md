@@ -73,3 +73,7 @@ tags: 学习笔记
 - [网络请求：AJAX 和 COMET](https://zh.javascript.info/xmlhttprequest)
 
 做了2道codewar 明天准备看react了
+
+**2019/01/23** 周三
+
+[react官方文档 高级指引](https://react.docschina.org/docs/jsx-in-depth.html)
