@@ -77,3 +77,9 @@ tags: 学习笔记
 **2019/01/23** 周三
 
 [react官方文档 高级指引](https://react.docschina.org/docs/jsx-in-depth.html)
+
+**2019/02/11** 周一
+
+春节回来开工第一天啦~
+
+[redux文档 基础](https://www.redux.org.cn/docs/basics/)
