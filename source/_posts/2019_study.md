@@ -83,3 +83,8 @@ tags: 学习笔记
 春节回来开工第一天啦~
 
 [redux文档 基础](https://www.redux.org.cn/docs/basics/)
+
+**2019/02/12** 周二
+
+[redux文档 高级](https://www.redux.org.cn/docs/advanced/)
+[redux文档 技巧](https://www.redux.org.cn/docs/recipes/)看了一部分
