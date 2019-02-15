@@ -88,3 +88,7 @@ tags: 学习笔记
 
 [redux文档 高级](https://www.redux.org.cn/docs/advanced/)
 [redux文档 技巧](https://www.redux.org.cn/docs/recipes/)看了一部分
+
+**2019/02/14** 周四
+
+[Vue.js 你需要知道的 v-slot （译）](https://juejin.im/post/5c64e11151882562e4726d98)
