@@ -101,3 +101,6 @@ tags: 学习笔记
 **2019/02/21** 周四
 
 过了一遍`Vue Router`的文档，结合api文档看源码，感觉用过一段时间后再看和初学的时候看完全是不一样的，再看的时候会有很多细节上的收获。
+
+**2019/02/22** 周五
+[minipack](https://github.com/ronami/minipack/blob/master/src/minipack.js) - parcel核心开发者开源的打包工具原理教程，有详细注释
