@@ -104,3 +104,7 @@ tags: 学习笔记
 
 **2019/02/22** 周五
 [minipack](https://github.com/ronami/minipack/blob/master/src/minipack.js) - parcel核心开发者开源的打包工具原理教程，有详细注释
+
+**2019/02/26** 周二
+
+继续看&跟着敲`Vue Router`的源码
