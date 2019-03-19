@@ -108,3 +108,12 @@ tags: 学习笔记
 **2019/02/26** 周二
 
 继续看&跟着敲`Vue Router`的源码
+
+**2019/03/12** 周二
+
+- [精读《Serverless 给前端带来了什么》](https://zhuanlan.zhihu.com/p/58877583)
+
+**2019/03/19** 周二
+
+- [ES5 to ESNext —  自 2015 以来 JavaScript 新增的所有新特性](https://juejin.im/post/5c907742f265da60c95b63af)
+- [2019年大前端技术趋势深度解读](https://mp.weixin.qq.com/s/lf55_ujbhOx4i3PrdCwihg)
