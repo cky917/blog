@@ -125,3 +125,9 @@ tags: 学习笔记
 趁着放假前的空挡更一波，感觉英语单词还是要继续背起来，看了这篇文章发现英语还是非常重要呀。
 
 - [我如何零基础转行成为一个自信的前端](https://www.yuque.com/fe9/basic/mchxkr)
+
+**2019/05/13** 周一
+
+又来更新拉，发现用teambition做个人计划管理超级好用诶。
+- [You-need-to-know-css](https://lhammer.cn/You-need-to-know-css/#/zh-cn/translucent-borders)
+- [前端面试每日 3+1](https://github.com/haizlin/fe-interview/blob/master/category/history.md)
