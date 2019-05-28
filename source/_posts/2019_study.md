@@ -125,3 +125,7 @@ tags: 学习笔记
 趁着放假前的空挡更一波，感觉英语单词还是要继续背起来，看了这篇文章发现英语还是非常重要呀。
 
 - [我如何零基础转行成为一个自信的前端](https://www.yuque.com/fe9/basic/mchxkr)
+
+**2019/04/28** 周日
+
+- [巧用 Typescript](https://zhuanlan.zhihu.com/p/39620591)
