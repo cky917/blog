@@ -129,3 +129,9 @@ tags: 学习笔记
 **2019/04/28** 周日
 
 - [巧用 Typescript](https://zhuanlan.zhihu.com/p/39620591)
+
+**2019/05/13** 周一
+
+又来更新拉，发现用teambition做个人计划管理超级好用诶。
+- [You-need-to-know-css](https://lhammer.cn/You-need-to-know-css/#/zh-cn/translucent-borders)
+- [前端面试每日 3+1](https://github.com/haizlin/fe-interview/blob/master/category/history.md)
