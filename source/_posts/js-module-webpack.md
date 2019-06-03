@@ -7,3 +7,4 @@ tags: Javascript学习笔记
 <img src="/images/JS模块化.png">
 <img src="/images/Webpack 概念.png">
 <img src="/images/Webpack 使用.png">
+<img src="/images/Webpack config.png">
