@@ -135,3 +135,7 @@ tags: 学习笔记
 又来更新拉，发现用teambition做个人计划管理超级好用诶。
 - [You-need-to-know-css](https://lhammer.cn/You-need-to-know-css/#/zh-cn/translucent-borders)
 - [前端面试每日 3+1](https://github.com/haizlin/fe-interview/blob/master/category/history.md)
+
+**2019/06/04** 周二
+
+- [一个合格的中级前端工程师必须要掌握的 28 个 JavaScript 技巧](https://juejin.im/post/5cef46226fb9a07eaf2b7516#heading-10)
