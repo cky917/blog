@@ -196,7 +196,7 @@ const dasherize = compose(
 dasherize('The world is a vampire'); // 'the-world-is-a-vampire'
 ```
 
-为了调试，我们可以用`trace`函数观察某个点上的数据，像`Haskell`和`PureScript`这样的变成语言一样有相似的功能，以方便开发。
+为了调试，我们可以用`trace`函数观察某个点上的数据，像`Haskell`和`PureScript`这样的编程语言一样有相似的功能，以方便开发。
 组合可以成为我们构建程序的工具，而且很幸运的是，它背后有一个很强大的理论来支撑其正确性。让我们来深入看看这个理论。
 
 ## 范畴论 (Category Theory)
@@ -260,3 +260,7 @@ compose(id, f) === compose(f, id) === f
 函数组合将我们的函数向一系列管道一样连接到一起，数据会也一定会流动穿过我们的应用---毕竟纯函数输入对应输出的，所以断掉这个链条会忽略掉输出，让我们的软件变得无用。
 
 我们认为组合是高于其他设计原则的设计原则，因为它让我们的app保持简单而且富有可读性。范畴学在app构建、模拟副作用和保证正确性方面扮演重要角色。
+
+
+相关：
+[函数式编程-柯里化](https://blog.chenkeyi.com/blog/fp_chapter4-currying/)
