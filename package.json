@@ -19,6 +19,6 @@
     "hexo-server": "^0.1.2"
   },
   "devDependencies": {
-    "file-loader": "^1.1.5"
+    "file-loader": "^6.2.0"
   }
 }
